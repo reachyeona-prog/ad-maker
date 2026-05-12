@@ -259,10 +259,12 @@ img{display:block;max-width:100%}
 .slide-a .brand-name{font-family:var(--display-font);font-size:120px;font-weight:700;color:#fff;-webkit-text-stroke:20px #000;paint-order:stroke fill;line-height:1;letter-spacing:-.03em;word-break:keep-all;position:relative;z-index:2}
 .slide-a .menu-cut{
   position:absolute;bottom:0;right:0;
-  height:260px;max-width:320px;object-fit:contain;
-  z-index:1;pointer-events:none;
+  object-fit:contain;
+  z-index:1;cursor:grab;
+  -webkit-user-select:none;user-select:none;
 }
-.slide-a .desc{font-size:48px;font-weight:500;color:#3A3A3A;line-height:1.45;word-break:keep-all}
+.slide-a .menu-cut:active{cursor:grabbing}
+.slide-a .desc{font-size:48px;font-weight:500;color:#3A3A3A;line-height:1.4;word-break:keep-all}
 .slide-a .desc .hl-y{color:#1A1A1A;font-weight:800;background:linear-gradient(transparent 60%, var(--hl-y-c, #F5FF00) 60%)}
 .slide-a .desc .hl-g{color:#00A847;font-weight:800}
 .slide-a .desc .hl-r{color:var(--point-c, #FF6B14);font-weight:800}
@@ -299,6 +301,10 @@ img{display:block;max-width:100%}
   font-size:48px;font-weight:800;padding:34px 48px;
   display:flex;align-items:center;justify-content:center;text-align:center;
   word-break:keep-all;z-index:3;
+  border-top-left-radius:50px;
+  border-top-right-radius:50px;
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
 }
 
 /* === 패턴 E 표지 (흰 배경 + 큰 카피 + 하단 사진 영역) === */
@@ -310,23 +316,24 @@ img{display:block;max-width:100%}
 .cover-e .copy .stamp-label{display:inline-block;background:#1A1A1A;color:#fff;font-size:28px;font-weight:800;padding:10px 22px;border-radius:99px;align-self:flex-start}
 .cover-e .photo-area{position:absolute;left:0;right:0;bottom:0;height:48%;background-size:cover;background-position:center;background-repeat:no-repeat}
 
-/* === 패턴 E 슬라이드 (흰 배경 + 해시태그 + 메트릭 박스 + 사진) === */
-.slide-e{background:#fff;color:#1A1A1A}
-.slide-e .head{position:absolute;left:48px;right:48px;top:48px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;z-index:2}
-.slide-e .head-text{flex:1}
-.slide-e .brand-row{display:flex;align-items:center;gap:14px}
-.slide-e .brand-name{font-size:60px;font-weight:900;line-height:1;letter-spacing:-.03em;color:#1A1A1A;word-break:keep-all}
-.slide-e .hashtags{font-size:22px;font-weight:600;color:#9A9A9A;margin-top:8px;line-height:1.4}
-.slide-e .brand-logo{height:96px;max-width:160px;object-fit:contain;flex-shrink:0}
-.slide-e .metrics{position:absolute;left:48px;right:48px;top:200px;display:flex;flex-wrap:wrap;gap:10px;z-index:2}
+/* === 패턴 E 슬라이드 (포인트 컬러 배경 + 해시태그 + 메트릭 박스 + 사진) === */
+.slide-e{background:var(--point-c, #4A8A3A);color:#fff}
+.slide-e .head{position:absolute;left:48px;right:48px;top:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:3}
+.slide-e .head-left{display:flex;align-items:center;gap:28px;min-width:0;flex:1}
+.slide-e .brand-name{font-size:110px;font-weight:900;line-height:.95;letter-spacing:-.03em;color:var(--text-c, #fff);word-break:keep-all;flex-shrink:0}
+.slide-e .hashtags{display:flex;flex-direction:column;gap:4px;font-size:36px;font-weight:700;color:var(--text-c, #fff);line-height:1.15;letter-spacing:-.02em;opacity:.95}
+.slide-e .brand-logo{height:110px;max-width:260px;object-fit:contain;flex-shrink:0}
+.slide-e .metrics{position:absolute;left:48px;right:48px;top:200px;display:flex;flex-wrap:wrap;gap:14px;z-index:3}
 .slide-e .metric{
-  font-size:24px;font-weight:800;padding:10px 20px;border-radius:99px;
-  border:2px solid;color:#1A1A1A;background:#fff;
+  font-size:43px;font-weight:800;padding:14px 32px;border-radius:99px;
+  border:3px solid var(--point-c, #4A8A3A);color:#1A1A1A;background:#fff;
+  line-height:1.15;letter-spacing:-.02em;
 }
-.slide-e .metric.c0{border-color:var(--hook-yellow);background:#FFFCC2}
-.slide-e .metric.c1{border-color:#FFA500;background:#FFE8C2}
-.slide-e .metric.c2{border-color:#00A847;background:#D7F5E2}
-.slide-e .photo{position:absolute;left:48px;right:48px;top:330px;bottom:48px;background-size:cover;background-position:center;border-radius:18px;z-index:1}
+.slide-e .metric .hl-y, .slide-e .metric .hl-g, .slide-e .metric .hl-r{
+  color:var(--hl-c, var(--point-c, #4A8A3A));font-weight:900;background:none;
+}
+.slide-e .photo{position:absolute;left:0;right:0;top:320px;bottom:0;background-size:cover;background-position:center;background-repeat:no-repeat;border-radius:0;z-index:1}
+.slide-e .photo-grad{position:absolute;left:0;right:0;top:320px;height:var(--grad-h, 240px);background:linear-gradient(to bottom, var(--point-c, #4A8A3A) 0%, rgba(0,0,0,0) 100%);z-index:2;pointer-events:none}
 
 /* === 패턴 L 슬라이드 (사진 + 좌하 동그란 + 우상 뾰족 말풍선) === */
 .slide-l{background:#fff;color:#1A1A1A}
@@ -460,6 +467,8 @@ img{display:block;max-width:100%}
       <select id="ctl-font" title="메인 폰트" onchange="onFontChange()">
         <option value="paperlogy">페이퍼로지</option>
         <option value="hakgyo">학교안심 둥근미소</option>
+        <option value="aggro">어그로체</option>
+        <option value="a2g">에이투지체</option>
       </select>
     </div>
     <div class="ctl">
@@ -594,8 +603,13 @@ const newSlide = () => ({
   imagePos: { x: 50, y: 50 },
   accentColor: '#00A847',
   pointColor: '#FF6B14',    // A: ~~키워드~~ 컬러
-  highlightColor: '#F5FF00',// A: **키워드** 형광펜 컬러
+  highlightColor: null,     // A: **키워드** 형광펜 컬러 (기본 #F5FF00), E: 강조 키워드 컬러 (기본 pointColor)
+  textColor: '#fff',        // E: 브랜드명/해시태그 컬러 (#fff | #1A1A1A)
+  gradientHeight: 240,      // E: 배경 이미지 그라데이션 높이 (px)
   menuCut: null,            // A: 대표 메뉴 누끼 (logo 대체)
+  menuCutX: 0,              // A: 메뉴 누끼 X 오프셋 (px, +right/-left)
+  menuCutY: 0,              // A: 메뉴 누끼 Y 오프셋 (px, +down/-up)
+  menuCutHeight: 260,       // A: 메뉴 누끼 높이 (px)
   cta: '',                  // B
   hashtags: '',             // E
   metrics: '',              // E (multiline)
@@ -685,6 +699,8 @@ function onZoomChange(){
 const FONTS = {
   paperlogy: "'Paperlogy','Pretendard Variable','Noto Sans KR',sans-serif",
   hakgyo:    "'Hakgyoansim','Pretendard Variable','Noto Sans KR',sans-serif",
+  aggro:     "'SBAggro','Pretendard Variable','Noto Sans KR',sans-serif",
+  a2g:       "'A2G','Pretendard Variable','Noto Sans KR',sans-serif",
 };
 function onFontChange(){
   const v = document.getElementById('ctl-font').value;
@@ -729,6 +745,7 @@ function renderSlideInputs(){
     const card = document.createElement('div');
     card.className = 'slide-card';
     let extraFields = '';
+    let postImageFields = '';
     if (p === 'A') {
       const pc = s.pointColor || '#FF6B14';
       const pointPresets = ['#FF6B14','#FB4317','#40A307'];
@@ -760,7 +777,7 @@ function renderSlideInputs(){
     } else if (p === 'B') {
       extraFields = `
         <div class="field">
-          <span class="field-label">CTA 알약 텍스트 (하단)</span>
+          <span class="field-label">CTA 버튼 텍스트</span>
           <input type="text" data-k="cta" data-id="${s.id}" value="${escAttr(s.cta)}" placeholder="가맹비·교육비 면제 & 최대 5천만 원 지원">
         </div>
         <div class="field">
@@ -768,15 +785,56 @@ function renderSlideInputs(){
           <input type="color" data-k="accentColor" data-id="${s.id}" value="${escAttr(s.accentColor || '#00A847')}" style="width:80px;height:32px;padding:0;border:1px solid var(--line);border-radius:6px;cursor:pointer">
         </div>`;
     } else if (p === 'E') {
+      const pcE = s.pointColor || '#4A8A3A';
+      const hlE = s.highlightColor || s.pointColor || '#4A8A3A';
+      const tcE = s.textColor || '#fff';
+      const ePointPresets = ['#4A8A3A','#E11D2A','#FFA500','#1A6BC8','#7B3FBF','#1A1A1A'];
+      const ePointPresetHtml = ePointPresets.map(c =>
+        `<button type="button" class="color-preset" data-color="${c}" data-k="pointColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
+      ).join('');
+      const eHlPresets = ['#E11D2A','#FFA500','#F5FF00','#00A847','#1A1A1A','#fff'];
+      const eHlPresetHtml = eHlPresets.map(c =>
+        `<button type="button" class="color-preset" data-color="${c}" data-k="highlightColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
+      ).join('');
       extraFields = `
         <div class="field">
           <span class="field-label">해시태그 (브랜드명 옆)</span>
-          <input type="text" data-k="hashtags" data-id="${s.id}" value="${escAttr(s.hashtags)}" placeholder="#소자본 #치비용">
+          <input type="text" data-k="hashtags" data-id="${s.id}" value="${escAttr(s.hashtags)}" placeholder="#돈카츠 #업종변경">
+          <span class="hint">공백으로 구분 — 세로로 stacking됨</span>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">텍스트 컬러 (브랜드명/해시태그)</span><span class="field-spec">${tcE === '#fff' ? '화이트' : '블랙'}</span></div>
+          <div class="color-input-row">
+            <button type="button" class="color-preset" data-color="#fff" data-k="textColor" data-id="${s.id}" title="화이트" style="background:#fff"></button>
+            <button type="button" class="color-preset" data-color="#1A1A1A" data-k="textColor" data-id="${s.id}" title="블랙" style="background:#1A1A1A"></button>
+          </div>
         </div>
         <div class="field">
           <span class="field-label">메트릭 박스 (최대 3줄)</span>
-          <textarea data-k="metrics" data-id="${s.id}" rows="3" placeholder="순수익 43.2%&#10;1,500만원 상당 혜택&#10;업종 변경 · 삼인삼 창업">${escHtml(s.metrics)}</textarea>
-          <span class="hint">컬러는 줄 순서대로 옐로 → 오렌지 → 그린</span>
+          <textarea data-k="metrics" data-id="${s.id}" rows="3" placeholder="월 평균 수익 **1천만원**&#10;홍보, 브랜딩 지원&#10;인테리어 강요 **X**">${escHtml(s.metrics)}</textarea>
+          <span class="hint"><code>**키워드**</code>로 강조하면 강조 컬러로 표시</span>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">강조 컬러 (**키워드**)</span></div>
+          <div class="color-input-row">
+            <input type="text" class="hex-input" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hlE)}" placeholder="#4A8A3A" maxlength="7">
+            <input type="color" class="color-swatch" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hlE)}" title="컬러 피커">
+            ${eHlPresetHtml}
+          </div>
+        </div>`;
+      const gh = s.gradientHeight ?? 240;
+      postImageFields = `
+        <div class="field">
+          <div class="field-row"><span class="field-label">포인트 컬러 (배경/테두리)</span></div>
+          <div class="color-input-row">
+            <input type="text" class="hex-input" data-k="pointColor" data-id="${s.id}" value="${escAttr(pcE)}" placeholder="#4A8A3A" maxlength="7">
+            <input type="color" class="color-swatch" data-k="pointColor" data-id="${s.id}" value="${escAttr(pcE)}" title="컬러 피커">
+            ${ePointPresetHtml}
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">그라데이션 높이</span><span class="field-spec">${gh}px</span></div>
+          <input type="range" min="0" max="1500" step="1" data-k="gradientHeight" data-id="${s.id}" value="${gh}" style="width:100%">
         </div>`;
     } else if (p === 'L') {
       extraFields = `
@@ -830,6 +888,7 @@ function renderSlideInputs(){
           <span class="drop-icon">＋</span>
           <span class="drop-text">${sideUploadHint}</span>
         </label>
+        ${isA ? '<span class="hint">미리보기에서 <code>드래그</code> 위치 이동 · <code>휠 스크롤</code> 크기 조정</span>' : ''}
       </div>
       <div class="field">
         <span class="field-label">배경 이미지 (음식/매장)</span>
@@ -838,7 +897,9 @@ function renderSlideInputs(){
           <span class="drop-icon">＋</span>
           <span class="drop-text">사진 업로드</span>
         </label>
+        <span class="hint">미리보기에서 <code>드래그</code>하여 위치 조정</span>
       </div>
+      ${postImageFields}
     `;
     list.appendChild(card);
     // 썸네일 표시
@@ -846,7 +907,7 @@ function renderSlideInputs(){
     if (s.image) showDropThumb(card.querySelector(`[data-drop="image-${s.id}"]`), s.image, '사진');
   });
   // 텍스트/컬러 입력 바인딩
-  list.querySelectorAll('input[type=text],input[type=color],textarea').forEach(el => {
+  list.querySelectorAll('input[type=text],input[type=color],input[type=range],textarea').forEach(el => {
     el.addEventListener('input', e => {
       const id = +el.dataset.id, k = el.dataset.k;
       const slide = state.slides.find(s => s.id === id);
@@ -857,6 +918,12 @@ function renderSlideInputs(){
         val = val.trim();
         if (val && !val.startsWith('#')) val = '#' + val;
         if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;  // 유효하지 않으면 적용 보류
+      }
+      if (el.type === 'range') {
+        val = parseInt(val, 10) || 0;
+        // 슬라이더 옆 field-spec 라이브 업데이트
+        const spec = el.closest('.field')?.querySelector('.field-spec');
+        if (spec) spec.textContent = val + 'px';
       }
       slide[k] = val;
       // 같은 row에 있는 sibling 컬러 입력 동기화
@@ -1040,6 +1107,11 @@ function makePreviewSection({label, filename, frameEl, stateObj, onDownload}){
     const bgEls = frameEl.querySelectorAll('.bg, .photo, .photo-area, .photo-wrap');
     bindBgDrag(frameEl, [...bgEls], stateObj);
   }
+  // 메뉴 누끼 드래그/리사이즈 (slide-a)
+  const menuCutEl = frameEl.querySelector('.menu-cut');
+  if (menuCutEl && stateObj) {
+    bindMenuCutDrag(menuCutEl, stateObj, s);
+  }
   // 다운로드 버튼
   const dlRow = document.createElement('div');
   dlRow.className = 'dl-row';
@@ -1055,9 +1127,10 @@ function makePreviewSection({label, filename, frameEl, stateObj, onDownload}){
 
 function buildFilename(kind, idx, slide){
   const ratio = state.ratio.replace(':', 'x');
-  if (kind === 'cover') return `payhere_franchise_cover_${ratio}.jpg`;
+  const p = state.pattern;
+  if (kind === 'cover') return `payhere_franchise_${p}_cover_${ratio}.jpg`;
   const brand = (slide?.brand || `slide${idx+1}`).replace(/\s+/g, '_');
-  return `payhere_franchise_${brand}_${String(idx+1).padStart(2,'0')}_${ratio}.jpg`;
+  return `payhere_franchise_${p}_${brand}_${String(idx+1).padStart(2,'0')}_${ratio}.jpg`;
 }
 
 function makeFrame(extraClass){
@@ -1111,6 +1184,46 @@ function bindBgDrag(previewFrame, bgEls, stateObj){
     e.preventDefault();
   });
 }
+
+/* ===== 메뉴 누끼 드래그/리사이즈 (slide-a) ===== */
+let _menuCutDrag = null;
+window.addEventListener('mousemove', (e) => {
+  if (!_menuCutDrag) return;
+  const { el, stateObj, startMx, startMy, startCX, startCY, scale } = _menuCutDrag;
+  const dx = (e.clientX - startMx) / scale;
+  const dy = (e.clientY - startMy) / scale;
+  stateObj.menuCutX = startCX + dx;
+  stateObj.menuCutY = startCY + dy;
+  el.style.transform = `translate(${stateObj.menuCutX}px, ${stateObj.menuCutY}px)`;
+});
+window.addEventListener('mouseup', () => {
+  if (!_menuCutDrag) return;
+  _menuCutDrag.el.style.cursor = 'grab';
+  _menuCutDrag = null;
+});
+function bindMenuCutDrag(menuCutEl, stateObj, scale){
+  menuCutEl.title = '드래그해서 위치 조정 · 휠 스크롤로 크기 조정';
+  menuCutEl.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
+    e.stopPropagation();  // 배경 드래그 트리거 방지
+    _menuCutDrag = {
+      el: menuCutEl, stateObj, scale,
+      startMx: e.clientX, startMy: e.clientY,
+      startCX: stateObj.menuCutX ?? 0,
+      startCY: stateObj.menuCutY ?? 0,
+    };
+    menuCutEl.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  menuCutEl.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const cur = stateObj.menuCutHeight ?? 260;
+    const newH = Math.max(50, Math.min(1500, cur + e.deltaY * -0.5));
+    stateObj.menuCutHeight = Math.round(newH);
+    menuCutEl.style.height = stateObj.menuCutHeight + 'px';
+  }, { passive: false });
+}
 function bgEmpty(text){
   const empty = document.createElement('div');
   empty.className = 'bg-empty';
@@ -1160,7 +1273,12 @@ function buildSlideA(s){
   const box = document.createElement('div'); box.className = 'info-box';
   const brandRow = document.createElement('div'); brandRow.className = 'brand-row';
   if (s.brand) { const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand; brandRow.appendChild(name); }
-  if (s.menuCut) { const img = document.createElement('img'); img.className = 'menu-cut'; img.src = s.menuCut; brandRow.appendChild(img); }
+  if (s.menuCut) {
+    const img = document.createElement('img'); img.className = 'menu-cut'; img.src = s.menuCut;
+    img.style.height = (s.menuCutHeight ?? 260) + 'px';
+    img.style.transform = `translate(${s.menuCutX ?? 0}px, ${s.menuCutY ?? 0}px)`;
+    brandRow.appendChild(img);
+  }
   if (brandRow.children.length) box.appendChild(brandRow);
   if (s.desc) { const desc = document.createElement('div'); desc.className = 'desc'; desc.innerHTML = parseEmphasis(s.desc); box.appendChild(desc); }
   frame.appendChild(box);
@@ -1218,23 +1336,41 @@ function buildCoverE(){
 }
 function buildSlideE(s){
   const frame = makeFrame('slide-e');
+  frame.style.setProperty('--point-c', s.pointColor || '#4A8A3A');
+  frame.style.setProperty('--hl-c', s.highlightColor || s.pointColor || '#4A8A3A');
+  frame.style.setProperty('--text-c', s.textColor || '#fff');
+  frame.style.setProperty('--grad-h', (s.gradientHeight ?? 240) + 'px');
   const head = document.createElement('div'); head.className = 'head';
-  const headText = document.createElement('div'); headText.className = 'head-text';
-  if (s.brand) { const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand; headText.appendChild(name); }
-  if (s.hashtags) { const ht = document.createElement('div'); ht.className = 'hashtags'; ht.textContent = s.hashtags; headText.appendChild(ht); }
-  head.appendChild(headText);
+  const headLeft = document.createElement('div'); headLeft.className = 'head-left';
+  if (s.brand) { const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand; headLeft.appendChild(name); }
+  if (s.hashtags) {
+    const ht = document.createElement('div'); ht.className = 'hashtags';
+    s.hashtags.split(/[\s\n]+/).filter(Boolean).forEach(tag => {
+      const t = document.createElement('span');
+      t.textContent = tag.startsWith('#') ? tag : '#' + tag;
+      ht.appendChild(t);
+    });
+    headLeft.appendChild(ht);
+  }
+  head.appendChild(headLeft);
   if (s.logo) { const logo = document.createElement('img'); logo.className = 'brand-logo'; logo.src = s.logo; head.appendChild(logo); }
   frame.appendChild(head);
   if (s.metrics) {
     const wrap = document.createElement('div'); wrap.className = 'metrics';
-    s.metrics.split('\n').filter(x=>x.trim()).slice(0,3).forEach((m,i) => {
-      const el = document.createElement('div'); el.className = `metric c${i}`; el.textContent = m.trim(); wrap.appendChild(el);
+    s.metrics.split('\n').filter(x=>x.trim()).slice(0,3).forEach(m => {
+      const el = document.createElement('div'); el.className = 'metric';
+      el.innerHTML = parseEmphasis(m.trim());
+      wrap.appendChild(el);
     });
     frame.appendChild(wrap);
   }
-  const photo = document.createElement('div'); photo.className = 'photo';
-  if (s.image) { photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos); } else photo.style.background = '#F0EDE5';
-  frame.appendChild(photo);
+  if (s.image) {
+    const photo = document.createElement('div'); photo.className = 'photo';
+    photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos);
+    frame.appendChild(photo);
+    const grad = document.createElement('div'); grad.className = 'photo-grad';
+    frame.appendChild(grad);
+  }
   return frame;
 }
 
@@ -1310,8 +1446,34 @@ function buildSlideG(s){
 // 2) fetch 시도 (Firefox + http://)
 // 3) CSSOM에서 @font-face 규칙 추출 (브라우저가 cssText에 data URL을 보존하면 작동)
 let _cachedFontCSS = null;
+let _cachedPretendardCSS = null;
+
+// CDN의 Pretendard Variable woff2를 base64로 임베드 (캐로셀 본문 폰트 — 다운로드 SVG가 인식하려면 인라인 필수)
+async function fetchPretendardEmbed(){
+  if (_cachedPretendardCSS != null) return _cachedPretendardCSS;
+  try {
+    const url = 'https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/woff2/PretendardVariable.woff2';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const blob = await res.blob();
+    const dataUrl = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(blob);
+    });
+    _cachedPretendardCSS = `@font-face{font-family:'Pretendard Variable';font-weight:45 920;font-style:normal;font-display:swap;src:url(${dataUrl}) format('woff2-variations');}`;
+    console.log('[font] Pretendard embedded:', _cachedPretendardCSS.length, 'chars');
+  } catch (e) {
+    console.warn('[font] Pretendard embed failed:', e.message);
+    _cachedPretendardCSS = '';
+  }
+  return _cachedPretendardCSS;
+}
+
 async function getEmbeddedFontCSS(){
   if (_cachedFontCSS != null) return _cachedFontCSS;
+  let baseCSS = '';
 
   // 1) 동기 XHR — Chrome file://에서도 동작
   try {
@@ -1319,39 +1481,44 @@ async function getEmbeddedFontCSS(){
     xhr.open('GET', 'fonts-embedded.css', false);
     xhr.send();
     if ((xhr.status === 200 || xhr.status === 0) && xhr.responseText && xhr.responseText.length > 100000) {
-      _cachedFontCSS = xhr.responseText;
-      console.log('[font] XHR loaded:', _cachedFontCSS.length, 'chars');
-      return _cachedFontCSS;
+      baseCSS = xhr.responseText;
+      console.log('[font] XHR loaded:', baseCSS.length, 'chars');
     }
   } catch (e) { console.warn('[font] XHR failed:', e.message); }
 
   // 2) fetch
-  try {
-    const res = await fetch('fonts-embedded.css');
-    if (res.ok) {
-      const text = await res.text();
-      if (text && text.length > 100000) {
-        _cachedFontCSS = text;
-        console.log('[font] fetch loaded:', text.length, 'chars');
-        return _cachedFontCSS;
+  if (!baseCSS) {
+    try {
+      const res = await fetch('fonts-embedded.css');
+      if (res.ok) {
+        const text = await res.text();
+        if (text && text.length > 100000) {
+          baseCSS = text;
+          console.log('[font] fetch loaded:', text.length, 'chars');
+        }
       }
-    }
-  } catch (e) { console.warn('[font] fetch failed:', e.message); }
+    } catch (e) { console.warn('[font] fetch failed:', e.message); }
+  }
 
   // 3) CSSOM
-  const parts = [];
-  for (const sheet of document.styleSheets) {
-    try {
-      for (const rule of sheet.cssRules || []) {
-        const isFontFace = rule.type === 5
-          || (typeof CSSFontFaceRule !== 'undefined' && rule instanceof CSSFontFaceRule)
-          || (rule.cssText && /^@font-face/i.test(rule.cssText));
-        if (isFontFace) parts.push(rule.cssText);
-      }
-    } catch (e) { /* CORS-blocked, skip */ }
+  if (!baseCSS) {
+    const parts = [];
+    for (const sheet of document.styleSheets) {
+      try {
+        for (const rule of sheet.cssRules || []) {
+          const isFontFace = rule.type === 5
+            || (typeof CSSFontFaceRule !== 'undefined' && rule instanceof CSSFontFaceRule)
+            || (rule.cssText && /^@font-face/i.test(rule.cssText));
+          if (isFontFace) parts.push(rule.cssText);
+        }
+      } catch (e) { /* CORS-blocked, skip */ }
+    }
+    baseCSS = parts.join('\n');
+    console.log('[font] CSSOM fallback:', baseCSS.length, 'chars');
   }
-  _cachedFontCSS = parts.join('\n');
-  console.log('[font] CSSOM fallback:', _cachedFontCSS.length, 'chars');
+
+  const pretendardCSS = await fetchPretendardEmbed();
+  _cachedFontCSS = baseCSS + '\n' + pretendardCSS;
   return _cachedFontCSS;
 }
 
@@ -1366,20 +1533,29 @@ async function downloadFrame(kind, idx){
     frameEl = buildSlide(s);
     filename = buildFilename('slide', idx, s);
   }
+  // 다운로드 전용: A 패턴 brand-name/main의 var(--display-font)가 SVG 캡처 시 안 따라가는 케이스 우회 — inline font-family로 강제
+  const df = getComputedStyle(document.documentElement).getPropertyValue('--display-font').trim();
+  if (df && (frameEl.classList.contains('slide-a') || frameEl.classList.contains('cover-a'))) {
+    frameEl.querySelectorAll('.brand-name, .main').forEach(el => { el.style.fontFamily = df; });
+  }
+  // 폰트 CSS를 프레임 안에 <style>로 주입 — fontEmbedCSS 옵션이 안 먹는 케이스 우회
+  const fontCSS = await getEmbeddedFontCSS();
+  const styleEl = document.createElement('style');
+  styleEl.textContent = fontCSS;
+  frameEl.insertBefore(styleEl, frameEl.firstChild);
   const stage = document.createElement('div');
   stage.style.cssText = 'position:fixed;left:-99999px;top:0;';
   stage.appendChild(frameEl);
   document.body.appendChild(stage);
   try {
     await Promise.all([waitImages(frameEl), document.fonts.ready]);
-    const fontCSS = await getEmbeddedFontCSS();
     const dataUrl = await htmlToImage.toJpeg(frameEl, {
       width: r.w,
       height: r.h,
       pixelRatio: 3,
       quality: 0.92,
       cacheBust: false,
-      // base64 임베드된 @font-face 규칙을 직접 SVG에 주입 — 라이브러리가 폰트 fetch 시도 않음
+      // 백업으로 fontEmbedCSS 옵션도 같이 전달
       fontEmbedCSS: fontCSS,
     });
     triggerDownload(dataUrl, filename);
