@@ -25,7 +25,7 @@
   --shadow:0 4px 16px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
   --shadow-lg:0 12px 40px rgba(0,0,0,.12);
   --t:.18s ease;
-  --display-font:'Paperlogy','Pretendard Variable','Noto Sans KR',sans-serif;
+  --display-font:'Pretendard Variable','Noto Sans KR',-apple-system,sans-serif;
 }
 /* ===== §2 리셋 + body ===== */
 *{box-sizing:border-box;margin:0;padding:0}
@@ -182,6 +182,31 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 .frame .bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat}
 .frame .bg-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#888;font-family:var(--font-mono);font-size:14px}
 
+/* === 공통 메인 카피 마커 (모든 커버 .main 요소에 적용) === */
+.main .hl-outline{
+  display:inline-block;color:#fff;-webkit-text-stroke:0;
+  text-shadow:
+    -12px -12px 0 var(--c-outline, #1A1A1A), -6px -12px 0 var(--c-outline, #1A1A1A), 0 -12px 0 var(--c-outline, #1A1A1A), 6px -12px 0 var(--c-outline, #1A1A1A), 12px -12px 0 var(--c-outline, #1A1A1A),
+    -12px -6px 0 var(--c-outline, #1A1A1A), 12px -6px 0 var(--c-outline, #1A1A1A),
+    -12px 0 0 var(--c-outline, #1A1A1A), 12px 0 0 var(--c-outline, #1A1A1A),
+    -12px 6px 0 var(--c-outline, #1A1A1A), 12px 6px 0 var(--c-outline, #1A1A1A),
+    -12px 12px 0 var(--c-outline, #1A1A1A), -6px 12px 0 var(--c-outline, #1A1A1A), 0 12px 0 var(--c-outline, #1A1A1A), 6px 12px 0 var(--c-outline, #1A1A1A), 12px 12px 0 var(--c-outline, #1A1A1A);
+}
+.main .hl-dbl-outline{
+  display:inline-block;color:#fff;-webkit-text-stroke:0;
+  text-shadow:
+    -12px -12px 0 var(--c-outline, #1A1A1A), -6px -12px 0 var(--c-outline, #1A1A1A), 0 -12px 0 var(--c-outline, #1A1A1A), 6px -12px 0 var(--c-outline, #1A1A1A), 12px -12px 0 var(--c-outline, #1A1A1A),
+    -12px -6px 0 var(--c-outline, #1A1A1A), 12px -6px 0 var(--c-outline, #1A1A1A),
+    -12px 0 0 var(--c-outline, #1A1A1A), 12px 0 0 var(--c-outline, #1A1A1A),
+    -12px 6px 0 var(--c-outline, #1A1A1A), 12px 6px 0 var(--c-outline, #1A1A1A),
+    -12px 12px 0 var(--c-outline, #1A1A1A), -6px 12px 0 var(--c-outline, #1A1A1A), 0 12px 0 var(--c-outline, #1A1A1A), 6px 12px 0 var(--c-outline, #1A1A1A), 12px 12px 0 var(--c-outline, #1A1A1A),
+    -24px -24px 0 var(--c-outline2, #E11D2A), -12px -24px 0 var(--c-outline2, #E11D2A), 0 -24px 0 var(--c-outline2, #E11D2A), 12px -24px 0 var(--c-outline2, #E11D2A), 24px -24px 0 var(--c-outline2, #E11D2A),
+    -24px -12px 0 var(--c-outline2, #E11D2A), 24px -12px 0 var(--c-outline2, #E11D2A),
+    -24px 0 0 var(--c-outline2, #E11D2A), 24px 0 0 var(--c-outline2, #E11D2A),
+    -24px 12px 0 var(--c-outline2, #E11D2A), 24px 12px 0 var(--c-outline2, #E11D2A),
+    -24px 24px 0 var(--c-outline2, #E11D2A), -12px 24px 0 var(--c-outline2, #E11D2A), 0 24px 0 var(--c-outline2, #E11D2A), 12px 24px 0 var(--c-outline2, #E11D2A), 24px 24px 0 var(--c-outline2, #E11D2A);
+}
+
 /* === 패턴 A 표지 === */
 .cover-a .scrim{position:absolute;inset:0;background:rgba(50,50,50,.5)}
 .cover-a .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 60px;gap:32px;z-index:2}
@@ -195,49 +220,47 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
   font-family:var(--display-font);
   font-size:140px;font-weight:900;line-height:1.1;letter-spacing:-.03em;
   color:#fff;
+  /* 두꺼운 검정 테두리 — text-shadow 16방향 오프셋 (커스텀 @font-face + SVG foreignObject 캡처 호환) */
   text-shadow:
-    -6px -6px 0 #000, -3px -6px 0 #000, 0 -6px 0 #000, 3px -6px 0 #000, 6px -6px 0 #000,
-    -6px -3px 0 #000, 6px -3px 0 #000,
-    -6px 0 0 #000, 6px 0 0 #000,
-    -6px 3px 0 #000, 6px 3px 0 #000,
-    -6px 6px 0 #000, -3px 6px 0 #000, 0 6px 0 #000, 3px 6px 0 #000, 6px 6px 0 #000,
-    0 8px 16px rgba(0,0,0,.5);
+    -14px -14px 0 #000, -7px -14px 0 #000, 0 -14px 0 #000, 7px -14px 0 #000, 14px -14px 0 #000,
+    -14px -7px 0 #000, 14px -7px 0 #000,
+    -14px 0 0 #000, 14px 0 0 #000,
+    -14px 7px 0 #000, 14px 7px 0 #000,
+    -14px 14px 0 #000, -7px 14px 0 #000, 0 14px 0 #000, 7px 14px 0 #000, 14px 14px 0 #000,
+    0 24px 48px rgba(0,0,0,.5);
   word-break:keep-all;
-  display:flex;flex-direction:column;gap:30px;align-items:center;
+  display:flex;flex-direction:column;gap:48px;align-items:center;
 }
 .cover-a .main .line{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
 .cover-a .main .hl{
   display:inline-block;background:var(--c-box, var(--hook-yellow));color:#1A1A1A;
-  padding:22px 28px;border-radius:14px;letter-spacing:-.03em;
+  padding:32px 38px;border-radius:14px;letter-spacing:-.03em;
   text-shadow:none;box-shadow:0 6px 0 rgba(0,0,0,.25);
-  -webkit-text-stroke:0;line-height:1;
+  line-height:1;
 }
 .cover-a .main .hl .hl-text{display:inline-block}
-.cover-a .main .hl-r{
-  display:inline-block;font-size:190px;line-height:1;letter-spacing:-.03em;
-}
-/* 강조 마크업 — 마크 내부 텍스트는 stroke 제거(40px 스트로크가 마크 경계를 가리는 근본 원인) */
+/* 강조 마크업 — stroke 유지(파라미터로 일괄 적용) */
 .cover-a .main .underline-mark,
 .cover-a .main .circle-mark{
-  -webkit-text-stroke:0;
   isolation:isolate;
 }
 .cover-a .main .underline-mark{
   display:inline-block;
-  padding:0 8px 14px;
-  border-bottom:12px solid var(--c-underline, #F5FF00);
-  border-radius:0 0 6px 6px;
+  padding:0 16px 24px;
+  border-bottom:18px solid var(--c-underline, #F5FF00);
+  border-radius:0 0 8px 8px;
   line-height:1;
 }
 .cover-a .main .underline-mark .underline-overlay{display:none}
 .cover-a .main .circle-mark{
-  display:inline-block;position:relative;padding:14px 42px;margin:0 6px;
+  display:inline-block;position:relative;padding:24px 52px;margin:0 8px;
 }
 .cover-a .main .circle-mark .circle-overlay{
   display:block;position:absolute;inset:0;
-  border:6px solid var(--c-circle, #F5FF00);border-radius:50%;
+  border:10px solid var(--c-circle, #F5FF00);border-radius:50%;
   pointer-events:none;z-index:5;
 }
+/* ///별/// — 양옆 ★만 테두리 제거(안쪽 텍스트는 그대로 stroke 유지) */
 .cover-a .main .star-mark{display:inline-flex;align-items:center;gap:.32em}
 .cover-a .main .star-mark::before,
 .cover-a .main .star-mark::after{
@@ -246,6 +269,9 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
   -webkit-text-stroke:0;
 }
 .cover-a .main .hl-y-text{color:var(--c-text, var(--hook-yellow))}
+/* ^text^ → 확대 (현재 폰트 크기 + 30px) */
+.cover-a .main .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
+.cover-a .main .hl-zoom-xl{display:inline-block;font-size:calc(1em + 80px);line-height:1}
 .cover-a .star{color:var(--hook-green);font-size:.7em;text-shadow:0 0 10px rgba(0,255,110,.5)}
 
 /* === 패턴 A 슬라이드 === */
@@ -257,7 +283,17 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
   overflow:visible;
 }
 .slide-a .brand-row{display:flex;align-items:flex-end;gap:20px;margin-top:-100px;margin-bottom:30px;position:relative}
-.slide-a .brand-name{font-family:var(--display-font);font-size:120px;font-weight:700;color:#fff;-webkit-text-stroke:20px #000;paint-order:stroke fill;line-height:1;letter-spacing:-.03em;word-break:keep-all;position:relative;z-index:2}
+.slide-a .brand-name{
+  font-family:var(--display-font);font-size:120px;font-weight:700;color:#fff;
+  /* text-shadow 16방향으로 두꺼운 검정 테두리 — 커스텀 @font-face + SVG 캡처 호환 */
+  text-shadow:
+    -10px -10px 0 #000, -5px -10px 0 #000, 0 -10px 0 #000, 5px -10px 0 #000, 10px -10px 0 #000,
+    -10px -5px 0 #000, 10px -5px 0 #000,
+    -10px 0 0 #000, 10px 0 0 #000,
+    -10px 5px 0 #000, 10px 5px 0 #000,
+    -10px 10px 0 #000, -5px 10px 0 #000, 0 10px 0 #000, 5px 10px 0 #000, 10px 10px 0 #000;
+  line-height:1;letter-spacing:-.03em;word-break:keep-all;position:relative;z-index:2;
+}
 .slide-a .menu-cut{
   position:absolute;bottom:0;right:0;
   object-fit:contain;
@@ -270,16 +306,93 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 .slide-a .desc .hl-g{color:#00A847;font-weight:800}
 .slide-a .desc .hl-r{color:var(--point-c, #FF6B14);font-weight:800}
 
-/* === 패턴 B 표지 (인물 + 상단/하단 카피) === */
+/* === 패턴 B 표지 (풀블리드 배경 + 상단 흰 그라데이션 + 좌측 카피 + 그라데이션 말풍선) === */
 .cover-b{background:#fff;color:#1A1A1A}
-.cover-b .bg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:75%;height:62%;background-size:cover;background-position:center;border-radius:24px}
-.cover-b .top-copy{position:absolute;left:0;right:0;top:7%;text-align:center;padding:0 60px;z-index:2}
-.cover-b .top-copy .main{font-size:64px;font-weight:900;line-height:1.18;letter-spacing:-.03em;color:#1A1A1A;word-break:keep-all;display:flex;flex-direction:column;gap:10px;align-items:center}
-.cover-b .top-copy .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));padding:0 14px;border-radius:6px}
-.cover-b .top-copy .main .hl-g{color:#00A847}
-.cover-b .top-copy .main .hl-r{color:var(--hook-red)}
+.cover-b .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+/* 상단 흰 그라데이션 — 메인 카피 영역, 높이 조절 가능 (자연스러운 페이드) */
+.cover-b .top-gradient{
+  position:absolute;left:0;right:0;top:0;
+  height:var(--b-top-grad-h, 480px);
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,1) 35%,
+    rgba(255,255,255,.92) 55%,
+    rgba(255,255,255,.7) 72%,
+    rgba(255,255,255,.4) 86%,
+    rgba(255,255,255,.15) 95%,
+    rgba(255,255,255,0) 100%);
+  z-index:1;pointer-events:none;
+}
+.cover-b .top-copy{position:absolute;left:0;right:0;top:60px;text-align:left;padding:0 60px;z-index:2}
+.cover-b .top-copy .main{
+  font-size:98px;font-weight:900;line-height:1.15;letter-spacing:-.03em;color:#1A1A1A;
+  word-break:keep-all;
+  display:flex;flex-direction:column;gap:18px;align-items:flex-start;
+}
+.cover-b .top-copy .main .line{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* 마커 스타일 — 두 컬러 그라데이션 (--b-pt-c1 → --b-pt-c2) */
+.cover-b .top-copy .main .hl{
+  display:inline-block;
+  background:linear-gradient(135deg, var(--b-pt-c1, #FFA500), var(--b-pt-c2, #E11D2A));
+  color:#fff;padding:0 16px;border-radius:8px;
+}
+.cover-b .top-copy .main .hl .hl-text{display:inline-block;color:inherit;background:none}
+.cover-b .top-copy .main .hl-y-text{
+  background:linear-gradient(135deg, var(--b-pt-c1, #FFA500), var(--b-pt-c2, #E11D2A));
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+.cover-b .top-copy .main .underline-mark{
+  display:inline-block;padding:0 6px 8px;line-height:1;
+  background:linear-gradient(135deg, var(--b-pt-c1, #FFA500), var(--b-pt-c2, #E11D2A)) no-repeat bottom / 100% 10px;
+  border-radius:0 0 4px 4px;
+}
+.cover-b .top-copy .main .underline-mark .underline-overlay{display:none}
+.cover-b .top-copy .main .circle-mark{display:inline-block;position:relative;padding:8px 28px;margin:0 4px}
+.cover-b .top-copy .main .circle-mark .circle-overlay{
+  display:block;position:absolute;inset:0;
+  background:linear-gradient(135deg, var(--b-pt-c1, #FFA500), var(--b-pt-c2, #E11D2A));
+  border-radius:50%;
+  /* mask로 안쪽 도려내서 그라데이션 링 효과 */
+  -webkit-mask:radial-gradient(ellipse, transparent calc(50% - 7px), #000 calc(50% - 6px));
+  mask:radial-gradient(ellipse, transparent calc(50% - 7px), #000 calc(50% - 6px));
+  pointer-events:none;z-index:5;
+}
+.cover-b .top-copy .main .star-mark{display:inline-flex;align-items:center;gap:.32em}
+.cover-b .top-copy .main .star-mark::before,
+.cover-b .top-copy .main .star-mark::after{
+  content:'★';font-size:.7em;
+  background:linear-gradient(135deg, var(--b-pt-c1, #FFA500), var(--b-pt-c2, #E11D2A));
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+.cover-b .top-copy .main .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
+.cover-b .top-copy .main .hl-zoom-xl{display:inline-block;font-size:calc(1em + 80px);line-height:1}
 .cover-b .bottom-copy{position:absolute;left:0;right:0;bottom:6%;text-align:center;padding:0 80px;z-index:2}
 .cover-b .bottom-copy .pre{display:inline-block;background:#1A1A1A;color:#fff;font-size:24px;font-weight:700;padding:10px 22px;border-radius:99px}
+/* 말풍선 — 흰색 고정, Figma layer blur 42 (배경만 블러, 텍스트는 선명) */
+.cover-b .b-bubble{
+  position:absolute;
+  background:transparent;
+  color:#1A1A1A;font-weight:900;letter-spacing:-.02em;line-height:1.2;
+  padding:0.7em 1.2em;
+  z-index:4;cursor:grab;
+  white-space:pre-line;word-break:keep-all;text-align:center;
+  width:max-content;max-width:780px;
+  -webkit-user-select:none;user-select:none;
+  isolation:isolate;
+}
+.cover-b .b-bubble::before{
+  content:'';position:absolute;
+  /* 가로로 긴 타원 — width 기준, height는 width의 약 40% (aspect-ratio 2.5) */
+  left:50%;top:50%;
+  width:max(100%, 8em);
+  aspect-ratio:2.5;
+  transform:translate(-50%, -50%);
+  background:#fff;border-radius:50%;
+  filter:blur(42px);
+  z-index:-1;
+}
 
 /* === 패턴 B 슬라이드 (배경 사진 풀블리드 + 상단 흰 그라디언트 + 하단 풀폭 CTA) === */
 .slide-b{background:#fff;color:#1A1A1A}
@@ -308,14 +421,61 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
   border-bottom-right-radius:0;
 }
 
-/* === 패턴 E 표지 (흰 배경 + 큰 카피 + 하단 사진 영역) === */
+/* === 패턴 E 표지 (풀블리드 배경 + 상단 흰 그라데이션 + 큰 카피 + 서브 박스 + blur 도장) === */
 .cover-e{background:#fff;color:#1A1A1A}
-.cover-e .copy{position:absolute;inset:0;padding:90px 70px 0;display:flex;flex-direction:column;gap:24px;z-index:2}
-.cover-e .copy .main{font-size:96px;font-weight:900;line-height:1.1;letter-spacing:-.03em;color:#1A1A1A;word-break:keep-all;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.cover-e .photo-area{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0}
+.cover-e .top-gradient{
+  position:absolute;left:0;right:0;top:0;
+  height:var(--e-grad-h, 800px);
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,1) 35%,
+    rgba(255,255,255,.92) 55%,
+    rgba(255,255,255,.7) 72%,
+    rgba(255,255,255,.4) 86%,
+    rgba(255,255,255,.15) 95%,
+    rgba(255,255,255,0) 100%);
+  z-index:1;pointer-events:none;
+}
+.cover-e .copy{
+  position:absolute;left:0;right:0;top:0;
+  padding:90px 70px 0;
+  display:flex;flex-direction:column;gap:32px;z-index:2;
+}
+.cover-e .copy .main{
+  font-size:140px;font-weight:900;line-height:1.08;letter-spacing:-.03em;color:#1A1A1A;
+  word-break:keep-all;
+  display:flex;flex-direction:column;gap:14px;align-items:flex-start;
+}
 .cover-e .copy .main .line{display:block}
 .cover-e .copy .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));padding:0 12px;border-radius:6px}
-.cover-e .copy .stamp-label{display:inline-block;background:#1A1A1A;color:#fff;font-size:28px;font-weight:800;padding:10px 22px;border-radius:99px;align-self:flex-start}
-.cover-e .photo-area{position:absolute;left:0;right:0;bottom:0;height:48%;background-size:cover;background-position:center;background-repeat:no-repeat}
+.cover-e .copy .main .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
+.cover-e .copy .main .hl-zoom-xl{display:inline-block;font-size:calc(1em + 80px);line-height:1}
+.cover-e .copy .sub{
+  display:inline-block;background:#1A1A1A;color:#fff;
+  font-size:62px;font-weight:800;letter-spacing:-.02em;
+  padding:18px 36px;border-radius:18px;align-self:flex-start;
+}
+/* 말풍선 — 흰 blur 효과 (배경만 blur, 텍스트 선명), 2줄 입력 가능, 드래그·휠 리사이즈 */
+.cover-e .stamp-bubble{
+  position:absolute;
+  color:#1A1A1A;font-weight:900;letter-spacing:-.02em;line-height:1.2;
+  padding:0.7em 1.2em;
+  z-index:4;text-align:center;cursor:grab;
+  white-space:pre-line;word-break:keep-all;
+  -webkit-user-select:none;user-select:none;
+  isolation:isolate;
+}
+.cover-e .stamp-bubble::before{
+  content:'';position:absolute;
+  left:50%;top:50%;
+  width:max(160%, 14em);
+  aspect-ratio:2.5;
+  transform:translate(-50%, -50%);
+  background:#fff;border-radius:50%;
+  filter:blur(42px);
+  z-index:-1;
+}
 
 /* === 패턴 E 슬라이드 (포인트 컬러 배경 + 해시태그 + 메트릭 박스 + 사진) === */
 .slide-e{background:var(--point-c, #4A8A3A);color:#fff}
@@ -402,7 +562,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 
 .cover-l{background:#fff}
 .cover-l .photo{position:absolute;inset:0;background-size:cover;background-position:center}
-.cover-l .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 60px;gap:28px;z-index:2}
+.cover-l .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding:80px 60px;gap:120px;z-index:2}
 /* 서브 카피 — 테두리 있는 아웃라인 텍스트 (박스 제거) */
 .cover-l .pre{
   display:inline-block;
@@ -419,65 +579,55 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 }
 /* 메인 카피 — 큰 흰색 타입 */
 .cover-l .main{
-  font-size:108px;font-weight:900;line-height:1.1;letter-spacing:-.03em;
+  font-size:98px;font-weight:900;line-height:1.4;letter-spacing:-.03em;
   color:#fff;word-break:keep-all;
-  display:flex;flex-direction:column;gap:14px;align-items:center;
+  display:flex;flex-direction:column;gap:24px;align-items:center;
 }
-/* /text/ → 단일 테두리 */
+/* L 마커 — A/B/E/G 와 동일한 표준 의미로 통일
+   /text/ = 밑줄 · //text// = 동그라미 · **text** = 박스 · $text$ = 컬러 · ~~text~~ = 빨강 · ==text== = 초록 · ///text/// = 별 */
+.cover-l .main .hl{
+  display:inline-block;background:var(--c-box, var(--hook-yellow));color:#1A1A1A;
+  padding:6px 22px;border-radius:12px;letter-spacing:-.02em;
+  text-shadow:none;-webkit-text-stroke:0;line-height:1;
+  box-shadow:0 6px 0 rgba(0,0,0,.18);
+}
+.cover-l .main .hl .hl-text{display:inline-block;color:inherit}
+.cover-l .main .hl-y-text{color:var(--c-text, var(--hook-yellow));text-shadow:none}
 .cover-l .main .underline-mark{
-  display:inline-block;
-  color:#fff;
-  -webkit-text-stroke:5px var(--l-outline1-c, #1A1A1A);
-  paint-order:stroke fill;
-  text-shadow:
-    -4px -4px 0 var(--l-outline1-c, #1A1A1A), 4px -4px 0 var(--l-outline1-c, #1A1A1A),
-    -4px 4px 0 var(--l-outline1-c, #1A1A1A), 4px 4px 0 var(--l-outline1-c, #1A1A1A),
-    -4px 0 0 var(--l-outline1-c, #1A1A1A), 4px 0 0 var(--l-outline1-c, #1A1A1A),
-    0 -4px 0 var(--l-outline1-c, #1A1A1A), 0 4px 0 var(--l-outline1-c, #1A1A1A);
+  display:inline-block;padding:0 8px 10px;line-height:1;
+  border-bottom:10px solid var(--c-underline, var(--hook-yellow));
+  border-radius:0 0 4px 4px;
+  -webkit-text-stroke:0;text-shadow:none;
 }
 .cover-l .main .underline-mark .underline-overlay{display:none}
-/* //text// → 이중 테두리 (컬러 inner + 흰 갭 + 컬러 outer) */
 .cover-l .main .circle-mark{
-  display:inline-block;
-  color:#fff;
-  -webkit-text-stroke:0;
-  text-shadow:
-    -2px -2px 0 var(--l-outline2-c, #E11D2A), 2px -2px 0 var(--l-outline2-c, #E11D2A),
-    -2px 2px 0 var(--l-outline2-c, #E11D2A), 2px 2px 0 var(--l-outline2-c, #E11D2A),
-    -2px 0 0 var(--l-outline2-c, #E11D2A), 2px 0 0 var(--l-outline2-c, #E11D2A),
-    0 -2px 0 var(--l-outline2-c, #E11D2A), 0 2px 0 var(--l-outline2-c, #E11D2A),
-    -5px -5px 0 #fff, 5px -5px 0 #fff, -5px 5px 0 #fff, 5px 5px 0 #fff,
-    -5px 0 0 #fff, 5px 0 0 #fff, 0 -5px 0 #fff, 0 5px 0 #fff,
-    -8px -8px 0 var(--l-outline2-c, #E11D2A), 8px -8px 0 var(--l-outline2-c, #E11D2A),
-    -8px 8px 0 var(--l-outline2-c, #E11D2A), 8px 8px 0 var(--l-outline2-c, #E11D2A),
-    -8px 0 0 var(--l-outline2-c, #E11D2A), 8px 0 0 var(--l-outline2-c, #E11D2A),
-    0 -8px 0 var(--l-outline2-c, #E11D2A), 0 8px 0 var(--l-outline2-c, #E11D2A);
+  display:inline-block;position:relative;padding:8px 28px;margin:0 4px;
+  -webkit-text-stroke:0;text-shadow:none;
 }
-.cover-l .main .circle-mark .circle-overlay{display:none}
-/* **text** → 포인트 (컬러 텍스트) */
-.cover-l .main .hl{
-  display:inline;
-  background:none;padding:0;border-radius:0;box-shadow:none;
-  color:var(--l-point-c, #E11D2A);
-  text-shadow:none;-webkit-text-stroke:0;
+.cover-l .main .circle-mark .circle-overlay{
+  display:block;position:absolute;inset:0;
+  border:6px solid var(--c-circle, var(--hook-yellow));border-radius:50%;
+  pointer-events:none;z-index:5;
 }
-.cover-l .main .hl .hl-text{display:inline;color:inherit;background:none;padding:0}
-/* ~~text~~ → 형광펜 */
-.cover-l .main .hl-r{
-  display:inline-block;
-  background:var(--l-highlight-c, #F5FF00);
-  color:#1A1A1A;
-  padding:0 0.2em;border-radius:8px;
-  text-shadow:none;-webkit-text-stroke:0;
+.cover-l .main .star-mark{display:inline-flex;align-items:center;gap:.32em;-webkit-text-stroke:0}
+.cover-l .main .star-mark::before, .cover-l .main .star-mark::after{
+  content:'★';color:var(--c-star, var(--hook-yellow));font-size:.7em;
+  text-shadow:0 0 16px rgba(245,255,0,.45);-webkit-text-stroke:0;
 }
+/* ^text^ → 확대 — 텍스트 크기 130 */
+.cover-l .main .hl-zoom{display:inline-block;font-size:130px;line-height:1}
+.cover-l .main .hl-zoom-xl{display:inline-block;font-size:180px;line-height:1}
 
 /* === 패턴 G 표지 (어두운 사진 + 큰 스텐실) === */
-.cover-g{background:#fff}
-.cover-g .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.45)}
-.cover-g .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 60px;gap:24px;z-index:2}
-.cover-g .pre{display:inline-block;border:1.5px dashed rgba(255,255,255,.7);color:#fff;font-size:26px;font-weight:700;padding:8px 18px;border-radius:6px}
-.cover-g .main{font-size:108px;font-weight:900;line-height:1.05;letter-spacing:-.04em;color:#fff;text-shadow:0 6px 18px rgba(0,0,0,.6);word-break:keep-all;display:flex;flex-direction:column;gap:8px;align-items:center}
+.cover-g{background:#fff;position:relative}
+.cover-g .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.cover-g::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.5);z-index:1;pointer-events:none}
+.cover-g .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 60px;gap:72px;z-index:2}
+.cover-g .pre{display:inline-block;background:#1A1A1A;color:#fff;font-size:90px;font-weight:900;letter-spacing:-.02em;padding:18px 36px;border-radius:18px;border:none}
+.cover-g .main{font-size:108px;font-weight:900;line-height:1.05;letter-spacing:-.04em;color:#fff;text-shadow:0 6px 18px rgba(0,0,0,.6);word-break:keep-all;display:flex;flex-direction:column;gap:24px;align-items:center}
 .cover-g .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));color:#1A1A1A;padding:6px 24px;border-radius:14px;text-shadow:none;box-shadow:0 6px 0 rgba(0,0,0,.3)}
+.cover-g .main .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
+.cover-g .main .hl-zoom-xl{display:inline-block;font-size:calc(1em + 80px);line-height:1}
 
 /* === 패턴 G 슬라이드 (부제목 알약 + 큰 제목 + 흰 카드 + bullets) === */
 .slide-g{background:#F0EDE5}
@@ -600,15 +750,6 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
       </select>
     </div>
     <div class="ctl">
-      <span class="ctl-label">메인 폰트</span>
-      <select id="ctl-font" title="메인 폰트" onchange="onFontChange()">
-        <option value="paperlogy">페이퍼로지</option>
-        <option value="hakgyo">학교안심 둥근미소</option>
-        <option value="aggro">어그로체</option>
-        <option value="a2g">에이투지체</option>
-      </select>
-    </div>
-    <div class="ctl">
       <span class="ctl-label">광고 버전</span>
       <select id="ctl-pattern" title="광고 버전" onchange="onPatternChange()">
         <option value="A">A — 메뉴 누끼</option>
@@ -637,64 +778,69 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
       <div class="card-title"><span class="tag">COVER</span> 커버</div>
       <div class="field">
         <div class="field-row"><span class="field-label">메인 카피 (라인별 줄바꿈)</span><span class="field-spec" id="cover-main-count">0/60</span></div>
-        <textarea id="cover-main" rows="3" placeholder="요즘 /뜨는/&#10;**창업 브랜드**&#10;///추천///" oninput="onInputChange()"></textarea>
+        <textarea id="cover-main" rows="3" placeholder="요즘 /뜨는/&#10;[[창업 브랜드]]&#10;%%추천%%" oninput="onInputChange()"></textarea>
         <span class="hint" id="cover-main-hint"><code>**박스**</code> <code>$컬러$</code> <code>/밑줄/</code> <code>//동그라미//</code> <code>///별///</code></span>
       </div>
-      <div class="field" data-show-pattern="L">
+      <div class="field">
         <div class="field-row"><span class="field-label">메인 카피 폰트</span></div>
-        <select id="cover-l-main-font" title="메인 카피 폰트" onchange="onCoverLFontChange('l_mainFont', this.value)" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
-          <option value="">기본 (메인 폰트와 동일)</option>
+        <select id="cover-main-font" title="메인 카피 폰트" onchange="onCoverFontChange('coverMainFont', this.value)" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
+          <option value="">Pretendard (기본)</option>
           <option value="paperlogy">페이퍼로지</option>
           <option value="hakgyo">학교안심 둥근미소</option>
           <option value="aggro">어그로체</option>
           <option value="a2g">에이투지체</option>
         </select>
       </div>
-      <div class="field" data-show-pattern="A,B,E,G">
+      <div class="field" data-show-pattern="A,E,G,L">
         <div class="field-row"><span class="field-label">포인트 컬러</span></div>
         <div class="color-input-row">
           <input type="text" id="cover-point-hex" class="hex-input" value="#F5FF00" placeholder="#F5FF00" maxlength="7">
           <input type="color" id="cover-point-swatch" class="color-swatch" value="#F5FF00" title="컬러 피커">
         </div>
-        <span class="hint">메인 카피의 모든 마커(박스·컬러·밑줄·동그라미·별)에 동일하게 적용</span>
+        <span class="hint">박스·컬러·밑줄·동그라미·별·테두리 마커에 동일 적용</span>
       </div>
-      <div class="field" data-show-pattern="L">
-        <div class="field-row"><span class="field-label">테두리 <code>/text/</code> 컬러</span></div>
+      <div class="field" data-show-pattern="A,E,G,L">
+        <div class="field-row"><span class="field-label">이중 테두리 바깥 컬러</span></div>
         <div class="color-input-row">
-          <input type="text" data-cover-l-color="l_outlineColor" class="hex-input" value="#1A1A1A" placeholder="#1A1A1A" maxlength="7">
-          <input type="color" data-cover-l-color="l_outlineColor" class="color-swatch" value="#1A1A1A" title="컬러 피커">
+          <input type="text" id="cover-dbl-outline-hex" class="hex-input" value="#E11D2A" placeholder="#E11D2A" maxlength="7">
+          <input type="color" id="cover-dbl-outline-swatch" class="color-swatch" value="#E11D2A" title="이중 테두리 바깥 컬러">
+        </div>
+        <span class="hint"><code>~~이중 테두리~~</code> 마커의 외곽선 (안쪽 18px은 포인트 컬러)</span>
+      </div>
+      <div class="field" data-show-pattern="B">
+        <div class="field-row"><span class="field-label">메인 카피 포인트 컬러 1 (그라데이션 시작)</span></div>
+        <div class="color-input-row">
+          <input type="text" id="cover-b-pt-c1-hex" class="hex-input" value="#FFA500" placeholder="#FFA500" maxlength="7">
+          <input type="color" id="cover-b-pt-c1-swatch" class="color-swatch" value="#FFA500" title="포인트 컬러 1">
         </div>
       </div>
-      <div class="field" data-show-pattern="L">
-        <div class="field-row"><span class="field-label">이중 테두리 <code>//text//</code> 컬러</span></div>
+      <div class="field" data-show-pattern="B">
+        <div class="field-row"><span class="field-label">메인 카피 포인트 컬러 2 (그라데이션 끝)</span></div>
         <div class="color-input-row">
-          <input type="text" data-cover-l-color="l_doubleOutlineColor" class="hex-input" value="#E11D2A" placeholder="#E11D2A" maxlength="7">
-          <input type="color" data-cover-l-color="l_doubleOutlineColor" class="color-swatch" value="#E11D2A" title="컬러 피커">
+          <input type="text" id="cover-b-pt-c2-hex" class="hex-input" value="#E11D2A" placeholder="#E11D2A" maxlength="7">
+          <input type="color" id="cover-b-pt-c2-swatch" class="color-swatch" value="#E11D2A" title="포인트 컬러 2">
         </div>
+        <span class="hint">두 컬러가 모든 마커(박스·컬러·밑줄·동그라미·별)에 그라데이션으로 적용</span>
       </div>
-      <div class="field" data-show-pattern="L">
-        <div class="field-row"><span class="field-label">포인트 <code>**text**</code> 컬러</span></div>
-        <div class="color-input-row">
-          <input type="text" data-cover-l-color="l_pointColor" class="hex-input" value="#E11D2A" placeholder="#E11D2A" maxlength="7">
-          <input type="color" data-cover-l-color="l_pointColor" class="color-swatch" value="#E11D2A" title="컬러 피커">
-        </div>
+      <div class="field" data-show-pattern="B">
+        <div class="field-row"><span class="field-label">상단 흰 그라데이션 높이</span><span class="field-spec" id="b-grad-h-spec">480px</span></div>
+        <input type="range" id="cover-b-grad-h" title="상단 흰 그라데이션 높이" min="0" max="1500" step="10" value="480" style="width:100%">
+        <span class="hint">메인 카피 영역만큼 흰색이 깔리고, 사진 쪽으로 자연스럽게 페이드</span>
       </div>
-      <div class="field" data-show-pattern="L">
-        <div class="field-row"><span class="field-label">형광펜 <code>~~text~~</code> 컬러</span></div>
-        <div class="color-input-row">
-          <input type="text" data-cover-l-color="l_highlightColor" class="hex-input" value="#F5FF00" placeholder="#F5FF00" maxlength="7">
-          <input type="color" data-cover-l-color="l_highlightColor" class="color-swatch" value="#F5FF00" title="컬러 피커">
-        </div>
+      <div class="field" data-show-pattern="B">
+        <div class="field-row"><span class="field-label">흰 말풍선 텍스트</span></div>
+        <input type="text" id="cover-b-bubble" value="" placeholder="예: 가맹비 전액 면제!">
+        <span class="hint">미리보기에서 <code>드래그</code>로 위치 조정 · 폰트 38 고정 · 흰 배경 + 외곽 blur</span>
       </div>
       <div class="field">
-        <div class="field-row"><span class="field-label" id="cover-sub-lbl">서브 카피 (상단 박스)</span><span class="field-spec" id="cover-sub-count">0/40</span></div>
+        <div class="field-row"><span class="field-label" id="cover-sub-lbl">서브 카피</span><span class="field-spec" id="cover-sub-count">0/40</span></div>
         <input type="text" id="cover-sub" placeholder="유명해지기 전에 선점하자!" oninput="onInputChange()">
-        <span class="hint" id="cover-sub-hint">A: 상단 검정 박스 · B: 하단 검정 알약 · G: 상단 알약 · L: 흰 글자 + 컬러 테두리</span>
+        <span class="hint" id="cover-sub-hint">A: 상단 검정 박스 · B: 하단 검정 알약 · E: 메인 카피 하단 박스 · G: 상단 알약 · L: 흰 글자 + 컬러 테두리</span>
       </div>
-      <div class="field" data-show-pattern="L">
+      <div class="field">
         <div class="field-row"><span class="field-label">서브 카피 폰트</span></div>
-        <select id="cover-l-sub-font" title="서브 카피 폰트" onchange="onCoverLFontChange('l_subFont', this.value)" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
-          <option value="">기본 (메인 폰트와 동일)</option>
+        <select id="cover-sub-font" title="서브 카피 폰트" onchange="onCoverFontChange('coverSubFont', this.value)" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
+          <option value="">Pretendard (기본)</option>
           <option value="paperlogy">페이퍼로지</option>
           <option value="hakgyo">학교안심 둥근미소</option>
           <option value="aggro">어그로체</option>
@@ -709,9 +855,24 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
         </div>
       </div>
       <div class="field" data-show-pattern="E">
-        <div class="field-row"><span class="field-label" id="cover-stamp-lbl">강조 라벨 (도장)</span><span class="field-spec">최대 8자</span></div>
-        <input type="text" id="cover-stamp" maxlength="8" placeholder="추천" oninput="onInputChange()">
-        <span class="hint">E: 메인 카피 아래 검정 알약</span>
+        <div class="field-row"><span class="field-label" id="cover-stamp-lbl">말풍선 (라인별 줄바꿈)</span><span class="field-spec">최대 2줄</span></div>
+        <textarea id="cover-stamp" rows="2" placeholder="추천&#10;프랜차이즈" oninput="onInputChange()"></textarea>
+        <span class="hint">E: 흰 blur 말풍선 — 미리보기에서 <code>드래그</code> 위치 · <code>휠 스크롤</code> 크기 조정</span>
+      </div>
+      <div class="field" data-show-pattern="E">
+        <div class="field-row"><span class="field-label">상단 흰 그라데이션 높이</span><span class="field-spec" id="e-grad-h-spec">800px</span></div>
+        <input type="range" id="cover-e-grad-h" title="상단 흰 그라데이션 높이" min="0" max="1920" step="10" value="800" style="width:100%">
+        <span class="hint">배경 이미지 위에 깔리는 흰 그라데이션 — 카피 가독성</span>
+      </div>
+      <div class="field" data-show-pattern="E">
+        <div class="field-row"><span class="field-label">말풍선 폰트</span></div>
+        <select id="cover-e-stamp-font" title="말풍선 폰트" onchange="onCoverFontChange('e_stampFont', this.value)" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
+          <option value="">Pretendard (기본)</option>
+          <option value="paperlogy">페이퍼로지</option>
+          <option value="hakgyo">학교안심 둥근미소</option>
+          <option value="aggro">어그로체</option>
+          <option value="a2g">에이투지체</option>
+        </select>
       </div>
       <div class="field">
         <span class="field-label">배경 이미지</span>
@@ -781,13 +942,20 @@ const state = {
   cover: {
     main: '', sub: '', stamp: '', image: null, imagePos: { x: 50, y: 50 }, campaignTitle: '',
     pointColor: '#F5FF00',
-    // L 패턴 전용
-    l_mainFont: '', l_subFont: '',
-    l_outlineColor:       '#1A1A1A',  // /text/ 단일 테두리
-    l_doubleOutlineColor: '#E11D2A',  // //text// 이중 테두리
-    l_pointColor:         '#E11D2A',  // **text** 포인트
-    l_highlightColor:     '#F5FF00',  // ~~text~~ 형광펜
-    l_subStrokeColor:     '#1A1A1A',  // 서브 카피 스트로크
+    doubleOutlineColor: '#E11D2A',  // ~~이중 테두리~~ 바깥쪽 컬러 (안쪽은 pointColor)
+    coverMainFont: '',  // 공통: 모든 패턴 커버 메인 카피 폰트 (빈 값 = Pretendard)
+    coverSubFont: '',   // 공통: 모든 패턴 커버 서브 카피 폰트
+    l_subStrokeColor:     '#1A1A1A',  // 서브 카피 스트로크 (L 전용)
+    // B 패턴 전용
+    b_topGradientHeight: 480,
+    b_bubbleText: '',
+    b_bubbleX: 560, b_bubbleY: 760,
+    b_pointColor1: '#FFA500',  // 메인 카피 포인트 그라데이션 시작 컬러
+    b_pointColor2: '#E11D2A',  // 메인 카피 포인트 그라데이션 끝 컬러
+    // E 패턴 전용
+    e_gradientHeight: 800,
+    e_stampFont: '',  // 말풍선 폰트
+    e_stampX: 620, e_stampY: 860, e_stampFS: 50,  // 말풍선 위치/폰트크기 (드래그·휠)
   },
   slides: [],
 };
@@ -817,6 +985,7 @@ const newSlide = () => ({
   bullets: '',              // G (multiline)
   gTitle: '',               // G: 카드 위 제목 (멀티라인, **포인트** 지원)
   gSubtitle: '',            // G: 상단 부제목 알약
+  slideFont: '',            // 공통: 슬라이드 주요 텍스트 폰트 (빈 값 = Pretendard)
   gSubtitleColor:    '#1A1A1A',  // G: 부제목 알약 배경
   gTitlePointColor:  '#F5FF00',  // G: 제목 **포인트** 컬러
   gBulletsPointColor:'#F5FF00',  // G: bullets **포인트** 형광펜 컬러
@@ -848,15 +1017,78 @@ window.addEventListener('load', () => {
   bindCoverPointColor();
   // L 커버 컬러 픽커들
   bindCoverLColors();
+  // B 커버 입력 바인딩
+  bindCoverBInputs();
+  // E 커버 입력 바인딩
+  bindCoverEInputs();
   // 슬라이드 1장 기본 추가
   addSlide();
   applyPatternVisibility();
   renderAll();
 });
 
+function onCoverFontChange(key, val){
+  state.cover[key] = val;
+  renderAll();
+}
+/* @deprecated — 호환용. 새 코드는 onCoverFontChange 사용 */
 function onCoverLFontChange(key, val){
   state.cover[key] = val;
   renderAll();
+}
+function bindCoverBInputs(){
+  // 상단 흰 그라데이션 높이 슬라이더
+  const gradH = document.getElementById('cover-b-grad-h');
+  const gradHSpec = document.getElementById('b-grad-h-spec');
+  if (gradH) {
+    gradH.addEventListener('input', e => {
+      const v = parseInt(e.target.value, 10) || 0;
+      state.cover.b_topGradientHeight = v;
+      if (gradHSpec) gradHSpec.textContent = v + 'px';
+      renderAll();
+    });
+  }
+  // 흰 말풍선 텍스트
+  const bubble = document.getElementById('cover-b-bubble');
+  if (bubble) {
+    bubble.addEventListener('input', e => {
+      state.cover.b_bubbleText = e.target.value;
+      renderAll();
+    });
+  }
+  // 포인트 그라데이션 컬러 1·2
+  const bindPtColor = (hexId, swatchId, stateKey) => {
+    const hex = document.getElementById(hexId);
+    const swatch = document.getElementById(swatchId);
+    if (!hex || !swatch) return;
+    const onChange = (val) => {
+      val = (val || '').trim();
+      if (val && !val.startsWith('#')) val = '#' + val;
+      if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;
+      state.cover[stateKey] = val;
+      if (hex.value.toLowerCase() !== val.toLowerCase()) hex.value = val;
+      if (swatch.value.toLowerCase() !== val.toLowerCase()) swatch.value = val;
+      renderAll();
+    };
+    hex.addEventListener('input', e => onChange(e.target.value));
+    hex.addEventListener('change', e => onChange(e.target.value));
+    swatch.addEventListener('input', e => onChange(e.target.value));
+    swatch.addEventListener('change', e => onChange(e.target.value));
+  };
+  bindPtColor('cover-b-pt-c1-hex', 'cover-b-pt-c1-swatch', 'b_pointColor1');
+  bindPtColor('cover-b-pt-c2-hex', 'cover-b-pt-c2-swatch', 'b_pointColor2');
+}
+function bindCoverEInputs(){
+  const gradH = document.getElementById('cover-e-grad-h');
+  const gradHSpec = document.getElementById('e-grad-h-spec');
+  if (gradH) {
+    gradH.addEventListener('input', e => {
+      const v = parseInt(e.target.value, 10) || 0;
+      state.cover.e_gradientHeight = v;
+      if (gradHSpec) gradHSpec.textContent = v + 'px';
+      renderAll();
+    });
+  }
 }
 function bindCoverLColors(){
   document.querySelectorAll('[data-cover-l-color]').forEach(el => {
@@ -876,24 +1108,31 @@ function bindCoverLColors(){
 
 /* ===== 커버 포인트 컬러 (모든 마커에 동일하게 적용) ===== */
 function bindCoverPointColor(){
-  const hex = document.getElementById('cover-point-hex');
-  const swatch = document.getElementById('cover-point-swatch');
-  if (!hex || !swatch) return;
-  const onChange = (val) => {
-    val = (val || '').trim();
-    if (val && !val.startsWith('#')) val = '#' + val;
-    if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;
-    state.cover.pointColor = val;
-    if (hex.value !== val) hex.value = val;
-    if (swatch.value !== val) swatch.value = val;
-    renderAll();
+  const bindPair = (hexId, swatchId, stateKey) => {
+    const hex = document.getElementById(hexId);
+    const swatch = document.getElementById(swatchId);
+    if (!hex || !swatch) return;
+    const onChange = (val) => {
+      val = (val || '').trim();
+      if (val && !val.startsWith('#')) val = '#' + val;
+      if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;
+      state.cover[stateKey] = val;
+      if (hex.value.toLowerCase() !== val.toLowerCase()) hex.value = val;
+      if (swatch.value.toLowerCase() !== val.toLowerCase()) swatch.value = val;
+      renderAll();
+    };
+    hex.addEventListener('input',  e => onChange(e.target.value));
+    hex.addEventListener('change', e => onChange(e.target.value));
+    swatch.addEventListener('input',  e => onChange(e.target.value));
+    swatch.addEventListener('change', e => onChange(e.target.value));
   };
-  hex.addEventListener('input', e => onChange(e.target.value));
-  swatch.addEventListener('input', e => onChange(e.target.value));
+  bindPair('cover-point-hex', 'cover-point-swatch', 'pointColor');
+  bindPair('cover-dbl-outline-hex', 'cover-dbl-outline-swatch', 'doubleOutlineColor');
 }
 function applyCoverColors(frame){
   const c = state.cover.pointColor || '#F5FF00';
-  ['--c-box','--c-text','--c-underline','--c-circle','--c-star'].forEach(v => frame.style.setProperty(v, c));
+  ['--c-box','--c-text','--c-underline','--c-circle','--c-star','--c-outline'].forEach(v => frame.style.setProperty(v, c));
+  frame.style.setProperty('--c-outline2', state.cover.doubleOutlineColor || '#E11D2A');
 }
 
 function applyPatternVisibility(){
@@ -905,15 +1144,11 @@ function applyPatternVisibility(){
   // L 패턴이면 메인 카피 힌트·플레이스홀더를 L 전용 마크업으로 안내
   const mainHint = document.getElementById('cover-main-hint');
   if (mainHint) {
-    mainHint.innerHTML = (p === 'L')
-      ? '<code>/테두리/</code> <code>//이중 테두리//</code> <code>**포인트**</code> <code>~~형광펜~~</code>'
-      : '<code>**박스**</code> <code>$컬러$</code> <code>/밑줄/</code> <code>//동그라미//</code> <code>///별///</code>';
+    mainHint.innerHTML = '<code>##컬러##</code> <code>[[박스]]</code> <code>/밑줄/</code> <code>((동그라미))</code> <code>%%별%%</code> <code>++확대++</code> <code>+++큰 확대+++</code> <code>~테두리~</code> <code>~~이중 테두리~~</code>';
   }
   const mainArea = document.getElementById('cover-main');
   if (mainArea) {
-    mainArea.placeholder = (p === 'L')
-      ? '요즘 /뜨는/\n//창업 브랜드//\n**지금 시작** ~~추천~~'
-      : '요즘 /뜨는/\n**창업 브랜드**\n///추천///';
+    mainArea.placeholder = '요즘 /뜨는/\n[[창업 브랜드]]\n%%추천%%';
   }
 }
 
@@ -938,10 +1173,6 @@ const FONTS = {
   aggro:     "'SBAggro','Pretendard Variable','Noto Sans KR',sans-serif",
   a2g:       "'A2G','Pretendard Variable','Noto Sans KR',sans-serif",
 };
-function onFontChange(){
-  const v = document.getElementById('ctl-font').value;
-  document.documentElement.style.setProperty('--display-font', FONTS[v]);
-}
 function adjustZoom(delta){
   const slider = document.getElementById('ctl-zoom');
   const next = Math.min(2.5, Math.max(0.5, parseFloat(slider.value) + delta));
@@ -1222,6 +1453,13 @@ function renderSlideInputs(){
         <span class="hint">미리보기에서 <code>드래그</code>하여 위치 조정</span>
       </div>
       ${postImageFields}
+      <div class="field">
+        <span class="field-label">슬라이드 폰트</span>
+        <select data-k="slideFont" data-id="${s.id}" title="슬라이드 폰트" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
+          ${[['','Pretendard (기본)'],['paperlogy','페이퍼로지'],['hakgyo','학교안심 둥근미소'],['aggro','어그로체'],['a2g','에이투지체']].map(([v,label]) => `<option value="${v}"${v === (s.slideFont||'') ? ' selected' : ''}>${label}</option>`).join('')}
+        </select>
+        <span class="hint">슬라이드의 주요 텍스트 (브랜드명·제목 등)에 적용</span>
+      </div>
     `;
     list.appendChild(card);
     // 썸네일 표시
@@ -1361,14 +1599,19 @@ function parseCoverMain(text){
   if (!text) return '';
   return text.split('\n').filter(s=>s.trim()).map(line => {
     // 슬래시 마크업을 먼저 (HTML 주입 후 다시 매칭되지 않도록 < > 도 제외)
+    // 순서: 슬래시 먼저 (HTML 안 주입 평문에서만 매칭, <> 제외로 닫는 태그 매칭 방지)
+    //       → 나머지 마크업 (이미 주입된 HTML도 안쪽으로 받아들일 수 있게 <> 허용)
+    //       → 긴 패턴 먼저 (+++ 보다 ++, ~~ 보다 ~ 가 나중)
     const inner = escHtml(line)
-      .replace(/\/\/\/([^/<>]+)\/\/\//g, '<span class="star-mark">$1</span>')
-      .replace(/\/\/([^/<>]+)\/\//g, '<span class="circle-mark">$1<span class="circle-overlay"></span></span>')
       .replace(/\/([^/<>]+)\//g, '<span class="underline-mark">$1<span class="underline-overlay"></span></span>')
-      .replace(/\$([^$<>]+)\$/g, '<span class="hl-y-text">$1</span>')
-      .replace(/~~([^~]+)~~/g, '<span class="hl-r">$1</span>')
-      .replace(/==([^=]+)==/g, '<span class="hl-g">$1</span>')
-      .replace(/\*\*([^*]+)\*\*/g, '<span class="hl"><span class="hl-text">$1</span></span>')
+      .replace(/\+\+\+([^+]+)\+\+\+/g, '<span class="hl-zoom-xl">$1</span>')
+      .replace(/\+\+([^+]+)\+\+/g, '<span class="hl-zoom">$1</span>')
+      .replace(/~~([^~]+)~~/g, '<span class="hl-dbl-outline">$1</span>')
+      .replace(/~([^~]+)~/g, '<span class="hl-outline">$1</span>')
+      .replace(/##([^#]+)##/g, '<span class="hl-y-text">$1</span>')
+      .replace(/\[\[([^\[\]]+)\]\]/g, '<span class="hl"><span class="hl-text">$1</span></span>')
+      .replace(/\(\(([^()]+)\)\)/g, '<span class="circle-mark">$1<span class="circle-overlay"></span></span>')
+      .replace(/%%([^%]+)%%/g, '<span class="star-mark">$1</span>')
       .replace(/★/g, '<span class="star">★</span>');
     return `<span class="line">${inner}</span>`;
   }).join('');
@@ -1442,6 +1685,18 @@ function makePreviewSection({label, filename, frameEl, stateObj, onDownload}){
       const idx = +el.dataset.bubbleIdx;
       if (idx) bindBubbleDrag(el, stateObj, s, idx);
     });
+  }
+  // B 커버 흰 말풍선 — 위치만 드래그 (폰트 38 고정)
+  if (stateObj === state.cover) {
+    const bBubble = frameEl.querySelector('.b-bubble');
+    if (bBubble) {
+      bindBubbleDrag(bBubble, state.cover, s, { kx:'b_bubbleX', ky:'b_bubbleY', noResize:true });
+    }
+    // E 커버 말풍선 — 위치 드래그 + 휠 리사이즈
+    const eStamp = frameEl.querySelector('.stamp-bubble');
+    if (eStamp) {
+      bindBubbleDrag(eStamp, state.cover, s, { kx:'e_stampX', ky:'e_stampY', kfs:'e_stampFS', defaultFS:50 });
+    }
   }
   // 다운로드 버튼
   const dlRow = document.createElement('div');
@@ -1573,9 +1828,15 @@ window.addEventListener('mouseup', () => {
   _bubbleDrag.el.style.cursor = 'grab';
   _bubbleDrag = null;
 });
-function bindBubbleDrag(bubbleEl, stateObj, scale, idx){
-  const kx = `bubble${idx}X`, ky = `bubble${idx}Y`, kfs = `bubble${idx}FS`;
-  bubbleEl.title = '드래그로 위치 · 휠 스크롤로 크기 조정';
+function bindBubbleDrag(bubbleEl, stateObj, scale, idxOrKeys){
+  let kx, ky, kfs, defaultFS, noResize = false;
+  if (typeof idxOrKeys === 'number') {
+    kx = `bubble${idxOrKeys}X`; ky = `bubble${idxOrKeys}Y`; kfs = `bubble${idxOrKeys}FS`;
+    defaultFS = 56;
+  } else {
+    ({kx, ky, kfs, defaultFS = 56, noResize = false} = idxOrKeys);
+  }
+  bubbleEl.title = noResize ? '드래그로 위치 조정' : '드래그로 위치 · 휠 스크롤로 크기 조정';
   bubbleEl.addEventListener('mousedown', (e) => {
     if (e.button !== 0) return;
     e.stopPropagation();
@@ -1588,10 +1849,11 @@ function bindBubbleDrag(bubbleEl, stateObj, scale, idx){
     bubbleEl.style.cursor = 'grabbing';
     e.preventDefault();
   });
+  if (noResize) return;
   bubbleEl.addEventListener('wheel', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const cur = stateObj[kfs] ?? 56;
+    const cur = stateObj[kfs] ?? defaultFS;
     const newFS = Math.max(20, Math.min(140, cur + e.deltaY * -0.08));
     stateObj[kfs] = Math.round(newFS);
     bubbleEl.style.fontSize = stateObj[kfs] + 'px';
@@ -1625,13 +1887,26 @@ function buildSlide(s){
 }
 
 /* === 패턴 A === */
+function coverMainFontStack(){ const k = state.cover.coverMainFont; return (k && FONTS[k]) ? FONTS[k] : null; }
+function coverSubFontStack(){ const k = state.cover.coverSubFont; return (k && FONTS[k]) ? FONTS[k] : null; }
+function slideFontStack(s){ const k = s.slideFont; return (k && FONTS[k]) ? FONTS[k] : null; }
 function buildCoverA(){
   const frame = makeFrame('cover-a');
   frame.appendChild(state.cover.image ? bgImage(state.cover.image, state.cover.imagePos) : bgEmpty());
   const scrim = document.createElement('div'); scrim.className = 'scrim'; frame.appendChild(scrim);
   const copy = document.createElement('div'); copy.className = 'copy';
-  if (state.cover.sub) { const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub; copy.appendChild(pre); }
-  if (state.cover.main) { const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main); copy.appendChild(main); }
+  const ff = coverMainFontStack();
+  const sf = coverSubFontStack();
+  if (state.cover.sub) {
+    const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub;
+    if (sf) pre.style.fontFamily = sf;
+    copy.appendChild(pre);
+  }
+  if (state.cover.main) {
+    const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main);
+    if (ff) main.style.fontFamily = ff;
+    copy.appendChild(main);
+  }
   frame.appendChild(copy);
   return frame;
 }
@@ -1643,9 +1918,14 @@ function buildSlideA(s){
   const grad = document.createElement('div');
   grad.style.cssText = 'position:absolute;inset:0;background:linear-gradient(0deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.1) 40%, transparent 100%);z-index:1;';
   frame.appendChild(grad);
+  const ff = slideFontStack(s);
   const box = document.createElement('div'); box.className = 'info-box';
   const brandRow = document.createElement('div'); brandRow.className = 'brand-row';
-  if (s.brand) { const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand; brandRow.appendChild(name); }
+  if (s.brand) {
+    const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand;
+    if (ff) name.style.fontFamily = ff;
+    brandRow.appendChild(name);
+  }
   if (s.menuCut) {
     const img = document.createElement('img'); img.className = 'menu-cut'; img.src = s.menuCut;
     img.style.height = (s.menuCutHeight ?? 260) + 'px';
@@ -1653,7 +1933,11 @@ function buildSlideA(s){
     brandRow.appendChild(img);
   }
   if (brandRow.children.length) box.appendChild(brandRow);
-  if (s.desc) { const desc = document.createElement('div'); desc.className = 'desc'; desc.innerHTML = parseEmphasis(s.desc); box.appendChild(desc); }
+  if (s.desc) {
+    const desc = document.createElement('div'); desc.className = 'desc'; desc.innerHTML = parseEmphasis(s.desc);
+    if (ff) desc.style.fontFamily = ff;
+    box.appendChild(desc);
+  }
   frame.appendChild(box);
   return frame;
 }
@@ -1661,12 +1945,39 @@ function buildSlideA(s){
 /* === 패턴 B (흰 배경 + 상단 카피 + 인물/사진 + 하단 메세지 + CTA) === */
 function buildCoverB(){
   const frame = makeFrame('cover-b');
+  frame.style.setProperty('--b-top-grad-h', (state.cover.b_topGradientHeight ?? 480) + 'px');
+  frame.style.setProperty('--b-pt-c1', state.cover.b_pointColor1 || '#FFA500');
+  frame.style.setProperty('--b-pt-c2', state.cover.b_pointColor2 || '#E11D2A');
   if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos); frame.appendChild(bg); }
   else { frame.appendChild(bgEmpty('인물/배경 이미지')); }
+  // 상단 흰 그라데이션 (메인 카피 가독성)
+  const grad = document.createElement('div'); grad.className = 'top-gradient';
+  frame.appendChild(grad);
+  // 메인 카피 (좌측 정렬, 모든 마크업 지원)
   const top = document.createElement('div'); top.className = 'top-copy';
-  if (state.cover.main) { const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main); top.appendChild(main); }
+  if (state.cover.main) {
+    const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main);
+    const ff = coverMainFontStack(); if (ff) main.style.fontFamily = ff;
+    top.appendChild(main);
+  }
   frame.appendChild(top);
-  if (state.cover.sub) { const bot = document.createElement('div'); bot.className = 'bottom-copy'; const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub; bot.appendChild(pre); frame.appendChild(bot); }
+  // 하단 서브 카피 (기존)
+  if (state.cover.sub) {
+    const bot = document.createElement('div'); bot.className = 'bottom-copy';
+    const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub;
+    const sf = coverSubFontStack(); if (sf) pre.style.fontFamily = sf;
+    bot.appendChild(pre); frame.appendChild(bot);
+  }
+  // 흰 말풍선 (폰트 38 고정, 위치만 드래그)
+  if (state.cover.b_bubbleText) {
+    const b = document.createElement('div'); b.className = 'b-bubble';
+    b.dataset.coverBubble = '1';
+    b.style.left = (state.cover.b_bubbleX ?? 560) + 'px';
+    b.style.top = (state.cover.b_bubbleY ?? 760) + 'px';
+    b.style.fontSize = '38px';  // 고정
+    b.innerHTML = parseEmphasis(state.cover.b_bubbleText);
+    frame.appendChild(b);
+  }
   return frame;
 }
 function buildSlideB(s){
@@ -1679,17 +1990,27 @@ function buildSlideB(s){
   // 상단 흰 그라디언트 오버레이
   const veil = document.createElement('div'); veil.className = 'top-veil';
   frame.appendChild(veil);
+  const ff = slideFontStack(s);
   // 헤드 (브랜드명 + 로고)
   const head = document.createElement('div'); head.className = 'head';
-  if (s.brand) { const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand; head.appendChild(name); }
+  if (s.brand) {
+    const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand;
+    if (ff) name.style.fontFamily = ff;
+    head.appendChild(name);
+  }
   if (s.logo) { const logo = document.createElement('img'); logo.className = 'brand-logo'; logo.src = s.logo; head.appendChild(logo); }
   frame.appendChild(head);
   // 설명
-  if (s.desc) { const desc = document.createElement('div'); desc.className = 'desc'; desc.innerHTML = parseEmphasis(s.desc); frame.appendChild(desc); }
+  if (s.desc) {
+    const desc = document.createElement('div'); desc.className = 'desc'; desc.innerHTML = parseEmphasis(s.desc);
+    if (ff) desc.style.fontFamily = ff;
+    frame.appendChild(desc);
+  }
   // CTA — 가로 풀폭, 가운데 정렬, 화살표 없음 (마케터 직접 입력)
   if (s.cta) {
     const cta = document.createElement('div'); cta.className = 'cta';
     cta.textContent = s.cta;
+    if (ff) cta.style.fontFamily = ff;
     frame.appendChild(cta);
   }
   return frame;
@@ -1698,13 +2019,41 @@ function buildSlideB(s){
 /* === 패턴 E (흰 배경 + 해시태그 + 컬러 메트릭 박스 + 사진) === */
 function buildCoverE(){
   const frame = makeFrame('cover-e');
-  const copy = document.createElement('div'); copy.className = 'copy';
-  if (state.cover.main) { const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main); copy.appendChild(main); }
-  if (state.cover.stamp) { const lab = document.createElement('div'); lab.className = 'stamp-label'; lab.textContent = state.cover.stamp; copy.appendChild(lab); }
-  frame.appendChild(copy);
+  frame.style.setProperty('--e-grad-h', (state.cover.e_gradientHeight ?? 800) + 'px');
+  // 풀블리드 배경
   const photo = document.createElement('div'); photo.className = 'photo-area';
   if (state.cover.image) { photo.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(photo, state.cover.imagePos); } else photo.style.background = '#FAF8F4';
   frame.appendChild(photo);
+  // 상단 흰 그라데이션
+  const grad = document.createElement('div'); grad.className = 'top-gradient';
+  frame.appendChild(grad);
+  // 메인 + 서브 카피 (서브가 메인 하단에 박스로)
+  const copy = document.createElement('div'); copy.className = 'copy';
+  if (state.cover.main) {
+    const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main);
+    const ff = coverMainFontStack(); if (ff) main.style.fontFamily = ff;
+    copy.appendChild(main);
+  }
+  if (state.cover.sub) {
+    const sub = document.createElement('div'); sub.className = 'sub'; sub.textContent = state.cover.sub;
+    const sf = coverSubFontStack(); if (sf) sub.style.fontFamily = sf;
+    copy.appendChild(sub);
+  }
+  frame.appendChild(copy);
+  // 말풍선 (blur, 2줄, 드래그·휠 리사이즈)
+  if (state.cover.stamp) {
+    const stamp = document.createElement('div'); stamp.className = 'stamp-bubble';
+    stamp.dataset.coverBubble = 'e-stamp';
+    stamp.style.left = (state.cover.e_stampX ?? 620) + 'px';
+    stamp.style.top = (state.cover.e_stampY ?? 860) + 'px';
+    stamp.style.fontSize = (state.cover.e_stampFS ?? 50) + 'px';
+    // \n → <br>로 줄바꿈 보존
+    stamp.innerHTML = escHtml(state.cover.stamp).replace(/\n/g, '<br>');
+    if (state.cover.e_stampFont && FONTS[state.cover.e_stampFont]) {
+      stamp.style.fontFamily = FONTS[state.cover.e_stampFont];
+    }
+    frame.appendChild(stamp);
+  }
   return frame;
 }
 function buildSlideE(s){
@@ -1713,9 +2062,14 @@ function buildSlideE(s){
   frame.style.setProperty('--hl-c', s.highlightColor || s.pointColor || '#4A8A3A');
   frame.style.setProperty('--text-c', s.textColor || '#fff');
   frame.style.setProperty('--grad-h', (s.gradientHeight ?? 240) + 'px');
+  const ff = slideFontStack(s);
   const head = document.createElement('div'); head.className = 'head';
   const headLeft = document.createElement('div'); headLeft.className = 'head-left';
-  if (s.brand) { const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand; headLeft.appendChild(name); }
+  if (s.brand) {
+    const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand;
+    if (ff) name.style.fontFamily = ff;
+    headLeft.appendChild(name);
+  }
   if (s.hashtags) {
     const ht = document.createElement('div'); ht.className = 'hashtags';
     s.hashtags.split(/[\s\n]+/).filter(Boolean).forEach(tag => {
@@ -1749,10 +2103,6 @@ function buildSlideE(s){
 
 /* === 패턴 L (사진 + 좌하 동그란 + 우상 뾰족 말풍선) === */
 function applyCoverLColors(frame){
-  frame.style.setProperty('--l-outline1-c',     state.cover.l_outlineColor       || '#1A1A1A');
-  frame.style.setProperty('--l-outline2-c',     state.cover.l_doubleOutlineColor || '#E11D2A');
-  frame.style.setProperty('--l-point-c',        state.cover.l_pointColor         || '#E11D2A');
-  frame.style.setProperty('--l-highlight-c',    state.cover.l_highlightColor     || '#F5FF00');
   frame.style.setProperty('--l-sub-stroke-c',   state.cover.l_subStrokeColor     || '#1A1A1A');
 }
 function buildCoverL(){
@@ -1766,13 +2116,13 @@ function buildCoverL(){
   const copy = document.createElement('div'); copy.className = 'copy';
   if (state.cover.sub) {
     const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub;
-    if (state.cover.l_subFont && FONTS[state.cover.l_subFont]) pre.style.fontFamily = FONTS[state.cover.l_subFont];
+    const sf = coverSubFontStack(); if (sf) pre.style.fontFamily = sf;
     copy.appendChild(pre);
   }
   if (state.cover.main) {
     const main = document.createElement('div'); main.className = 'main';
     main.innerHTML = parseCoverMain(state.cover.main);
-    if (state.cover.l_mainFont && FONTS[state.cover.l_mainFont]) main.style.fontFamily = FONTS[state.cover.l_mainFont];
+    const ff = coverMainFontStack(); if (ff) main.style.fontFamily = ff;
     copy.appendChild(main);
   }
   frame.appendChild(copy);
@@ -1826,8 +2176,16 @@ function buildCoverG(){
   if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos); frame.appendChild(bg); }
   else { frame.appendChild(bgEmpty()); }
   const copy = document.createElement('div'); copy.className = 'copy';
-  if (state.cover.sub) { const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub; copy.appendChild(pre); }
-  if (state.cover.main) { const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main); copy.appendChild(main); }
+  if (state.cover.sub) {
+    const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub;
+    const sf = coverSubFontStack(); if (sf) pre.style.fontFamily = sf;
+    copy.appendChild(pre);
+  }
+  if (state.cover.main) {
+    const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main);
+    const ff = coverMainFontStack(); if (ff) main.style.fontFamily = ff;
+    copy.appendChild(main);
+  }
   frame.appendChild(copy);
   return frame;
 }
@@ -1840,10 +2198,12 @@ function buildSlideG(s){
     frame.style.setProperty('--accent-font', FONTS[s.accentFont]);
   }
   if (s.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${s.image})`; applyBgPos(bg, s.imagePos); frame.appendChild(bg); }
+  const ff = slideFontStack(s);
   // 부제목 알약 (상단 부착)
   if (s.gSubtitle) {
     const sub = document.createElement('div'); sub.className = 'subtitle-pill';
     sub.textContent = s.gSubtitle;
+    if (ff) sub.style.fontFamily = ff;
     frame.appendChild(sub);
   }
   // 제목 + 카드를 묶는 stack (제목 위, 카드 아래 — 카드는 남은 공간 채워 하단까지)
@@ -1851,6 +2211,7 @@ function buildSlideG(s){
   if (s.gTitle) {
     const ttl = document.createElement('div'); ttl.className = 'g-title';
     ttl.innerHTML = parseEmphasis(s.gTitle);
+    if (ff) ttl.style.fontFamily = ff;
     stack.appendChild(ttl);
   }
   const card = document.createElement('div'); card.className = 'card';
@@ -1971,11 +2332,6 @@ async function downloadFrame(kind, idx){
     frameEl = buildSlide(s);
     filename = buildFilename('slide', idx, s);
   }
-  // 다운로드 전용: A 패턴 brand-name/main의 var(--display-font)가 SVG 캡처 시 안 따라가는 케이스 우회 — inline font-family로 강제
-  const df = getComputedStyle(document.documentElement).getPropertyValue('--display-font').trim();
-  if (df && (frameEl.classList.contains('slide-a') || frameEl.classList.contains('cover-a'))) {
-    frameEl.querySelectorAll('.brand-name, .main').forEach(el => { el.style.fontFamily = df; });
-  }
   // 폰트 CSS를 프레임 안에 <style>로 주입 — fontEmbedCSS 옵션이 안 먹는 케이스 우회
   const fontCSS = await getEmbeddedFontCSS();
   const styleEl = document.createElement('style');
@@ -1985,6 +2341,13 @@ async function downloadFrame(kind, idx){
   stage.style.cssText = 'position:fixed;left:-99999px;top:0;';
   stage.appendChild(frameEl);
   document.body.appendChild(stage);
+  // html-to-image SVG foreignObject 캡처는 :root CSS var를 못 끌고 가는 케이스 있음
+  // — DOM에 붙은 뒤 frame 내부 모든 요소의 computed 폰트를 인라인으로 박아 캡처가 정확히 보존하도록
+  // — 사용자가 명시 선택한 inline fontFamily는 그대로 유지 (computed 자체가 그 값이므로 idempotent)
+  frameEl.querySelectorAll('*').forEach(el => {
+    const computed = getComputedStyle(el).fontFamily;
+    if (computed) el.style.fontFamily = computed;
+  });
   try {
     await Promise.all([waitImages(frameEl), document.fonts.ready]);
     const dataUrl = await htmlToImage.toJpeg(frameEl, {
