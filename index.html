@@ -206,7 +206,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
     -24px 12px 0 var(--c-outline2, #E11D2A), 24px 12px 0 var(--c-outline2, #E11D2A),
     -24px 24px 0 var(--c-outline2, #E11D2A), -12px 24px 0 var(--c-outline2, #E11D2A), 0 24px 0 var(--c-outline2, #E11D2A), 12px 24px 0 var(--c-outline2, #E11D2A), 24px 24px 0 var(--c-outline2, #E11D2A);
 }
-/* ++확대++ · +++큰 확대+++ · @강조 폰트@ — 슬라이드·커버 공용 (각 패턴이 더 구체적으로 오버라이드 가능) */
+/* ++확대++ · +++큰 확대+++ · @@강조 폰트@@ — 슬라이드·커버 공용 (각 패턴이 더 구체적으로 오버라이드 가능) */
 .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
 .hl-zoom-xl{display:inline-block;font-size:calc(1em + 55px);line-height:1}
 .hl-f{font-family:var(--accent-font, inherit)}
@@ -1163,7 +1163,7 @@ function applyPatternVisibility(){
   // L 패턴이면 메인 카피 힌트·플레이스홀더를 L 전용 마크업으로 안내
   const mainHint = document.getElementById('cover-main-hint');
   if (mainHint) {
-    mainHint.innerHTML = '<code>##컬러##</code> <code>[[박스]]</code> <code>/밑줄/</code> <code>((동그라미))</code> <code>%%별%%</code> <code>++확대++</code> <code>+++큰 확대+++</code> <code>~테두리~</code> <code>~~이중 테두리~~</code>';
+    mainHint.innerHTML = '<code>##컬러##</code> <code>[[박스]]</code> <code>/밑줄/</code> <code>((동그라미))</code> <code>%%별%%</code> <code>++확대++</code> <code>+++큰 확대+++</code> <code>~테두리~</code> <code>~~이중 테두리~~</code> <code>==형광펜==</code> <code>@@강조 폰트@@</code>';
   }
   const mainArea = document.getElementById('cover-main');
   if (mainArea) {
@@ -1255,7 +1255,7 @@ function renderSlideInputs(){
           </div>
         </div>
         <div class="field">
-          <div class="field-row"><span class="field-label">형광펜 컬러 (=키워드=)</span></div>
+          <div class="field-row"><span class="field-label">형광펜 컬러 (==키워드==)</span></div>
           <div class="color-input-row">
             <input type="text" class="hex-input" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hc)}" placeholder="#F5FF00" maxlength="7">
             <input type="color" class="color-swatch" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hc)}" title="컬러 피커">
@@ -1346,8 +1346,8 @@ function renderSlideInputs(){
       extraFields = `
         <div class="field">
           <span class="field-label">동그란 말풍선 (좌하단)</span>
-          <textarea data-k="bubble1" data-id="${s.id}" rows="2" placeholder="로열티 3.3%&#10;##포인트## =형광펜=">${escHtml(s.bubble1)}</textarea>
-          <span class="hint">미리보기에서 <code>드래그</code> 위치 · <code>휠 스크롤</code> 크기 · <code>##포인트##</code> <code>=형광펜=</code> 등 커버와 동일</span>
+          <textarea data-k="bubble1" data-id="${s.id}" rows="2" placeholder="로열티 3.3%&#10;##포인트## ==형광펜==">${escHtml(s.bubble1)}</textarea>
+          <span class="hint">미리보기에서 <code>드래그</code> 위치 · <code>휠 스크롤</code> 크기 · <code>##포인트##</code> <code>==형광펜==</code> 등 커버와 동일</span>
         </div>
         <div class="field">
           <span class="field-label">뾰족 말풍선 (우상단)</span>
@@ -1413,8 +1413,8 @@ function renderSlideInputs(){
         </div>
         <div class="field">
           <span class="field-label">✓ Bullets (줄당 1개)</span>
-          <textarea data-k="bullets" data-id="${s.id}" rows="6" placeholder="가맹비 교육비 면제&#10;로열티 50만원&#10;##창업지원금 최대 5천만 원##&#10;업종 변경 시 간판 교체 비용 지원&#10;=통행세 없는 착한 프랜차이즈=&#10;@주목@ 소자본 가능">${escHtml(s.bullets)}</textarea>
-          <span class="hint"><code>##포인트##</code> 컬러 · <code>=형광펜=</code> · <code>@강조 폰트@</code> · <code>~테두리~</code> · <code>++확대++</code> 등 커버와 동일</span>
+          <textarea data-k="bullets" data-id="${s.id}" rows="6" placeholder="가맹비 교육비 면제&#10;로열티 50만원&#10;##창업지원금 최대 5천만 원##&#10;업종 변경 시 간판 교체 비용 지원&#10;==통행세 없는 착한 프랜차이즈==&#10;@@주목@@ 소자본 가능">${escHtml(s.bullets)}</textarea>
+          <span class="hint"><code>##포인트##</code> 컬러 · <code>==형광펜==</code> · <code>@@강조 폰트@@</code> · <code>~테두리~</code> · <code>++확대++</code> 등 커버와 동일</span>
         </div>
         <div class="field">
           <div class="field-row"><span class="field-label">Bullets 포인트 컬러 (<code>**text**</code>)</span></div>
@@ -1424,7 +1424,7 @@ function renderSlideInputs(){
           </div>
         </div>
         <div class="field">
-          <div class="field-row"><span class="field-label">강조 폰트 (<code>@text@</code>)</span></div>
+          <div class="field-row"><span class="field-label">강조 폰트 (<code>@@text@@</code>)</span></div>
           <select data-k="accentFont" data-id="${s.id}" title="강조 폰트" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">${accentFontOpts}</select>
         </div>`;
     }
@@ -1432,8 +1432,8 @@ function renderSlideInputs(){
     const descField = showDesc ? `
       <div class="field">
         <span class="field-label">설명 (강점)</span>
-        <textarea data-k="desc" data-id="${s.id}" rows="3" placeholder="코로나 시기도 이겨낸 우동 브랜드!&#10;##소자본 창업## 찾고 있다면 강추 드려요&#10;=400만원 가맹 지원금=도 받을 수 있대요">${escHtml(s.desc)}</textarea>
-        <span class="hint"><code>##포인트##</code> <code>=형광펜=</code> 등 커버와 동일</span>
+        <textarea data-k="desc" data-id="${s.id}" rows="3" placeholder="코로나 시기도 이겨낸 우동 브랜드!&#10;##소자본 창업## 찾고 있다면 강추 드려요&#10;==400만원 가맹 지원금==도 받을 수 있대요">${escHtml(s.desc)}</textarea>
+        <span class="hint"><code>##포인트##</code> <code>==형광펜==</code> 등 커버와 동일</span>
       </div>` : '';
     const isA = (p === 'A');
     const sideUploadKey = isA ? 'menuCut' : 'logo';
@@ -1609,6 +1609,7 @@ function showDropThumb(drop, dataUrl, label){
 // 마크업 한 줄 변환 (커버·슬라이드 공통)
 // 순서: 슬래시 먼저(평문만 매칭) → 나머지 (HTML 안쪽도 받아들임) → 긴 패턴 우선
 function markupLine(line){
+  // 모든 마커는 2자 이상 구분자 사용 — HTML 속성의 단일 '=' 와 충돌 안 함.
   return escHtml(line)
     .replace(/\/([^/<>]+)\//g, '<span class="underline-mark">$1<span class="underline-overlay"></span></span>')
     .replace(/\+\+\+([^+]+)\+\+\+/g, '<span class="hl-zoom-xl">$1</span>')
@@ -1619,8 +1620,8 @@ function markupLine(line){
     .replace(/\[\[([^\[\]]+)\]\]/g, '<span class="hl"><span class="hl-text">$1</span></span>')
     .replace(/\(\(([^()]+)\)\)/g, '<span class="circle-mark">$1<span class="circle-overlay"></span></span>')
     .replace(/%%([^%]+)%%/g, '<span class="star-mark">$1</span>')
-    .replace(/=([^=]+)=/g, '<span class="hl-hi">$1</span>')
-    .replace(/@([^@]+)@/g, '<span class="hl-f">$1</span>')
+    .replace(/==([^=]+)==/g, '<span class="hl-hi">$1</span>')
+    .replace(/@@([^@]+)@@/g, '<span class="hl-f">$1</span>')
     .replace(/★/g, '<span class="star">★</span>');
 }
 // 슬라이드: 라인 단위 마크업 + <br>로 연결
