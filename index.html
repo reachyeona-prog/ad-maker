@@ -86,7 +86,12 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 /* ===== §4 레이아웃 ===== */
 .main-layout{display:grid;grid-template-columns:400px max-content;gap:28px;padding:28px;align-items:start;justify-content:start}
 .input-col{display:flex;flex-direction:column;gap:16px;min-width:0}
-.preview-col{position:sticky;top:96px;display:flex;flex-direction:column;gap:18px}
+.preview-col{
+  position:sticky;top:96px;display:flex;flex-direction:column;gap:18px;
+  /* 미리보기 패널이 독립 스크롤 — 좌측 편집기와 함께 길어지지 않도록 viewport 높이로 제한 */
+  max-height:calc(100vh - 112px);overflow-y:auto;scroll-behavior:smooth;
+  padding-right:6px;
+}
 .card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:18px;border:1px solid var(--line)}
 .card-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .card-title .tag{font-family:var(--font-mono);font-size:10px;background:var(--ink);color:#fff;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em}
@@ -103,14 +108,15 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 }
 .field textarea{resize:vertical;min-height:60px;line-height:1.5}
 .field input:focus,.field textarea:focus{outline:none;border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-.color-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.color-input-row .hex-input{
+.color-input-row{display:flex;gap:10px;align-items:center}
+/* `.field input[type=text]` 의 width:100% 를 이기려고 input.hex-input 으로 specificity 매칭 + 소스 후순위 */
+.color-input-row input.hex-input{
   font-family:var(--font-mono);font-size:12px;
-  width:80px;padding:8px 8px;text-transform:uppercase;
+  width:120px;flex:0 0 120px;padding:8px 10px;text-transform:uppercase;
   background:#FAF8F4;border:1px solid var(--line);border-radius:6px;
   transition:border-color var(--t),box-shadow var(--t);
 }
-.color-input-row .hex-input:focus{outline:none;border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.color-input-row input.hex-input:focus{outline:none;border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .color-input-row .color-swatch{
   -webkit-appearance:none;-moz-appearance:none;appearance:none;
   width:32px;height:32px;padding:0;flex-shrink:0;
@@ -120,13 +126,6 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 .color-input-row .color-swatch::-webkit-color-swatch-wrapper{padding:0;border-radius:50%}
 .color-input-row .color-swatch::-webkit-color-swatch{border:none;border-radius:50%}
 .color-input-row .color-swatch::-moz-color-swatch{border:none;border-radius:50%}
-.color-input-row .color-preset{
-  width:28px;height:28px;border-radius:50%;
-  border:2px solid var(--line);cursor:pointer;
-  padding:0;flex-shrink:0;
-  transition:transform var(--t),border-color var(--t);
-}
-.color-input-row .color-preset:hover{border-color:var(--ink);transform:scale(1.12)}
 .hint{font-size:11px;color:var(--muted);line-height:1.5}
 .hint code{font-family:var(--font-mono);font-size:10px;background:#F0EDE5;padding:1px 5px;border-radius:3px}
 
@@ -295,7 +294,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 }
 .slide-a .brand-row{display:flex;align-items:flex-end;gap:20px;margin-top:-100px;margin-bottom:30px;position:relative}
 .slide-a .brand-name{
-  font-family:var(--display-font);font-size:120px;font-weight:700;color:#fff;
+  font-family:var(--display-font);font-size:calc(120px * var(--brand-scale, 1));font-weight:700;color:#fff;
   /* text-shadow 16방향으로 두꺼운 검정 테두리 — 커스텀 @font-face + SVG 캡처 호환 */
   text-shadow:
     -10px -10px 0 #000, -5px -10px 0 #000, 0 -10px 0 #000, 5px -10px 0 #000, 10px -10px 0 #000,
@@ -414,7 +413,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
   z-index:1;
 }
 .slide-b .head{position:absolute;left:48px;right:48px;top:48px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:2}
-.slide-b .brand-name{font-size:85px;font-weight:900;line-height:1;letter-spacing:-.03em;color:var(--accent-c, #00A847);word-break:keep-all}
+.slide-b .brand-name{font-size:calc(85px * var(--brand-scale, 1));font-weight:900;line-height:1;letter-spacing:-.03em;color:var(--accent-c, #00A847);word-break:keep-all}
 .slide-b .brand-logo{height:95px;max-width:280px;object-fit:contain}
 .slide-b .desc{position:absolute;left:48px;right:48px;top:180px;font-size:47px;font-weight:600;color:#1A1A1A;line-height:1.4;word-break:keep-all;z-index:2}
 .slide-b .desc .hl-y-text{color:var(--accent-c, #00A847);font-weight:800}
@@ -493,7 +492,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 .slide-e{background:var(--point-c, #4A8A3A);color:#fff}
 .slide-e .head{position:absolute;left:48px;right:48px;top:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:3}
 .slide-e .head-left{display:flex;align-items:center;gap:28px;min-width:0;flex:1}
-.slide-e .brand-name{font-size:110px;font-weight:900;line-height:.95;letter-spacing:-.03em;color:var(--text-c, #fff);word-break:keep-all;flex-shrink:0}
+.slide-e .brand-name{font-size:calc(110px * var(--brand-scale, 1));font-weight:900;line-height:.95;letter-spacing:-.03em;color:var(--text-c, #fff);word-break:keep-all;flex-shrink:0}
 .slide-e .hashtags{display:flex;flex-direction:column;gap:4px;font-size:36px;font-weight:700;color:var(--text-c, #fff);line-height:1.15;letter-spacing:-.02em;opacity:.95}
 .slide-e .brand-logo{height:110px;max-width:260px;object-fit:contain;flex-shrink:0}
 .slide-e .metrics{position:absolute;left:48px;right:48px;top:200px;display:flex;flex-wrap:wrap;gap:14px;z-index:3}
@@ -604,7 +603,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
   box-shadow:0 6px 0 rgba(0,0,0,.18);
 }
 .cover-l .main .hl .hl-text{display:inline-block;color:inherit}
-.cover-l .main .hl-y-text{color:var(--c-text, var(--hook-yellow));text-shadow:none}
+.cover-l .main .hl-y-text{color:var(--c-text, var(--hook-yellow))}
 .cover-l .main .underline-mark{
   display:inline-block;padding:0 8px 10px;line-height:1;
   border-bottom:10px solid var(--c-underline, var(--hook-yellow));
@@ -638,7 +637,8 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 .cover-g .pre{display:inline-block;background:#1A1A1A;color:#fff;font-size:90px;font-weight:900;letter-spacing:-.02em;padding:18px 36px;border-radius:18px;border:none}
 .cover-g .main{font-size:108px;font-weight:900;line-height:1.05;letter-spacing:-.04em;color:#fff;text-shadow:0 6px 18px rgba(0,0,0,.6);word-break:keep-all;display:flex;flex-direction:column;gap:48px;align-items:center}
 .cover-g .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));color:#1A1A1A;padding:6px 24px;border-radius:14px;text-shadow:none;box-shadow:0 6px 0 rgba(0,0,0,.3)}
-.cover-g .main .hl-y-text{color:var(--c-text, var(--hook-yellow));text-shadow:none}
+/* text-shadow 는 명시적으로 클리어하지 않음 — ~##text##~ 처럼 outline 부모 안에 중첩됐을 때 부모의 outline 을 상속받아야 함 */
+.cover-g .main .hl-y-text{color:var(--c-text, var(--hook-yellow))}
 .cover-g .main .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
 .cover-g .main .hl-zoom-xl{display:inline-block;font-size:calc(1em + 55px);line-height:1}
 
@@ -742,7 +742,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 /* ===== §11 반응형 ===== */
 @media (max-width:1100px){
   .main-layout{grid-template-columns:1fr}
-  .preview-col{position:static}
+  .preview-col{position:static;max-height:none;overflow-y:visible}
   body{padding-top:160px}  /* 헤더가 줄바꿈되면 더 두꺼워짐 */
 }
 
@@ -791,7 +791,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
   <!-- 왼쪽: 입력 -->
   <div class="input-col">
     <!-- 표지 -->
-    <div class="card">
+    <div class="card" data-editor-section="cover">
       <div class="card-title"><span class="tag">COVER</span> 커버</div>
       <div class="field">
         <div class="field-row"><span class="field-label">메인 카피 (라인별 줄바꿈)</span><span class="field-spec" id="cover-main-count">0/60</span></div>
@@ -918,6 +918,11 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
     <!-- 슬라이드 -->
     <div class="card">
       <div class="card-title"><span class="tag">SLIDES</span> 슬라이드</div>
+      <div class="field">
+        <div class="field-row"><span class="field-label">전체 슬라이드 브랜드명 크기</span><span class="field-spec" id="brand-fs-spec">100%</span></div>
+        <input type="range" id="ctl-brand-fs" title="전체 슬라이드 브랜드명 크기" min="40" max="200" step="5" value="100" style="width:100%" oninput="onBrandFsChange(this.value)">
+        <span class="hint">한 번 설정으로 모든 슬라이드의 브랜드명에 적용</span>
+      </div>
       <div id="slides-list"></div>
       <button class="add-slide" onclick="addSlide()">＋ 슬라이드 추가</button>
     </div>
@@ -970,8 +975,9 @@ let zoomFactor = 1.0;
 const state = {
   ratio: '1:1',
   pattern: 'A',
+  slideBrandFontSize: 100,  // 전체 슬라이드 공용 브랜드명 크기 (% — 100 = 기본)
   cover: {
-    main: '', sub: '', stamp: '', image: null, imagePos: { x: 50, y: 50 }, campaignTitle: '',
+    main: '', sub: '', stamp: '', image: null, imagePos: { x: 50, y: 50 }, imageScale: 100, campaignTitle: '',
     pointColor: '#F5FF00',
     outlineColor: '#1A1A1A',        // ~테두리~ 컬러 + ~~이중 테두리~~ 안쪽
     doubleOutlineColor: '#E11D2A',  // ~~이중 테두리~~ 바깥쪽 컬러
@@ -995,6 +1001,7 @@ let _slideId = 0;
 const newSlide = () => ({
   id: ++_slideId, brand: '', logo: null, image: null, desc: '',
   imagePos: { x: 50, y: 50 },
+  imageScale: 100,            // 배경 이미지 줌 (% — 휠 스크롤로 조절)
   accentColor: '#00A847',
   pointColor: '#FF6B14',    // A: ~~키워드~~ 컬러
   highlightColor: null,     // A: **키워드** 형광펜 컬러 (기본 #F5FF00), E: 강조 키워드 컬러 (기본 pointColor)
@@ -1025,6 +1032,31 @@ const newSlide = () => ({
   gTitlePointColor:  '#F5FF00',  // G: 제목 **포인트** 컬러
   gBulletsPointColor:'#F5FF00',  // G: bullets **포인트** 형광펜 컬러
   accentFont: '',                // f...f 마크업에 적용되는 폰트
+});
+
+/* ===== 편집 영역 ↔ 미리보기 자동 스크롤 동기화 =====
+   편집기에 포커스 들어가면 우측 미리보기 패널이 해당 섹션으로 부드럽게 스크롤됨.
+   - 슬라이드 카드 (.slide-card[data-slide-id]) → [data-preview-id="slide-{id}"]
+   - 커버 카드 (.card[data-editor-section="cover"]) → [data-preview-id="cover"] */
+document.addEventListener('focusin', (e) => {
+  let previewId = null;
+  const slideCard = e.target.closest('.slide-card[data-slide-id]');
+  if (slideCard) {
+    previewId = `slide-${slideCard.dataset.slideId}`;
+  } else if (e.target.closest('[data-editor-section="cover"]')) {
+    previewId = 'cover';
+  }
+  if (!previewId) return;
+  const previewEl = document.querySelector(`[data-preview-id="${previewId}"]`);
+  if (!previewEl) return;
+  const col = previewEl.closest('.preview-col');
+  // 데스크탑: preview-col 내부 스크롤 / 모바일: 페이지 스크롤
+  if (col && col.scrollHeight > col.clientHeight) {
+    // previewEl.offsetTop 은 offsetParent(preview-col, position:sticky 기준) 기준이라 그대로 사용
+    col.scrollTo({ top: previewEl.offsetTop, behavior: 'smooth' });
+  } else {
+    previewEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 });
 
 /* ===== 초기화 ===== */
@@ -1221,6 +1253,12 @@ function adjustZoom(delta){
 function onInputChange(){
   renderAll();
 }
+function onBrandFsChange(v){
+  state.slideBrandFontSize = parseInt(v, 10) || 100;
+  const spec = document.getElementById('brand-fs-spec');
+  if (spec) spec.textContent = state.slideBrandFontSize + '%';
+  renderAll();
+}
 
 /* 슬라이드/커버 공통: 메인 카피 마커 안내 (커버 hint와 동일한 전체 칩 목록) */
 const SLIDE_MARKUP_HINT = '<code>##컬러##</code> <code>[[박스]]</code> <code>/밑줄/</code> <code>((동그라미))</code> <code>%%별%%</code> <code>++확대++</code> <code>+++큰 확대+++</code> <code>~테두리~</code> <code>~~이중 테두리~~</code> <code>==형광펜==</code> <code>@@강조 폰트@@</code>';
@@ -1271,26 +1309,18 @@ function renderSlideInputs(){
   state.slides.forEach((s, i) => {
     const card = document.createElement('div');
     card.className = 'slide-card';
+    card.dataset.slideId = s.id;
     let extraFields = '';
     let postImageFields = '';
     if (p === 'A') {
       const pc = s.pointColor || '#FF6B14';
-      const pointPresets = ['#FF6B14','#FB4317','#40A307'];
-      const pointPresetHtml = pointPresets.map(c =>
-        `<button type="button" class="color-preset" data-color="${c}" data-k="pointColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
-      ).join('');
       const hc = s.highlightColor || '#F5FF00';
-      const hlPresets = ['#F5FF00','#00FF6E','#FFD400','#A0E4FF'];
-      const hlPresetHtml = hlPresets.map(c =>
-        `<button type="button" class="color-preset" data-color="${c}" data-k="highlightColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
-      ).join('');
       extraFields = `
         <div class="field">
           <div class="field-row"><span class="field-label">포인트 컬러 (##키워드##)</span></div>
           <div class="color-input-row">
             <input type="text" class="hex-input" data-k="pointColor" data-id="${s.id}" value="${escAttr(pc)}" placeholder="#FF6B14" maxlength="7">
             <input type="color" class="color-swatch" data-k="pointColor" data-id="${s.id}" value="${escAttr(pc)}" title="컬러 피커">
-            ${pointPresetHtml}
           </div>
         </div>
         <div class="field">
@@ -1298,15 +1328,15 @@ function renderSlideInputs(){
           <div class="color-input-row">
             <input type="text" class="hex-input" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hc)}" placeholder="#F5FF00" maxlength="7">
             <input type="color" class="color-swatch" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hc)}" title="컬러 피커">
-            ${hlPresetHtml}
           </div>
         </div>`;
     } else if (p === 'B') {
       extraFields = `
         <div class="field">
-          <span class="field-label">CTA 버튼 텍스트</span>
+          <span class="field-label">서브 카피 (CTA 버튼)</span>
           <input type="text" data-k="cta" data-id="${s.id}" value="${escAttr(s.cta)}" placeholder="가맹비·교육비 면제 & 최대 5천만 원 지원">
         </div>
+        ${fontSelectHtml(s, 'subFont', '서브 카피 (CTA) 폰트')}
         <div class="field">
           <div class="field-row"><span class="field-label">브랜드 컬러</span><span class="field-spec">${escHtml(s.accentColor)}</span></div>
           <input type="color" data-k="accentColor" data-id="${s.id}" value="${escAttr(s.accentColor || '#00A847')}" style="width:80px;height:32px;padding:0;border:1px solid var(--line);border-radius:6px;cursor:pointer">
@@ -1315,38 +1345,31 @@ function renderSlideInputs(){
       const pcE = s.pointColor || '#4A8A3A';
       const hlE = s.highlightColor || s.pointColor || '#4A8A3A';
       const tcE = s.textColor || '#fff';
-      const ePointPresets = ['#4A8A3A','#E11D2A','#FFA500','#1A6BC8','#7B3FBF','#1A1A1A'];
-      const ePointPresetHtml = ePointPresets.map(c =>
-        `<button type="button" class="color-preset" data-color="${c}" data-k="pointColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
-      ).join('');
-      const eHlPresets = ['#E11D2A','#FFA500','#F5FF00','#00A847','#1A1A1A','#fff'];
-      const eHlPresetHtml = eHlPresets.map(c =>
-        `<button type="button" class="color-preset" data-color="${c}" data-k="highlightColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
-      ).join('');
       extraFields = `
         <div class="field">
-          <span class="field-label">해시태그 (브랜드명 옆)</span>
+          <span class="field-label">서브 카피 (해시태그 — 브랜드명 옆)</span>
           <input type="text" data-k="hashtags" data-id="${s.id}" value="${escAttr(s.hashtags)}" placeholder="#돈카츠 #업종변경">
           <span class="hint">공백으로 구분 — 세로로 stacking됨</span>
         </div>
+        ${fontSelectHtml(s, 'subFont', '서브 카피 (해시태그) 폰트')}
         <div class="field">
-          <div class="field-row"><span class="field-label">텍스트 컬러 (브랜드명/해시태그)</span><span class="field-spec">${tcE === '#fff' ? '화이트' : '블랙'}</span></div>
+          <div class="field-row"><span class="field-label">텍스트 컬러 (브랜드명/해시태그)</span></div>
           <div class="color-input-row">
-            <button type="button" class="color-preset" data-color="#fff" data-k="textColor" data-id="${s.id}" title="화이트" style="background:#fff"></button>
-            <button type="button" class="color-preset" data-color="#1A1A1A" data-k="textColor" data-id="${s.id}" title="블랙" style="background:#1A1A1A"></button>
+            <input type="text" class="hex-input" data-k="textColor" data-id="${s.id}" value="${escAttr(tcE)}" placeholder="#FFFFFF" maxlength="7">
+            <input type="color" class="color-swatch" data-k="textColor" data-id="${s.id}" value="${escAttr(tcE)}" title="컬러 피커">
           </div>
         </div>
         <div class="field">
-          <span class="field-label">메트릭 박스 (최대 3줄)</span>
+          <span class="field-label">메인 카피 (메트릭 박스 — 최대 3줄)</span>
           <textarea data-k="metrics" data-id="${s.id}" rows="3" placeholder="월 평균 수익 ##1천만원##&#10;홍보, 브랜딩 지원&#10;인테리어 강요 ##X##">${escHtml(s.metrics)}</textarea>
           <span class="hint">${SLIDE_MARKUP_HINT}</span>
         </div>
+        ${fontSelectHtml(s, 'mainFont', '메인 카피 (메트릭) 폰트')}
         <div class="field">
           <div class="field-row"><span class="field-label">강조 컬러 (##키워드##)</span></div>
           <div class="color-input-row">
             <input type="text" class="hex-input" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hlE)}" placeholder="#4A8A3A" maxlength="7">
             <input type="color" class="color-swatch" data-k="highlightColor" data-id="${s.id}" value="${escAttr(hlE)}" title="컬러 피커">
-            ${eHlPresetHtml}
           </div>
         </div>`;
       const gh = s.gradientHeight ?? 240;
@@ -1356,7 +1379,6 @@ function renderSlideInputs(){
           <div class="color-input-row">
             <input type="text" class="hex-input" data-k="pointColor" data-id="${s.id}" value="${escAttr(pcE)}" placeholder="#4A8A3A" maxlength="7">
             <input type="color" class="color-swatch" data-k="pointColor" data-id="${s.id}" value="${escAttr(pcE)}" title="컬러 피커">
-            ${ePointPresetHtml}
           </div>
         </div>
         <div class="field">
@@ -1366,40 +1388,33 @@ function renderSlideInputs(){
     } else if (p === 'L') {
       const bubC = s.bubbleColor || '#E11D2A';
       const boxC = s.logoBoxColor || '#1A1A1A';
-      const bubblePresets = ['#E11D2A','#1A1A1A','#FFA500','#00A847','#1A6BC8','#7B3FBF'];
-      const bubblePresetHtml = bubblePresets.map(c =>
-        `<button type="button" class="color-preset" data-color="${c}" data-k="bubbleColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
-      ).join('');
-      const logoBoxPresets = ['#1A1A1A','#E11D2A','#F5FF00','#00A847','#fff','#FFA500'];
-      const logoBoxPresetHtml = logoBoxPresets.map(c =>
-        `<button type="button" class="color-preset" data-color="${c}" data-k="logoBoxColor" data-id="${s.id}" title="${c}" style="background:${c};${c==='#fff'?'border:1px solid #ccc':''}"></button>`
-      ).join('');
       extraFields = `
         <div class="field">
-          <span class="field-label">동그란 말풍선 (좌하단)</span>
+          <span class="field-label">메인 카피 — 동그란 말풍선 (좌하단)</span>
           <textarea data-k="bubble1" data-id="${s.id}" rows="2" placeholder="로열티 3.3%&#10;##포인트## ==형광펜==">${escHtml(s.bubble1)}</textarea>
           <span class="hint">미리보기에서 <code>드래그</code> 위치 · <code>휠 스크롤</code> 크기 · ${SLIDE_MARKUP_HINT}</span>
         </div>
         <div class="field">
-          <span class="field-label">뾰족 말풍선 (우상단)</span>
+          <span class="field-label">메인 카피 — 뾰족 말풍선 (우상단)</span>
           <textarea data-k="bubble2" data-id="${s.id}" rows="2" placeholder="창업 지원금&#10;##1,000만## 지원">${escHtml(s.bubble2)}</textarea>
           <span class="hint">${SLIDE_MARKUP_HINT}</span>
         </div>
+        ${fontSelectHtml(s, 'mainFont', '메인 카피 (말풍선) 폰트')}
         <div class="field">
           <div class="field-row"><span class="field-label">말풍선 컬러 (테두리/형광펜/포인트)</span></div>
           <div class="color-input-row">
             <input type="text" class="hex-input" data-k="bubbleColor" data-id="${s.id}" value="${escAttr(bubC)}" placeholder="#E11D2A" maxlength="7">
             <input type="color" class="color-swatch" data-k="bubbleColor" data-id="${s.id}" value="${escAttr(bubC)}" title="컬러 피커">
-            ${bubblePresetHtml}
           </div>
         </div>
         <div class="field">
-          <div class="field-row"><span class="field-label">브랜드 로고 박스 컬러</span></div>
+          <div class="field-row"><span class="field-label">브랜드 로고 박스 컬러</span><span class="field-spec">${boxC === 'transparent' ? '투명' : ''}</span></div>
           <div class="color-input-row">
-            <input type="text" class="hex-input" data-k="logoBoxColor" data-id="${s.id}" value="${escAttr(boxC)}" placeholder="#1A1A1A" maxlength="7">
-            <input type="color" class="color-swatch" data-k="logoBoxColor" data-id="${s.id}" value="${escAttr(boxC)}" title="컬러 피커">
-            ${logoBoxPresetHtml}
+            <input type="text" class="hex-input" data-k="logoBoxColor" data-id="${s.id}" value="${escAttr(boxC)}" placeholder="#1A1A1A 또는 transparent" maxlength="11">
+            <input type="color" class="color-swatch" data-k="logoBoxColor" data-id="${s.id}" value="${escAttr(boxC === 'transparent' ? '#ffffff' : boxC)}" title="컬러 피커">
+            <button type="button" class="color-preset" data-color="transparent" data-k="logoBoxColor" data-id="${s.id}" title="투명 (배경 없음 — 로고만)" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;flex-shrink:0;background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 14px 14px"></button>
           </div>
+          <span class="hint">우측 체커보드 버튼 = 투명 (배경 없이 로고만)</span>
         </div>`;
     } else if (p === 'G') {
       const gSubC = s.gSubtitleColor    || '#1A1A1A';
@@ -1417,9 +1432,10 @@ function renderSlideInputs(){
       ].map(([v, label]) => `<option value="${v}"${v === af ? ' selected' : ''}>${label}</option>`).join('');
       extraFields = `
         <div class="field">
-          <span class="field-label">부제목 (상단 알약)</span>
+          <span class="field-label">서브 카피 (상단 알약 부제목)</span>
           <input type="text" data-k="gSubtitle" data-id="${s.id}" value="${escAttr(s.gSubtitle)}" placeholder="3월 추천 프랜차이즈">
         </div>
+        ${fontSelectHtml(s, 'subFont', '서브 카피 (부제목) 폰트')}
         <div class="field">
           <div class="field-row"><span class="field-label">부제목 박스 컬러</span></div>
           <div class="color-input-row">
@@ -1428,12 +1444,13 @@ function renderSlideInputs(){
           </div>
         </div>
         <div class="field">
-          <span class="field-label">제목 (카드 위 큰 카피)</span>
+          <span class="field-label">메인 카피 (카드 위 큰 제목)</span>
           <textarea data-k="gTitle" data-id="${s.id}" rows="2" placeholder="사장님이 알려주는&#10;##진짜 정보##">${escHtml(s.gTitle)}</textarea>
           <span class="hint">라인별 줄바꿈 · ${SLIDE_MARKUP_HINT}</span>
         </div>
+        ${fontSelectHtml(s, 'mainFont', '메인 카피 (제목+불릿) 폰트')}
         <div class="field">
-          <div class="field-row"><span class="field-label">제목 포인트 컬러 (<code>**text**</code>)</span></div>
+          <div class="field-row"><span class="field-label">제목 포인트 컬러 (<code>##키워드##</code>)</span></div>
           <div class="color-input-row">
             <input type="text" class="hex-input" data-k="gTitlePointColor" data-id="${s.id}" value="${escAttr(gTtlC)}" placeholder="#F5FF00" maxlength="7">
             <input type="color" class="color-swatch" data-k="gTitlePointColor" data-id="${s.id}" value="${escAttr(gTtlC)}" title="컬러 피커">
@@ -1462,30 +1479,20 @@ function renderSlideInputs(){
         <span class="field-label">메인 카피 (강점 설명)</span>
         <textarea data-k="desc" data-id="${s.id}" rows="3" placeholder="코로나 시기도 이겨낸 우동 브랜드!&#10;##소자본 창업## 찾고 있다면 강추 드려요&#10;==400만원 가맹 지원금==도 받을 수 있대요">${escHtml(s.desc)}</textarea>
         <span class="hint">${SLIDE_MARKUP_HINT}</span>
-      </div>` : '';
+      </div>
+      ${fontSelectHtml(s, 'mainFont', '메인 카피 폰트')}` : '';
     const isA = (p === 'A');
     const sideUploadKey = isA ? 'menuCut' : 'logo';
     const sideUploadLabel = isA ? '대표 메뉴 누끼 (브랜드명 우측)' : '브랜드 로고 (선택)';
     const sideUploadHint = isA ? '메뉴 누끼 업로드' : '로고 업로드';
     const sideUploadVal = isA ? s.menuCut : s.logo;
+    const showBrandFont = (p === 'A' || p === 'B' || p === 'E');
     const brandField = (p === 'G') ? '' : `
       <div class="field">
         <span class="field-label">브랜드명</span>
         <input type="text" data-k="brand" data-id="${s.id}" value="${escAttr(s.brand)}" placeholder="브랜드명">
-      </div>`;
-    // 패턴별 텍스트 → 폰트 매핑 (브랜드명·메인·서브)
-    let fontFields = '';
-    if (p === 'A') {
-      fontFields = fontSelectHtml(s, 'brandFont', '브랜드명 폰트') + fontSelectHtml(s, 'mainFont', '메인 카피 폰트');
-    } else if (p === 'B') {
-      fontFields = fontSelectHtml(s, 'brandFont', '브랜드명 폰트') + fontSelectHtml(s, 'mainFont', '메인 카피 폰트') + fontSelectHtml(s, 'subFont', '서브 카피 (CTA) 폰트');
-    } else if (p === 'E') {
-      fontFields = fontSelectHtml(s, 'brandFont', '브랜드명 폰트') + fontSelectHtml(s, 'mainFont', '메인 카피 (메트릭) 폰트') + fontSelectHtml(s, 'subFont', '서브 카피 (해시태그) 폰트');
-    } else if (p === 'G') {
-      fontFields = fontSelectHtml(s, 'mainFont', '메인 카피 (제목+불릿) 폰트') + fontSelectHtml(s, 'subFont', '서브 카피 (부제목) 폰트');
-    } else if (p === 'L') {
-      fontFields = fontSelectHtml(s, 'mainFont', '메인 카피 (말풍선) 폰트');
-    }
+      </div>
+      ${showBrandFont ? fontSelectHtml(s, 'brandFont', '브랜드명 폰트') : ''}`;
     card.innerHTML = `
       <div class="slide-card-head">
         <span class="slide-num">${String(i+1).padStart(2,'0')}</span>
@@ -1517,7 +1524,6 @@ function renderSlideInputs(){
         <span class="hint">미리보기에서 <code>드래그</code>하여 위치 조정</span>
       </div>
       ${postImageFields}
-      ${fontFields}
     `;
     list.appendChild(card);
     // 썸네일 표시
@@ -1532,11 +1538,13 @@ function renderSlideInputs(){
       const slide = state.slides.find(s => s.id === id);
       if (!slide) return;
       let val = el.value;
-      // hex 입력은 검증 후 # 보정
+      // hex 입력은 검증 후 # 보정 — 'transparent' 키워드는 특수 통과
       if (el.classList.contains('hex-input')) {
         val = val.trim();
-        if (val && !val.startsWith('#')) val = '#' + val;
-        if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;  // 유효하지 않으면 적용 보류
+        if (val !== 'transparent') {
+          if (val && !val.startsWith('#')) val = '#' + val;
+          if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;  // 유효하지 않으면 적용 보류
+        }
       }
       if (el.type === 'range') {
         val = parseInt(val, 10) || 0;
@@ -1551,7 +1559,7 @@ function renderSlideInputs(){
       renderAll();
     });
   });
-  // 컬러 프리셋 클릭 바인딩
+  // 컬러 프리셋 (현재는 L 로고박스 투명 1개만) 클릭 바인딩
   list.querySelectorAll('.color-preset').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = +btn.dataset.id, k = btn.dataset.k, color = btn.dataset.color;
@@ -1677,6 +1685,9 @@ function escAttr(s){ return escHtml(s); }
 /* ===== 미리보기 렌더 ===== */
 function renderAll(){
   const root = document.getElementById('preview-sections');
+  // 입력 중 preview-col 의 스크롤 위치 유지 (innerHTML 교체로 리셋되는 것 방지)
+  const col = root.closest('.preview-col');
+  const savedScroll = col ? col.scrollTop : 0;
   root.innerHTML = '';
   // 표지
   root.appendChild(makePreviewSection({
@@ -1685,6 +1696,7 @@ function renderAll(){
     frameEl: buildCover(),
     stateObj: state.cover,
     onDownload: () => downloadFrame('cover'),
+    previewId: 'cover',
   }));
   // 슬라이드
   state.slides.forEach((s, i) => {
@@ -1694,13 +1706,17 @@ function renderAll(){
       frameEl: buildSlide(s),
       stateObj: s,
       onDownload: () => downloadFrame('slide', i),
+      previewId: `slide-${s.id}`,
     }));
   });
+  // 입력 중 스크롤 유지
+  if (col) col.scrollTop = savedScroll;
 }
 
-function makePreviewSection({label, filename, frameEl, stateObj, onDownload}){
+function makePreviewSection({label, filename, frameEl, stateObj, onDownload, previewId}){
   const section = document.createElement('div');
   section.className = 'preview-section';
+  if (previewId) section.dataset.previewId = previewId;
   const card = document.createElement('div');
   card.className = 'preview-card';
   card.innerHTML = `
@@ -1780,15 +1796,18 @@ function makeFrame(extraClass){
   frame.style.height = r.h + 'px';
   return frame;
 }
-function bgImage(url, pos){
+function bgImage(url, pos, scale){
   const bg = document.createElement('div');
   bg.className = 'bg';
   bg.style.backgroundImage = `url(${url})`;
-  if (pos) bg.style.backgroundPosition = `${pos.x}% ${pos.y}%`;
+  applyBgPos(bg, pos, scale);
   return bg;
 }
-function applyBgPos(el, pos){
+// 위치는 background-position(%), 줌은 transform: scale 로 처리.
+// transform 은 bg div 자체를 확대 — 부모(.frame)의 overflow:hidden 으로 자연스럽게 크롭됨.
+function applyBgPos(el, pos, scale){
   if (pos) el.style.backgroundPosition = `${pos.x}% ${pos.y}%`;
+  if (scale != null) el.style.transform = `scale(${scale / 100})`;
 }
 
 /* ===== 배경 이미지 드래그 (단일 글로벌 리스너로 누수 방지) ===== */
@@ -1810,8 +1829,9 @@ window.addEventListener('mouseup', () => {
 function bindBgDrag(previewFrame, bgEls, stateObj){
   if (!stateObj.image || !bgEls.length) return;
   if (!stateObj.imagePos) stateObj.imagePos = { x: 50, y: 50 };
+  if (stateObj.imageScale == null) stateObj.imageScale = 100;
   previewFrame.style.cursor = 'grab';
-  previewFrame.title = '드래그해서 위치 조정';
+  previewFrame.title = '드래그로 위치 · 휠 스크롤로 크기 조정';
   previewFrame.addEventListener('mousedown', (e) => {
     if (e.button !== 0) return;
     _bgDrag = {
@@ -1822,6 +1842,14 @@ function bindBgDrag(previewFrame, bgEls, stateObj){
     previewFrame.style.cursor = 'grabbing';
     e.preventDefault();
   });
+  previewFrame.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const cur = stateObj.imageScale ?? 100;
+    // 휠 ↑ (deltaY < 0) → 확대, ↓ → 축소
+    const next = Math.max(50, Math.min(400, cur + e.deltaY * -0.15));
+    stateObj.imageScale = Math.round(next);
+    bgEls.forEach(el => { el.style.transform = `scale(${stateObj.imageScale / 100})`; });
+  }, { passive: false });
 }
 
 /* ===== 메뉴 누끼 드래그/리사이즈 (slide-a) ===== */
@@ -1932,11 +1960,15 @@ function buildCover(){
 }
 function buildSlide(s){
   const p = state.pattern;
-  if (p === 'B') return buildSlideB(s);
-  if (p === 'E') return buildSlideE(s);
-  if (p === 'L') return buildSlideL(s);
-  if (p === 'G') return buildSlideG(s);
-  return buildSlideA(s);
+  let frame;
+  if (p === 'B') frame = buildSlideB(s);
+  else if (p === 'E') frame = buildSlideE(s);
+  else if (p === 'L') frame = buildSlideL(s);
+  else if (p === 'G') frame = buildSlideG(s);
+  else frame = buildSlideA(s);
+  // 전역 브랜드명 크기 스케일 — 슬라이드 패턴마다 brand-name font-size 에 곱해짐
+  frame.style.setProperty('--brand-scale', (state.slideBrandFontSize ?? 100) / 100);
+  return frame;
 }
 
 /* === 패턴 A === */
@@ -1949,7 +1981,7 @@ function mainFontStack(s){ const k = s.mainFont || s.slideFont || s.bubbleFont; 
 function subFontStack(s){ const k = s.subFont || s.slideFont; return (k && FONTS[k]) ? FONTS[k] : null; }
 function buildCoverA(){
   const frame = makeFrame('cover-a');
-  frame.appendChild(state.cover.image ? bgImage(state.cover.image, state.cover.imagePos) : bgEmpty());
+  frame.appendChild(state.cover.image ? bgImage(state.cover.image, state.cover.imagePos, state.cover.imageScale) : bgEmpty());
   const scrim = document.createElement('div'); scrim.className = 'scrim'; frame.appendChild(scrim);
   const copy = document.createElement('div'); copy.className = 'copy';
   const ff = coverMainFontStack();
@@ -1971,7 +2003,7 @@ function buildSlideA(s){
   const frame = makeFrame('slide-a');
   frame.style.setProperty('--point-c', s.pointColor || '#FF6B14');
   frame.style.setProperty('--hl-y-c', s.highlightColor || '#F5FF00');
-  frame.appendChild(s.image ? bgImage(s.image, s.imagePos) : bgEmpty());
+  frame.appendChild(s.image ? bgImage(s.image, s.imagePos, s.imageScale) : bgEmpty());
   const grad = document.createElement('div');
   grad.style.cssText = 'position:absolute;inset:0;background:linear-gradient(0deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.1) 40%, transparent 100%);z-index:1;';
   frame.appendChild(grad);
@@ -2006,7 +2038,7 @@ function buildCoverB(){
   frame.style.setProperty('--b-top-grad-h', (state.cover.b_topGradientHeight ?? 480) + 'px');
   frame.style.setProperty('--b-pt-c1', state.cover.b_pointColor1 || '#FFA500');
   frame.style.setProperty('--b-pt-c2', state.cover.b_pointColor2 || '#E11D2A');
-  if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos); frame.appendChild(bg); }
+  if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos, state.cover.imageScale); frame.appendChild(bg); }
   else { frame.appendChild(bgEmpty('인물/배경 이미지')); }
   // 상단 흰 그라데이션 (메인 카피 가독성)
   const grad = document.createElement('div'); grad.className = 'top-gradient';
@@ -2043,7 +2075,7 @@ function buildSlideB(s){
   frame.style.setProperty('--accent-c', s.accentColor || '#00A847');
   // 배경 사진 풀블리드
   const photo = document.createElement('div'); photo.className = 'photo';
-  if (s.image) { photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos); } else photo.style.background = '#F0EDE5';
+  if (s.image) { photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos, s.imageScale); } else photo.style.background = '#F0EDE5';
   frame.appendChild(photo);
   // 상단 흰 그라디언트 오버레이
   const veil = document.createElement('div'); veil.className = 'top-veil';
@@ -2082,7 +2114,7 @@ function buildCoverE(){
   frame.style.setProperty('--e-grad-h', (state.cover.e_gradientHeight ?? 800) + 'px');
   // 풀블리드 배경
   const photo = document.createElement('div'); photo.className = 'photo-area';
-  if (state.cover.image) { photo.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(photo, state.cover.imagePos); } else photo.style.background = '#FAF8F4';
+  if (state.cover.image) { photo.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(photo, state.cover.imagePos, state.cover.imageScale); } else photo.style.background = '#FAF8F4';
   frame.appendChild(photo);
   // 상단 흰 그라데이션
   const grad = document.createElement('div'); grad.className = 'top-gradient';
@@ -2157,7 +2189,7 @@ function buildSlideE(s){
   }
   if (s.image) {
     const photo = document.createElement('div'); photo.className = 'photo';
-    photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos);
+    photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos, s.imageScale);
     frame.appendChild(photo);
     const grad = document.createElement('div'); grad.className = 'photo-grad';
     frame.appendChild(grad);
@@ -2172,7 +2204,7 @@ function applyCoverLColors(frame){
 function buildCoverL(){
   const frame = makeFrame('cover-l');
   applyCoverLColors(frame);
-  if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'photo'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos); frame.appendChild(bg); }
+  if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'photo'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos, state.cover.imageScale); frame.appendChild(bg); }
   else { frame.appendChild(bgEmpty('인물 이미지')); }
   const dim = document.createElement('div');
   dim.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,.25);z-index:1';
@@ -2198,7 +2230,7 @@ function buildSlideL(s){
   frame.style.setProperty('--bubble-c', s.bubbleColor || '#E11D2A');
   frame.style.setProperty('--logo-box-c', s.logoBoxColor || '#1A1A1A');
   const photo = document.createElement('div'); photo.className = 'photo-wrap';
-  if (s.image) { photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos); }
+  if (s.image) { photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos, s.imageScale); }
   frame.appendChild(photo);
   // 좌상단 브랜드 로고 박스
   const logoBox = document.createElement('div'); logoBox.className = 'logo-box';
@@ -2238,7 +2270,7 @@ function buildSlideL(s){
 /* === 패턴 G (어두운 표지 + 흰 카드 + bullets) === */
 function buildCoverG(){
   const frame = makeFrame('cover-g');
-  if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos); frame.appendChild(bg); }
+  if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos, state.cover.imageScale); frame.appendChild(bg); }
   else { frame.appendChild(bgEmpty()); }
   const copy = document.createElement('div'); copy.className = 'copy';
   if (state.cover.sub) {
@@ -2262,7 +2294,7 @@ function buildSlideG(s){
   if (s.accentFont && FONTS[s.accentFont]) {
     frame.style.setProperty('--accent-font', FONTS[s.accentFont]);
   }
-  if (s.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${s.image})`; applyBgPos(bg, s.imagePos); frame.appendChild(bg); }
+  if (s.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${s.image})`; applyBgPos(bg, s.imagePos, s.imageScale); frame.appendChild(bg); }
   const mf = mainFontStack(s);
   const sf = subFontStack(s);
   // 부제목 알약 (서브 카피)
