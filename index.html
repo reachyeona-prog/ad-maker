@@ -44,12 +44,13 @@ img{display:block;max-width:100%}
 
 /* ===== §3 헤더 ===== */
 .studio-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(244,241,234,.85); backdrop-filter:blur(12px);
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(244,241,234,.95); backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line);
   padding:18px 28px;
   display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
 }
+body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보정 */
 .brand{display:flex;align-items:baseline;gap:10px}
 .brand h1{font-size:20px;font-weight:900;letter-spacing:-.01em}
 .brand-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
@@ -335,43 +336,140 @@ img{display:block;max-width:100%}
 .slide-e .photo{position:absolute;left:0;right:0;top:320px;bottom:0;background-size:cover;background-position:center;background-repeat:no-repeat;border-radius:0;z-index:1}
 .slide-e .photo-grad{position:absolute;left:0;right:0;top:320px;height:var(--grad-h, 240px);background:linear-gradient(to bottom, var(--point-c, #4A8A3A) 0%, rgba(0,0,0,0) 100%);z-index:2;pointer-events:none}
 
-/* === 패턴 L 슬라이드 (사진 + 좌하 동그란 + 우상 뾰족 말풍선) === */
+/* === 패턴 L 슬라이드 (사진 풀블리드 + 좌하 타원 + 우상 스타버스트) === */
 .slide-l{background:#fff;color:#1A1A1A}
-.slide-l .photo-wrap{position:absolute;left:48px;right:48px;top:48px;bottom:48px;background-size:cover;background-position:center;border-radius:24px;z-index:1;background-color:#EEE}
+.slide-l .photo-wrap{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#EEE;z-index:1}
+.slide-l .logo-box{
+  position:absolute;left:0;top:0;
+  width:555px;height:195px;
+  background:var(--logo-box-c, #1A1A1A);
+  border-radius:0 0 30px 0;
+  z-index:4;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 35px;box-sizing:border-box;
+  overflow:hidden;
+}
+.slide-l .logo-box .brand-logo{max-width:100%;max-height:100%;object-fit:contain}
+.slide-l .bubble-round, .slide-l .bubble-spike{
+  position:absolute;
+  font-weight:800;line-height:1.2;letter-spacing:-.02em;
+  text-align:center;word-break:keep-all;
+  white-space:pre-line;
+  width:max-content;max-width:1000px;
+  box-sizing:border-box;
+  z-index:3;cursor:grab;
+  -webkit-user-select:none;user-select:none;
+}
 .slide-l .bubble-round{
-  position:absolute;left:80px;bottom:80px;
-  background:#fff;color:#1A1A1A;
-  font-size:26px;font-weight:800;line-height:1.3;
-  padding:22px 28px;border-radius:99px;
-  box-shadow:0 8px 24px rgba(0,0,0,.25);
-  max-width:55%;word-break:keep-all;z-index:3;
+  color:#1A1A1A;background:#fff;
+  border:8px solid var(--bubble-c, #E11D2A);
+  border-radius:50%;
+  padding:0.75em 1.8em;
+  /* 타원 영역만 클릭 받도록 (모서리는 통과 → 배경 이미지 드래그 가능) */
+  clip-path:ellipse(50% 50% at 50% 50%);
 }
-.slide-l .bubble-round .hl-y{background:linear-gradient(transparent 60%, var(--hook-yellow) 60%);font-weight:900}
-.slide-l .bubble-round .hl-g{color:#00A847;font-weight:900}
-.slide-l .bubble-round .hl-r{color:var(--hook-red);font-weight:900}
 .slide-l .bubble-spike{
-  position:absolute;right:80px;top:80px;
-  background:#1A1A1A;color:#fff;
-  font-size:30px;font-weight:900;line-height:1.2;
-  padding:20px 26px;border-radius:14px;
-  max-width:48%;text-align:center;word-break:keep-all;z-index:3;
+  color:#1A1A1A;
+  /* 스파이크 많아지고 valley 얕아져서 텍스트 더 가까이 붙일 수 있음 */
+  padding:calc(0.8em + 20px) calc(1.5em + 20px);
+  isolation:isolate;
+  /* 박스 자체는 클릭 패스스루, 폴리곤/텍스트에서만 받음 */
+  pointer-events:none;
 }
-.slide-l .bubble-spike::after{
-  content:'';position:absolute;left:32px;bottom:-14px;
-  width:0;height:0;
-  border-left:14px solid transparent;border-right:14px solid transparent;
-  border-top:18px solid #1A1A1A;
+.slide-l .bubble-spike .bubble-burst{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:-1;overflow:visible;
+  pointer-events:none;
 }
-.slide-l .bubble-spike .hl-y{color:var(--hook-yellow)}
-.slide-l .bubble-spike .hl-g{color:var(--hook-green)}
-.slide-l .bubble-spike .hl-r{color:#FF7070}
+.slide-l .bubble-spike .bubble-burst polygon{
+  fill:#fff;
+  stroke:var(--bubble-c, #E11D2A);
+  stroke-width:8;
+  stroke-linejoin:miter;
+  vector-effect:non-scaling-stroke;
+  pointer-events:visiblePainted;
+  cursor:grab;
+}
+.slide-l .bubble-spike .bubble-text{position:relative;z-index:1;display:block;pointer-events:auto}
+.slide-l .bubble-round .hl-r, .slide-l .bubble-spike .hl-r{
+  background:var(--bubble-c, #E11D2A);color:#fff;
+  padding:0.05em 0.22em;border-radius:6px;font-weight:900;
+}
+.slide-l .bubble-round .hl-y, .slide-l .bubble-spike .hl-y,
+.slide-l .bubble-round .hl-g, .slide-l .bubble-spike .hl-g{
+  color:var(--bubble-c, #E11D2A);font-weight:900;
+}
 
 .cover-l{background:#fff}
 .cover-l .photo{position:absolute;inset:0;background-size:cover;background-position:center}
-.cover-l .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 60px;gap:18px;z-index:2}
-.cover-l .pre{display:inline-block;background:#fff;color:#1A1A1A;font-size:28px;font-weight:800;padding:8px 22px;border-radius:99px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-.cover-l .main{font-size:96px;font-weight:900;line-height:1.1;letter-spacing:-.03em;color:#fff;text-shadow:0 4px 16px rgba(0,0,0,.5);word-break:keep-all;display:flex;flex-direction:column;gap:14px;align-items:center}
-.cover-l .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));color:#1A1A1A;padding:6px 22px;border-radius:14px;text-shadow:none;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+.cover-l .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 60px;gap:28px;z-index:2}
+/* 서브 카피 — 테두리 있는 아웃라인 텍스트 (박스 제거) */
+.cover-l .pre{
+  display:inline-block;
+  background:none;color:#fff;
+  font-size:52px;font-weight:900;letter-spacing:-.02em;
+  padding:0;border-radius:0;box-shadow:none;
+  -webkit-text-stroke:3px var(--l-sub-stroke-c, #1A1A1A);
+  paint-order:stroke fill;
+  text-shadow:
+    -3px -3px 0 var(--l-sub-stroke-c, #1A1A1A), 3px -3px 0 var(--l-sub-stroke-c, #1A1A1A),
+    -3px 3px 0 var(--l-sub-stroke-c, #1A1A1A), 3px 3px 0 var(--l-sub-stroke-c, #1A1A1A),
+    -3px 0 0 var(--l-sub-stroke-c, #1A1A1A), 3px 0 0 var(--l-sub-stroke-c, #1A1A1A),
+    0 -3px 0 var(--l-sub-stroke-c, #1A1A1A), 0 3px 0 var(--l-sub-stroke-c, #1A1A1A);
+}
+/* 메인 카피 — 큰 흰색 타입 */
+.cover-l .main{
+  font-size:108px;font-weight:900;line-height:1.1;letter-spacing:-.03em;
+  color:#fff;word-break:keep-all;
+  display:flex;flex-direction:column;gap:14px;align-items:center;
+}
+/* /text/ → 단일 테두리 */
+.cover-l .main .underline-mark{
+  display:inline-block;
+  color:#fff;
+  -webkit-text-stroke:5px var(--l-outline1-c, #1A1A1A);
+  paint-order:stroke fill;
+  text-shadow:
+    -4px -4px 0 var(--l-outline1-c, #1A1A1A), 4px -4px 0 var(--l-outline1-c, #1A1A1A),
+    -4px 4px 0 var(--l-outline1-c, #1A1A1A), 4px 4px 0 var(--l-outline1-c, #1A1A1A),
+    -4px 0 0 var(--l-outline1-c, #1A1A1A), 4px 0 0 var(--l-outline1-c, #1A1A1A),
+    0 -4px 0 var(--l-outline1-c, #1A1A1A), 0 4px 0 var(--l-outline1-c, #1A1A1A);
+}
+.cover-l .main .underline-mark .underline-overlay{display:none}
+/* //text// → 이중 테두리 (컬러 inner + 흰 갭 + 컬러 outer) */
+.cover-l .main .circle-mark{
+  display:inline-block;
+  color:#fff;
+  -webkit-text-stroke:0;
+  text-shadow:
+    -2px -2px 0 var(--l-outline2-c, #E11D2A), 2px -2px 0 var(--l-outline2-c, #E11D2A),
+    -2px 2px 0 var(--l-outline2-c, #E11D2A), 2px 2px 0 var(--l-outline2-c, #E11D2A),
+    -2px 0 0 var(--l-outline2-c, #E11D2A), 2px 0 0 var(--l-outline2-c, #E11D2A),
+    0 -2px 0 var(--l-outline2-c, #E11D2A), 0 2px 0 var(--l-outline2-c, #E11D2A),
+    -5px -5px 0 #fff, 5px -5px 0 #fff, -5px 5px 0 #fff, 5px 5px 0 #fff,
+    -5px 0 0 #fff, 5px 0 0 #fff, 0 -5px 0 #fff, 0 5px 0 #fff,
+    -8px -8px 0 var(--l-outline2-c, #E11D2A), 8px -8px 0 var(--l-outline2-c, #E11D2A),
+    -8px 8px 0 var(--l-outline2-c, #E11D2A), 8px 8px 0 var(--l-outline2-c, #E11D2A),
+    -8px 0 0 var(--l-outline2-c, #E11D2A), 8px 0 0 var(--l-outline2-c, #E11D2A),
+    0 -8px 0 var(--l-outline2-c, #E11D2A), 0 8px 0 var(--l-outline2-c, #E11D2A);
+}
+.cover-l .main .circle-mark .circle-overlay{display:none}
+/* **text** → 포인트 (컬러 텍스트) */
+.cover-l .main .hl{
+  display:inline;
+  background:none;padding:0;border-radius:0;box-shadow:none;
+  color:var(--l-point-c, #E11D2A);
+  text-shadow:none;-webkit-text-stroke:0;
+}
+.cover-l .main .hl .hl-text{display:inline;color:inherit;background:none;padding:0}
+/* ~~text~~ → 형광펜 */
+.cover-l .main .hl-r{
+  display:inline-block;
+  background:var(--l-highlight-c, #F5FF00);
+  color:#1A1A1A;
+  padding:0 0.2em;border-radius:8px;
+  text-shadow:none;-webkit-text-stroke:0;
+}
 
 /* === 패턴 G 표지 (어두운 사진 + 큰 스텐실) === */
 .cover-g{background:#fff}
@@ -381,30 +479,63 @@ img{display:block;max-width:100%}
 .cover-g .main{font-size:108px;font-weight:900;line-height:1.05;letter-spacing:-.04em;color:#fff;text-shadow:0 6px 18px rgba(0,0,0,.6);word-break:keep-all;display:flex;flex-direction:column;gap:8px;align-items:center}
 .cover-g .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));color:#1A1A1A;padding:6px 24px;border-radius:14px;text-shadow:none;box-shadow:0 6px 0 rgba(0,0,0,.3)}
 
-/* === 패턴 G 슬라이드 (흰 카드 + 라벨 + bullets) === */
+/* === 패턴 G 슬라이드 (부제목 알약 + 큰 제목 + 흰 카드 + bullets) === */
 .slide-g{background:#F0EDE5}
 .slide-g .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(8px) brightness(.85);transform:scale(1.1)}
+/* 부제목 — 상단 부착 알약 (655x95, 하단 라운드 40) */
+.slide-g .subtitle-pill{
+  position:absolute;top:0;left:50%;
+  transform:translateX(-50%);
+  width:655px;height:95px;
+  background:var(--g-subtitle-c, #1A1A1A);color:#fff;
+  font-size:42px;font-weight:800;letter-spacing:-.02em;
+  border-radius:0 0 40px 40px;
+  display:flex;align-items:center;justify-content:center;
+  z-index:5;
+}
+/* 제목 + 카드를 묶는 세로 flex 컨테이너 — 부제목 아래부터 이미지 하단까지 차지 */
+.slide-g .content-stack{
+  position:absolute;
+  left:0;right:0;top:125px;bottom:0;  /* 부제목(95) + 30px 갭 아래에서 시작, 하단까지 */
+  display:flex;flex-direction:column;
+  padding:0 60px;gap:40px;z-index:2;
+}
+/* 제목 — 카드 위 큰 흰 스트로크 카피 */
+.slide-g .g-title{
+  text-align:center;
+  font-size:95px;font-weight:900;line-height:1.1;letter-spacing:-.03em;
+  color:#1A1A1A;
+  -webkit-text-stroke:5px #fff;paint-order:stroke fill;
+  text-shadow:
+    -5px -5px 0 #fff, 5px -5px 0 #fff, -5px 5px 0 #fff, 5px 5px 0 #fff,
+    -5px 0 0 #fff, 5px 0 0 #fff, 0 -5px 0 #fff, 0 5px 0 #fff;
+  word-break:keep-all;
+  flex-shrink:0;  /* 제목 높이는 내용만큼 유지 */
+}
+.slide-g .g-title .hl-y{color:var(--g-title-pt-c, var(--hook-yellow))}
+.slide-g .g-title .hl-r{color:var(--hook-red)}
+.slide-g .g-title .hl-g{color:#00A847}
+.slide-g .g-title .hl-f,
+.slide-g .bullets .hl-f{font-family:var(--accent-font, inherit)}
+/* 카드 — 제목 다음부터 이미지 하단까지 채움 */
 .slide-g .card{
-  position:absolute;left:60px;right:60px;top:120px;bottom:60px;
-  background:#fff;border-radius:20px;padding:48px 44px;
-  box-shadow:0 12px 32px rgba(0,0,0,.18);
-  display:flex;flex-direction:column;gap:18px;z-index:2;
+  flex:1;  /* 남은 세로 공간 모두 차지 */
+  background:#fff;
+  border-radius:20px 20px 0 0;  /* 하단 부착이므로 위 모서리만 라운드 */
+  padding:48px 44px;
+  box-shadow:0 -12px 32px rgba(0,0,0,.12);
+  display:flex;flex-direction:column;gap:24px;
+  overflow:hidden;
 }
-.slide-g .label-band{
-  position:absolute;left:60px;right:60px;top:60px;
-  background:#00A847;color:#fff;
-  font-size:24px;font-weight:800;padding:14px 28px;
-  border-radius:14px 14px 0 0;text-align:center;z-index:1;
+.slide-g .logo-wrap{
+  display:flex;justify-content:center;align-items:center;
+  padding-bottom:24px;border-bottom:2px solid #EEE;
 }
-.slide-g .campaign-title{font-size:48px;font-weight:900;letter-spacing:-.03em;color:#1A1A1A;line-height:1.1}
-.slide-g .campaign-title .hl{display:inline-block;background:var(--hook-yellow);padding:0 12px;border-radius:6px}
-.slide-g .brand-row{display:flex;align-items:center;gap:14px;padding-top:8px;border-bottom:2px solid #EEE;padding-bottom:18px}
-.slide-g .brand-logo{height:56px;max-width:180px;object-fit:contain}
-.slide-g .brand-name{font-size:42px;font-weight:900;color:#1A1A1A;letter-spacing:-.03em}
-.slide-g .bullets{display:flex;flex-direction:column;gap:10px;font-size:24px;line-height:1.4;color:#1A1A1A;word-break:keep-all}
-.slide-g .bullets .row{display:flex;gap:10px;align-items:flex-start}
-.slide-g .bullets .row::before{content:'✓';color:#00A847;font-weight:900;flex-shrink:0}
-.slide-g .bullets .hl-y{background:linear-gradient(transparent 60%, var(--hook-yellow) 60%);font-weight:800}
+.slide-g .brand-logo{height:110px;max-width:80%;object-fit:contain}
+.slide-g .bullets{display:flex;flex-direction:column;gap:14px;font-size:40px;line-height:1.4;color:#1A1A1A;word-break:keep-all}
+.slide-g .bullets .row{display:flex;gap:14px;align-items:flex-start}
+.slide-g .bullets .row::before{content:'·';color:#1A1A1A;font-weight:900;flex-shrink:0;font-size:1.6em;line-height:.9;margin-top:-.1em}
+.slide-g .bullets .hl-y{color:var(--g-bullets-pt-c, #1A1A1A);font-weight:900;background:none}
 .slide-g .bullets .hl-g{color:#00A847;font-weight:800}
 .slide-g .bullets .hl-r{color:var(--hook-red);font-weight:800}
 
@@ -440,6 +571,7 @@ img{display:block;max-width:100%}
 @media (max-width:1100px){
   .main-layout{grid-template-columns:1fr}
   .preview-col{position:static}
+  body{padding-top:160px}  /* 헤더가 줄바꿈되면 더 두꺼워짐 */
 }
 
 /* prefers-reduced-motion */
@@ -501,9 +633,19 @@ img{display:block;max-width:100%}
       <div class="field">
         <div class="field-row"><span class="field-label">메인 카피 (라인별 줄바꿈)</span><span class="field-spec" id="cover-main-count">0/60</span></div>
         <textarea id="cover-main" rows="3" placeholder="요즘 /뜨는/&#10;**창업 브랜드**&#10;///추천///" oninput="onInputChange()"></textarea>
-        <span class="hint"><code>**박스**</code> <code>$컬러$</code> <code>/밑줄/</code> <code>//동그라미//</code> <code>///별///</code></span>
+        <span class="hint" id="cover-main-hint"><code>**박스**</code> <code>$컬러$</code> <code>/밑줄/</code> <code>//동그라미//</code> <code>///별///</code></span>
       </div>
-      <div class="field">
+      <div class="field" data-show-pattern="L">
+        <div class="field-row"><span class="field-label">메인 카피 폰트</span></div>
+        <select id="cover-l-main-font" title="메인 카피 폰트" onchange="onCoverLFontChange('l_mainFont', this.value)" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
+          <option value="">기본 (메인 폰트와 동일)</option>
+          <option value="paperlogy">페이퍼로지</option>
+          <option value="hakgyo">학교안심 둥근미소</option>
+          <option value="aggro">어그로체</option>
+          <option value="a2g">에이투지체</option>
+        </select>
+      </div>
+      <div class="field" data-show-pattern="A,B,E,G">
         <div class="field-row"><span class="field-label">포인트 컬러</span></div>
         <div class="color-input-row">
           <input type="text" id="cover-point-hex" class="hex-input" value="#F5FF00" placeholder="#F5FF00" maxlength="7">
@@ -511,20 +653,60 @@ img{display:block;max-width:100%}
         </div>
         <span class="hint">메인 카피의 모든 마커(박스·컬러·밑줄·동그라미·별)에 동일하게 적용</span>
       </div>
+      <div class="field" data-show-pattern="L">
+        <div class="field-row"><span class="field-label">테두리 <code>/text/</code> 컬러</span></div>
+        <div class="color-input-row">
+          <input type="text" data-cover-l-color="l_outlineColor" class="hex-input" value="#1A1A1A" placeholder="#1A1A1A" maxlength="7">
+          <input type="color" data-cover-l-color="l_outlineColor" class="color-swatch" value="#1A1A1A" title="컬러 피커">
+        </div>
+      </div>
+      <div class="field" data-show-pattern="L">
+        <div class="field-row"><span class="field-label">이중 테두리 <code>//text//</code> 컬러</span></div>
+        <div class="color-input-row">
+          <input type="text" data-cover-l-color="l_doubleOutlineColor" class="hex-input" value="#E11D2A" placeholder="#E11D2A" maxlength="7">
+          <input type="color" data-cover-l-color="l_doubleOutlineColor" class="color-swatch" value="#E11D2A" title="컬러 피커">
+        </div>
+      </div>
+      <div class="field" data-show-pattern="L">
+        <div class="field-row"><span class="field-label">포인트 <code>**text**</code> 컬러</span></div>
+        <div class="color-input-row">
+          <input type="text" data-cover-l-color="l_pointColor" class="hex-input" value="#E11D2A" placeholder="#E11D2A" maxlength="7">
+          <input type="color" data-cover-l-color="l_pointColor" class="color-swatch" value="#E11D2A" title="컬러 피커">
+        </div>
+      </div>
+      <div class="field" data-show-pattern="L">
+        <div class="field-row"><span class="field-label">형광펜 <code>~~text~~</code> 컬러</span></div>
+        <div class="color-input-row">
+          <input type="text" data-cover-l-color="l_highlightColor" class="hex-input" value="#F5FF00" placeholder="#F5FF00" maxlength="7">
+          <input type="color" data-cover-l-color="l_highlightColor" class="color-swatch" value="#F5FF00" title="컬러 피커">
+        </div>
+      </div>
       <div class="field">
         <div class="field-row"><span class="field-label" id="cover-sub-lbl">서브 카피 (상단 박스)</span><span class="field-spec" id="cover-sub-count">0/40</span></div>
         <input type="text" id="cover-sub" placeholder="유명해지기 전에 선점하자!" oninput="onInputChange()">
-        <span class="hint" id="cover-sub-hint">A: 상단 검정 박스 · B: 하단 검정 알약 · G/L: 상단 알약 · G 슬라이드: 상단 컬러 띠</span>
+        <span class="hint" id="cover-sub-hint">A: 상단 검정 박스 · B: 하단 검정 알약 · G: 상단 알약 · L: 흰 글자 + 컬러 테두리</span>
+      </div>
+      <div class="field" data-show-pattern="L">
+        <div class="field-row"><span class="field-label">서브 카피 폰트</span></div>
+        <select id="cover-l-sub-font" title="서브 카피 폰트" onchange="onCoverLFontChange('l_subFont', this.value)" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
+          <option value="">기본 (메인 폰트와 동일)</option>
+          <option value="paperlogy">페이퍼로지</option>
+          <option value="hakgyo">학교안심 둥근미소</option>
+          <option value="aggro">어그로체</option>
+          <option value="a2g">에이투지체</option>
+        </select>
+      </div>
+      <div class="field" data-show-pattern="L">
+        <div class="field-row"><span class="field-label">서브 카피 테두리 컬러</span></div>
+        <div class="color-input-row">
+          <input type="text" data-cover-l-color="l_subStrokeColor" class="hex-input" value="#1A1A1A" placeholder="#1A1A1A" maxlength="7">
+          <input type="color" data-cover-l-color="l_subStrokeColor" class="color-swatch" value="#1A1A1A" title="컬러 피커">
+        </div>
       </div>
       <div class="field" data-show-pattern="E">
         <div class="field-row"><span class="field-label" id="cover-stamp-lbl">강조 라벨 (도장)</span><span class="field-spec">최대 8자</span></div>
         <input type="text" id="cover-stamp" maxlength="8" placeholder="추천" oninput="onInputChange()">
         <span class="hint">E: 메인 카피 아래 검정 알약</span>
-      </div>
-      <div class="field" data-show-pattern="G">
-        <div class="field-row"><span class="field-label">캠페인 타이틀 (G 슬라이드 상단)</span></div>
-        <input type="text" id="cover-campaign" placeholder="3월 프차 **꿀창업 정보**" oninput="onInputChange()">
-        <span class="hint">G 패턴 전용 — 모든 슬라이드 상단에 동일하게 표시</span>
       </div>
       <div class="field">
         <span class="field-label">배경 이미지</span>
@@ -594,6 +776,13 @@ const state = {
   cover: {
     main: '', sub: '', stamp: '', image: null, imagePos: { x: 50, y: 50 }, campaignTitle: '',
     pointColor: '#F5FF00',
+    // L 패턴 전용
+    l_mainFont: '', l_subFont: '',
+    l_outlineColor:       '#1A1A1A',  // /text/ 단일 테두리
+    l_doubleOutlineColor: '#E11D2A',  // //text// 이중 테두리
+    l_pointColor:         '#E11D2A',  // **text** 포인트
+    l_highlightColor:     '#F5FF00',  // ~~text~~ 형광펜
+    l_subStrokeColor:     '#1A1A1A',  // 서브 카피 스트로크
   },
   slides: [],
 };
@@ -615,7 +804,18 @@ const newSlide = () => ({
   metrics: '',              // E (multiline)
   bubble1: '',              // L 좌하 동그란 말풍선
   bubble2: '',              // L 우상 뾰족 말풍선
+  bubble1X: 100, bubble1Y: 760, bubble1FS: 56,  // L: 동그란 말풍선 위치/폰트크기 (너비는 텍스트에 맞춰 auto)
+  bubble2X: 480, bubble2Y: 180, bubble2FS: 52,  // L: 뾰족 말풍선 위치/폰트크기
+  bubbleColor: '#E11D2A',   // L: 말풍선 테두리·형광펜·포인트 공통 컬러
+  logoBoxColor: '#1A1A1A',  // L: 좌상단 브랜드 로고 박스 컬러
+  bubbleFont: '',           // L: 말풍선 텍스트 폰트 (빈 값 = 글로벌 메인 폰트 사용)
   bullets: '',              // G (multiline)
+  gTitle: '',               // G: 카드 위 제목 (멀티라인, **포인트** 지원)
+  gSubtitle: '',            // G: 상단 부제목 알약
+  gSubtitleColor:    '#1A1A1A',  // G: 부제목 알약 배경
+  gTitlePointColor:  '#F5FF00',  // G: 제목 **포인트** 컬러
+  gBulletsPointColor:'#F5FF00',  // G: bullets **포인트** 형광펜 컬러
+  accentFont: '',                // f...f 마크업에 적용되는 폰트
 });
 
 /* ===== 초기화 ===== */
@@ -639,17 +839,35 @@ window.addEventListener('load', () => {
     state.cover.stamp = e.target.value;
     renderAll();
   });
-  document.getElementById('cover-campaign').addEventListener('input', e => {
-    state.cover.campaignTitle = e.target.value;
-    renderAll();
-  });
   // 커버 포인트 컬러
   bindCoverPointColor();
+  // L 커버 컬러 픽커들
+  bindCoverLColors();
   // 슬라이드 1장 기본 추가
   addSlide();
   applyPatternVisibility();
   renderAll();
 });
+
+function onCoverLFontChange(key, val){
+  state.cover[key] = val;
+  renderAll();
+}
+function bindCoverLColors(){
+  document.querySelectorAll('[data-cover-l-color]').forEach(el => {
+    el.addEventListener('input', e => {
+      const key = el.dataset.coverLColor;
+      let val = (e.target.value || '').trim();
+      if (val && !val.startsWith('#')) val = '#' + val;
+      if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;
+      state.cover[key] = val;
+      document.querySelectorAll(`[data-cover-l-color="${key}"]`).forEach(o => {
+        if (o !== el) o.value = val;
+      });
+      renderAll();
+    });
+  });
+}
 
 /* ===== 커버 포인트 컬러 (모든 마커에 동일하게 적용) ===== */
 function bindCoverPointColor(){
@@ -679,6 +897,19 @@ function applyPatternVisibility(){
     const ok = el.dataset.showPattern.split(',').map(s=>s.trim()).includes(p);
     el.style.display = ok ? '' : 'none';
   });
+  // L 패턴이면 메인 카피 힌트·플레이스홀더를 L 전용 마크업으로 안내
+  const mainHint = document.getElementById('cover-main-hint');
+  if (mainHint) {
+    mainHint.innerHTML = (p === 'L')
+      ? '<code>/테두리/</code> <code>//이중 테두리//</code> <code>**포인트**</code> <code>~~형광펜~~</code>'
+      : '<code>**박스**</code> <code>$컬러$</code> <code>/밑줄/</code> <code>//동그라미//</code> <code>///별///</code>';
+  }
+  const mainArea = document.getElementById('cover-main');
+  if (mainArea) {
+    mainArea.placeholder = (p === 'L')
+      ? '요즘 /뜨는/\n//창업 브랜드//\n**지금 시작** ~~추천~~'
+      : '요즘 /뜨는/\n**창업 브랜드**\n///추천///';
+  }
 }
 
 function onRatioChange(){
@@ -837,21 +1068,105 @@ function renderSlideInputs(){
           <input type="range" min="0" max="1500" step="1" data-k="gradientHeight" data-id="${s.id}" value="${gh}" style="width:100%">
         </div>`;
     } else if (p === 'L') {
+      const bubC = s.bubbleColor || '#E11D2A';
+      const boxC = s.logoBoxColor || '#1A1A1A';
+      const bubblePresets = ['#E11D2A','#1A1A1A','#FFA500','#00A847','#1A6BC8','#7B3FBF'];
+      const bubblePresetHtml = bubblePresets.map(c =>
+        `<button type="button" class="color-preset" data-color="${c}" data-k="bubbleColor" data-id="${s.id}" title="${c}" style="background:${c}"></button>`
+      ).join('');
+      const logoBoxPresets = ['#1A1A1A','#E11D2A','#F5FF00','#00A847','#fff','#FFA500'];
+      const logoBoxPresetHtml = logoBoxPresets.map(c =>
+        `<button type="button" class="color-preset" data-color="${c}" data-k="logoBoxColor" data-id="${s.id}" title="${c}" style="background:${c};${c==='#fff'?'border:1px solid #ccc':''}"></button>`
+      ).join('');
+      const bf = s.bubbleFont || '';
+      const fontOpts = [
+        ['', '기본 (메인 폰트와 동일)'],
+        ['paperlogy', '페이퍼로지'],
+        ['hakgyo', '학교안심 둥근미소'],
+        ['aggro', '어그로체'],
+        ['a2g', '에이투지체'],
+      ].map(([v, label]) => `<option value="${v}"${v === bf ? ' selected' : ''}>${label}</option>`).join('');
       extraFields = `
         <div class="field">
           <span class="field-label">동그란 말풍선 (좌하단)</span>
-          <textarea data-k="bubble1" data-id="${s.id}" rows="2" placeholder="로열티 3.3%&#10;**완전 면제**">${escHtml(s.bubble1)}</textarea>
+          <textarea data-k="bubble1" data-id="${s.id}" rows="2" placeholder="로열티 3.3%&#10;**포인트** ~~형광펜~~">${escHtml(s.bubble1)}</textarea>
+          <span class="hint">미리보기에서 <code>드래그</code> 위치 · <code>휠 스크롤</code> 크기 · <code>**포인트**</code> <code>~~형광펜~~</code></span>
         </div>
         <div class="field">
           <span class="field-label">뾰족 말풍선 (우상단)</span>
           <textarea data-k="bubble2" data-id="${s.id}" rows="2" placeholder="창업 지원금&#10;**1,000만** 지원">${escHtml(s.bubble2)}</textarea>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">말풍선 텍스트 폰트</span></div>
+          <select data-k="bubbleFont" data-id="${s.id}" title="말풍선 텍스트 폰트" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">${fontOpts}</select>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">말풍선 컬러 (테두리/형광펜/포인트)</span></div>
+          <div class="color-input-row">
+            <input type="text" class="hex-input" data-k="bubbleColor" data-id="${s.id}" value="${escAttr(bubC)}" placeholder="#E11D2A" maxlength="7">
+            <input type="color" class="color-swatch" data-k="bubbleColor" data-id="${s.id}" value="${escAttr(bubC)}" title="컬러 피커">
+            ${bubblePresetHtml}
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">브랜드 로고 박스 컬러</span></div>
+          <div class="color-input-row">
+            <input type="text" class="hex-input" data-k="logoBoxColor" data-id="${s.id}" value="${escAttr(boxC)}" placeholder="#1A1A1A" maxlength="7">
+            <input type="color" class="color-swatch" data-k="logoBoxColor" data-id="${s.id}" value="${escAttr(boxC)}" title="컬러 피커">
+            ${logoBoxPresetHtml}
+          </div>
         </div>`;
     } else if (p === 'G') {
+      const gSubC = s.gSubtitleColor    || '#1A1A1A';
+      const gTtlC = s.gTitlePointColor  || '#F5FF00';
+      const gBulC = s.gBulletsPointColor|| '#F5FF00';
+      const af = s.accentFont || '';
+      const accentFontOpts = [
+        ['', '기본 (메인 폰트와 동일)'],
+        ['paperlogy', '페이퍼로지'],
+        ['hakgyo', '학교안심 둥근미소'],
+        ['aggro', '어그로체'],
+        ['a2g', '에이투지체'],
+      ].map(([v, label]) => `<option value="${v}"${v === af ? ' selected' : ''}>${label}</option>`).join('');
       extraFields = `
         <div class="field">
+          <span class="field-label">부제목 (상단 알약)</span>
+          <input type="text" data-k="gSubtitle" data-id="${s.id}" value="${escAttr(s.gSubtitle)}" placeholder="3월 추천 프랜차이즈">
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">부제목 박스 컬러</span></div>
+          <div class="color-input-row">
+            <input type="text" class="hex-input" data-k="gSubtitleColor" data-id="${s.id}" value="${escAttr(gSubC)}" placeholder="#1A1A1A" maxlength="7">
+            <input type="color" class="color-swatch" data-k="gSubtitleColor" data-id="${s.id}" value="${escAttr(gSubC)}" title="컬러 피커">
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label">제목 (카드 위 큰 카피)</span>
+          <textarea data-k="gTitle" data-id="${s.id}" rows="2" placeholder="사장님이 알려주는&#10;**진짜 정보**">${escHtml(s.gTitle)}</textarea>
+          <span class="hint"><code>**포인트**</code> 강조 — 라인별 줄바꿈</span>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">제목 포인트 컬러 (<code>**text**</code>)</span></div>
+          <div class="color-input-row">
+            <input type="text" class="hex-input" data-k="gTitlePointColor" data-id="${s.id}" value="${escAttr(gTtlC)}" placeholder="#F5FF00" maxlength="7">
+            <input type="color" class="color-swatch" data-k="gTitlePointColor" data-id="${s.id}" value="${escAttr(gTtlC)}" title="컬러 피커">
+          </div>
+        </div>
+        <div class="field">
           <span class="field-label">✓ Bullets (줄당 1개)</span>
-          <textarea data-k="bullets" data-id="${s.id}" rows="6" placeholder="가맹비 교육비 면제&#10;로열티 50만원&#10;**창업지원금 최대 5천만 원**&#10;업종 변경 시 간판 교체 비용 지원&#10;==통행세 없는 착한 프랜차이즈==">${escHtml(s.bullets)}</textarea>
-          <span class="hint">강조 마크업 사용 가능</span>
+          <textarea data-k="bullets" data-id="${s.id}" rows="6" placeholder="가맹비 교육비 면제&#10;로열티 50만원&#10;**창업지원금 최대 5천만 원**&#10;업종 변경 시 간판 교체 비용 지원&#10;==통행세 없는 착한 프랜차이즈==&#10;~~소자본 가능~~ — f주목f">${escHtml(s.bullets)}</textarea>
+          <span class="hint"><code>**포인트**</code> 형광펜 · <code>~~포인트~~</code> 빨강 · <code>==포인트==</code> 초록 · <code>fXf</code> 강조 폰트</span>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">Bullets 포인트 컬러 (<code>**text**</code>)</span></div>
+          <div class="color-input-row">
+            <input type="text" class="hex-input" data-k="gBulletsPointColor" data-id="${s.id}" value="${escAttr(gBulC)}" placeholder="#F5FF00" maxlength="7">
+            <input type="color" class="color-swatch" data-k="gBulletsPointColor" data-id="${s.id}" value="${escAttr(gBulC)}" title="컬러 피커">
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-row"><span class="field-label">강조 폰트 (<code>fXf</code>)</span></div>
+          <select data-k="accentFont" data-id="${s.id}" title="강조 폰트" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">${accentFontOpts}</select>
         </div>`;
     }
     const showDesc = (p === 'A' || p === 'B');
@@ -866,6 +1181,11 @@ function renderSlideInputs(){
     const sideUploadLabel = isA ? '대표 메뉴 누끼 (브랜드명 우측)' : '브랜드 로고 (선택)';
     const sideUploadHint = isA ? '메뉴 누끼 업로드' : '로고 업로드';
     const sideUploadVal = isA ? s.menuCut : s.logo;
+    const brandField = (p === 'G') ? '' : `
+      <div class="field">
+        <span class="field-label">브랜드명</span>
+        <input type="text" data-k="brand" data-id="${s.id}" value="${escAttr(s.brand)}" placeholder="브랜드명">
+      </div>`;
     card.innerHTML = `
       <div class="slide-card-head">
         <span class="slide-num">${String(i+1).padStart(2,'0')}</span>
@@ -875,10 +1195,7 @@ function renderSlideInputs(){
           <button class="danger" onclick="removeSlide(${s.id})" title="삭제">×</button>
         </div>
       </div>
-      <div class="field">
-        <span class="field-label">브랜드명</span>
-        <input type="text" data-k="brand" data-id="${s.id}" value="${escAttr(s.brand)}" placeholder="브랜드명">
-      </div>
+      ${brandField}
       ${descField}
       ${extraFields}
       <div class="field">
@@ -906,9 +1223,10 @@ function renderSlideInputs(){
     if (sideUploadVal) showDropThumb(card.querySelector(`[data-drop="${sideUploadKey}-${s.id}"]`), sideUploadVal, isA ? '메뉴' : '로고');
     if (s.image) showDropThumb(card.querySelector(`[data-drop="image-${s.id}"]`), s.image, '사진');
   });
-  // 텍스트/컬러 입력 바인딩
-  list.querySelectorAll('input[type=text],input[type=color],input[type=range],textarea').forEach(el => {
-    el.addEventListener('input', e => {
+  // 텍스트/컬러/셀렉트 입력 바인딩
+  list.querySelectorAll('input[type=text],input[type=color],input[type=range],textarea,select').forEach(el => {
+    const evt = (el.tagName === 'SELECT') ? 'change' : 'input';
+    el.addEventListener(evt, e => {
       const id = +el.dataset.id, k = el.dataset.k;
       const slide = state.slides.find(s => s.id === id);
       if (!slide) return;
@@ -1024,11 +1342,12 @@ function showDropThumb(drop, dataUrl, label){
 /* ===== 텍스트 강조 파싱 ===== */
 function parseEmphasis(text){
   if (!text) return '';
-  // 순서: red ~~ → green == → yellow **
+  // 순서: red ~~ → green == → yellow ** → 강조 폰트 f...f
   return escHtml(text)
     .replace(/~~([^~]+)~~/g, '<span class="hl-r">$1</span>')
     .replace(/==([^=]+)==/g, '<span class="hl-g">$1</span>')
     .replace(/\*\*([^*]+)\*\*/g, '<span class="hl-y">$1</span>')
+    .replace(/f([^f<>]+)f/g, '<span class="hl-f">$1</span>')
     .replace(/★/g, '<span class="star">★</span>')
     .replace(/\n/g, '<br>');
 }
@@ -1111,6 +1430,13 @@ function makePreviewSection({label, filename, frameEl, stateObj, onDownload}){
   const menuCutEl = frameEl.querySelector('.menu-cut');
   if (menuCutEl && stateObj) {
     bindMenuCutDrag(menuCutEl, stateObj, s);
+  }
+  // L 말풍선 드래그/리사이즈 (slide-l)
+  if (stateObj && stateObj.id) {
+    frameEl.querySelectorAll('.bubble-round, .bubble-spike').forEach(el => {
+      const idx = +el.dataset.bubbleIdx;
+      if (idx) bindBubbleDrag(el, stateObj, s, idx);
+    });
   }
   // 다운로드 버튼
   const dlRow = document.createElement('div');
@@ -1222,6 +1548,48 @@ function bindMenuCutDrag(menuCutEl, stateObj, scale){
     const newH = Math.max(50, Math.min(1500, cur + e.deltaY * -0.5));
     stateObj.menuCutHeight = Math.round(newH);
     menuCutEl.style.height = stateObj.menuCutHeight + 'px';
+  }, { passive: false });
+}
+
+/* ===== L 패턴 말풍선 드래그/리사이즈 ===== */
+let _bubbleDrag = null;
+window.addEventListener('mousemove', (e) => {
+  if (!_bubbleDrag) return;
+  const { el, stateObj, kx, ky, startMx, startMy, startX, startY, scale } = _bubbleDrag;
+  const dx = (e.clientX - startMx) / scale;
+  const dy = (e.clientY - startMy) / scale;
+  stateObj[kx] = Math.round(startX + dx);
+  stateObj[ky] = Math.round(startY + dy);
+  el.style.left = stateObj[kx] + 'px';
+  el.style.top = stateObj[ky] + 'px';
+});
+window.addEventListener('mouseup', () => {
+  if (!_bubbleDrag) return;
+  _bubbleDrag.el.style.cursor = 'grab';
+  _bubbleDrag = null;
+});
+function bindBubbleDrag(bubbleEl, stateObj, scale, idx){
+  const kx = `bubble${idx}X`, ky = `bubble${idx}Y`, kfs = `bubble${idx}FS`;
+  bubbleEl.title = '드래그로 위치 · 휠 스크롤로 크기 조정';
+  bubbleEl.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
+    e.stopPropagation();
+    _bubbleDrag = {
+      el: bubbleEl, stateObj, scale, kx, ky,
+      startMx: e.clientX, startMy: e.clientY,
+      startX: stateObj[kx] ?? 0,
+      startY: stateObj[ky] ?? 0,
+    };
+    bubbleEl.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  bubbleEl.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const cur = stateObj[kfs] ?? 56;
+    const newFS = Math.max(20, Math.min(140, cur + e.deltaY * -0.08));
+    stateObj[kfs] = Math.round(newFS);
+    bubbleEl.style.fontSize = stateObj[kfs] + 'px';
   }, { passive: false });
 }
 function bgEmpty(text){
@@ -1375,26 +1743,73 @@ function buildSlideE(s){
 }
 
 /* === 패턴 L (사진 + 좌하 동그란 + 우상 뾰족 말풍선) === */
+function applyCoverLColors(frame){
+  frame.style.setProperty('--l-outline1-c',     state.cover.l_outlineColor       || '#1A1A1A');
+  frame.style.setProperty('--l-outline2-c',     state.cover.l_doubleOutlineColor || '#E11D2A');
+  frame.style.setProperty('--l-point-c',        state.cover.l_pointColor         || '#E11D2A');
+  frame.style.setProperty('--l-highlight-c',    state.cover.l_highlightColor     || '#F5FF00');
+  frame.style.setProperty('--l-sub-stroke-c',   state.cover.l_subStrokeColor     || '#1A1A1A');
+}
 function buildCoverL(){
   const frame = makeFrame('cover-l');
+  applyCoverLColors(frame);
   if (state.cover.image) { const bg = document.createElement('div'); bg.className = 'photo'; bg.style.backgroundImage = `url(${state.cover.image})`; applyBgPos(bg, state.cover.imagePos); frame.appendChild(bg); }
   else { frame.appendChild(bgEmpty('인물 이미지')); }
   const dim = document.createElement('div');
   dim.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,.25);z-index:1';
   frame.appendChild(dim);
   const copy = document.createElement('div'); copy.className = 'copy';
-  if (state.cover.sub) { const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub; copy.appendChild(pre); }
-  if (state.cover.main) { const main = document.createElement('div'); main.className = 'main'; main.innerHTML = parseCoverMain(state.cover.main); copy.appendChild(main); }
+  if (state.cover.sub) {
+    const pre = document.createElement('div'); pre.className = 'pre'; pre.textContent = state.cover.sub;
+    if (state.cover.l_subFont && FONTS[state.cover.l_subFont]) pre.style.fontFamily = FONTS[state.cover.l_subFont];
+    copy.appendChild(pre);
+  }
+  if (state.cover.main) {
+    const main = document.createElement('div'); main.className = 'main';
+    main.innerHTML = parseCoverMain(state.cover.main);
+    if (state.cover.l_mainFont && FONTS[state.cover.l_mainFont]) main.style.fontFamily = FONTS[state.cover.l_mainFont];
+    copy.appendChild(main);
+  }
   frame.appendChild(copy);
   return frame;
 }
+const BURST_POINTS = '50,0 56.6,12.58 67.1,3.02 69,17.09 82.14,11.7 79.11,25.57 93.3,25 85.71,37 99.24,41.32 88,50 99.24,58.68 85.71,63 93.3,75 79.11,74.43 82.14,88.3 69,82.91 67.1,96.98 56.6,87.42 50,100 43.4,87.42 32.9,96.98 31,82.91 17.86,88.3 20.89,74.43 6.7,75 14.29,63 0.76,58.68 12,50 0.76,41.32 14.29,37 6.7,25 20.89,25.57 17.86,11.7 31,17.09 32.9,3.02 43.4,12.58';
 function buildSlideL(s){
   const frame = makeFrame('slide-l');
+  frame.style.setProperty('--bubble-c', s.bubbleColor || '#E11D2A');
+  frame.style.setProperty('--logo-box-c', s.logoBoxColor || '#1A1A1A');
   const photo = document.createElement('div'); photo.className = 'photo-wrap';
   if (s.image) { photo.style.backgroundImage = `url(${s.image})`; applyBgPos(photo, s.imagePos); }
   frame.appendChild(photo);
-  if (s.bubble2) { const b2 = document.createElement('div'); b2.className = 'bubble-spike'; b2.innerHTML = parseEmphasis(s.bubble2); frame.appendChild(b2); }
-  if (s.bubble1) { const b1 = document.createElement('div'); b1.className = 'bubble-round'; b1.innerHTML = parseEmphasis(s.bubble1); frame.appendChild(b1); }
+  // 좌상단 브랜드 로고 박스
+  const logoBox = document.createElement('div'); logoBox.className = 'logo-box';
+  if (s.logo) { const img = document.createElement('img'); img.className = 'brand-logo'; img.src = s.logo; logoBox.appendChild(img); }
+  frame.appendChild(logoBox);
+  const bubbleFontFamily = (s.bubbleFont && FONTS[s.bubbleFont]) ? FONTS[s.bubbleFont] : null;
+  // 뾰족 말풍선 (우상)
+  if (s.bubble2) {
+    const b2 = document.createElement('div');
+    b2.className = 'bubble-spike';
+    b2.dataset.bubbleIdx = '2';
+    b2.style.left = (s.bubble2X ?? 480) + 'px';
+    b2.style.top = (s.bubble2Y ?? 180) + 'px';
+    b2.style.fontSize = (s.bubble2FS ?? 52) + 'px';
+    if (bubbleFontFamily) b2.style.fontFamily = bubbleFontFamily;
+    b2.innerHTML = `<svg class="bubble-burst" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="${BURST_POINTS}"/></svg><span class="bubble-text">${parseEmphasis(s.bubble2)}</span>`;
+    frame.appendChild(b2);
+  }
+  // 동그란 말풍선 (좌하)
+  if (s.bubble1) {
+    const b1 = document.createElement('div');
+    b1.className = 'bubble-round';
+    b1.dataset.bubbleIdx = '1';
+    b1.style.left = (s.bubble1X ?? 100) + 'px';
+    b1.style.top = (s.bubble1Y ?? 760) + 'px';
+    b1.style.fontSize = (s.bubble1FS ?? 56) + 'px';
+    if (bubbleFontFamily) b1.style.fontFamily = bubbleFontFamily;
+    b1.innerHTML = parseEmphasis(s.bubble1);
+    frame.appendChild(b1);
+  }
   return frame;
 }
 
@@ -1411,18 +1826,33 @@ function buildCoverG(){
 }
 function buildSlideG(s){
   const frame = makeFrame('slide-g');
-  if (s.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${s.image})`; applyBgPos(bg, s.imagePos); frame.appendChild(bg); }
-  if (state.cover.sub) { const band = document.createElement('div'); band.className = 'label-band'; band.textContent = state.cover.sub; frame.appendChild(band); }
-  const card = document.createElement('div'); card.className = 'card';
-  if (state.cover.campaignTitle) {
-    const t = document.createElement('div'); t.className = 'campaign-title';
-    t.innerHTML = parseEmphasis(state.cover.campaignTitle).replace(/hl-y/g, 'hl');
-    card.appendChild(t);
+  frame.style.setProperty('--g-subtitle-c',    s.gSubtitleColor    || '#1A1A1A');
+  frame.style.setProperty('--g-title-pt-c',    s.gTitlePointColor  || '#F5FF00');
+  frame.style.setProperty('--g-bullets-pt-c',  s.gBulletsPointColor|| '#F5FF00');
+  if (s.accentFont && FONTS[s.accentFont]) {
+    frame.style.setProperty('--accent-font', FONTS[s.accentFont]);
   }
-  const brandRow = document.createElement('div'); brandRow.className = 'brand-row';
-  if (s.logo) { const logo = document.createElement('img'); logo.className = 'brand-logo'; logo.src = s.logo; brandRow.appendChild(logo); }
-  if (s.brand) { const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand; brandRow.appendChild(name); }
-  if (brandRow.children.length) card.appendChild(brandRow);
+  if (s.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${s.image})`; applyBgPos(bg, s.imagePos); frame.appendChild(bg); }
+  // 부제목 알약 (상단 부착)
+  if (s.gSubtitle) {
+    const sub = document.createElement('div'); sub.className = 'subtitle-pill';
+    sub.textContent = s.gSubtitle;
+    frame.appendChild(sub);
+  }
+  // 제목 + 카드를 묶는 stack (제목 위, 카드 아래 — 카드는 남은 공간 채워 하단까지)
+  const stack = document.createElement('div'); stack.className = 'content-stack';
+  if (s.gTitle) {
+    const ttl = document.createElement('div'); ttl.className = 'g-title';
+    ttl.innerHTML = parseEmphasis(s.gTitle);
+    stack.appendChild(ttl);
+  }
+  const card = document.createElement('div'); card.className = 'card';
+  if (s.logo) {
+    const logoWrap = document.createElement('div'); logoWrap.className = 'logo-wrap';
+    const logo = document.createElement('img'); logo.className = 'brand-logo'; logo.src = s.logo;
+    logoWrap.appendChild(logo);
+    card.appendChild(logoWrap);
+  }
   if (s.bullets) {
     const wrap = document.createElement('div'); wrap.className = 'bullets';
     s.bullets.split('\n').filter(x=>x.trim()).forEach(line => {
@@ -1432,7 +1862,8 @@ function buildSlideG(s){
     });
     card.appendChild(wrap);
   }
-  frame.appendChild(card);
+  if (card.children.length) stack.appendChild(card);
+  if (stack.children.length) frame.appendChild(stack);
   return frame;
 }
 
