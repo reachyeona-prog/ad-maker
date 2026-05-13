@@ -1002,7 +1002,10 @@ const newSlide = () => ({
   bullets: '',              // G (multiline)
   gTitle: '',               // G: 카드 위 제목 (멀티라인, **포인트** 지원)
   gSubtitle: '',            // G: 상단 부제목 알약
-  slideFont: '',            // 공통: 슬라이드 주요 텍스트 폰트 (빈 값 = Pretendard)
+  slideFont: '',            // (legacy 폴백) 공통 슬라이드 폰트 — 신규 brandFont/mainFont/subFont 가 우선
+  brandFont: '',            // 슬라이드 브랜드명 폰트 (A/B/E)
+  mainFont:  '',            // 슬라이드 메인 카피 폰트 (A.desc, B.desc, E.metrics, G.gTitle+bullets, L.bubbles)
+  subFont:   '',            // 슬라이드 서브 카피 폰트 (B.cta, E.hashtags, G.gSubtitle)
   gSubtitleColor:    '#1A1A1A',  // G: 부제목 알약 배경
   gTitlePointColor:  '#F5FF00',  // G: 제목 **포인트** 컬러
   gBulletsPointColor:'#F5FF00',  // G: bullets **포인트** 형광펜 컬러
@@ -1204,6 +1207,27 @@ function onInputChange(){
   renderAll();
 }
 
+/* 슬라이드/커버 공통: 메인 카피 마커 안내 (커버 hint와 동일한 전체 칩 목록) */
+const SLIDE_MARKUP_HINT = '<code>##컬러##</code> <code>[[박스]]</code> <code>/밑줄/</code> <code>((동그라미))</code> <code>%%별%%</code> <code>++확대++</code> <code>+++큰 확대+++</code> <code>~테두리~</code> <code>~~이중 테두리~~</code> <code>==형광펜==</code> <code>@@강조 폰트@@</code>';
+
+/* 슬라이드 텍스트별 폰트 셀렉터 HTML — key 는 newSlide() 의 brandFont/mainFont/subFont */
+function fontSelectHtml(s, key, label){
+  const v = s[key] || '';
+  const opts = [
+    ['', 'Pretendard (기본)'],
+    ['paperlogy', '페이퍼로지'],
+    ['hakgyo', '학교안심 둥근미소'],
+    ['aggro', '어그로체'],
+    ['a2g', '에이투지체'],
+    ['mulmaru', '물마루'],
+    ['bunpil', '학교안심 분필'],
+  ].map(([val, lab]) => `<option value="${val}"${val === v ? ' selected' : ''}>${lab}</option>`).join('');
+  return `<div class="field">
+    <div class="field-row"><span class="field-label">${label}</span></div>
+    <select data-k="${key}" data-id="${s.id}" title="${label}" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">${opts}</select>
+  </div>`;
+}
+
 /* ===== 슬라이드 관리 ===== */
 function addSlide(){
   state.slides.push(newSlide());
@@ -1300,7 +1324,7 @@ function renderSlideInputs(){
         <div class="field">
           <span class="field-label">메트릭 박스 (최대 3줄)</span>
           <textarea data-k="metrics" data-id="${s.id}" rows="3" placeholder="월 평균 수익 ##1천만원##&#10;홍보, 브랜딩 지원&#10;인테리어 강요 ##X##">${escHtml(s.metrics)}</textarea>
-          <span class="hint"><code>##키워드##</code>로 강조하면 강조 컬러로 표시</span>
+          <span class="hint">${SLIDE_MARKUP_HINT}</span>
         </div>
         <div class="field">
           <div class="field-row"><span class="field-label">강조 컬러 (##키워드##)</span></div>
@@ -1335,27 +1359,16 @@ function renderSlideInputs(){
       const logoBoxPresetHtml = logoBoxPresets.map(c =>
         `<button type="button" class="color-preset" data-color="${c}" data-k="logoBoxColor" data-id="${s.id}" title="${c}" style="background:${c};${c==='#fff'?'border:1px solid #ccc':''}"></button>`
       ).join('');
-      const bf = s.bubbleFont || '';
-      const fontOpts = [
-        ['', '기본 (메인 폰트와 동일)'],
-        ['paperlogy', '페이퍼로지'],
-        ['hakgyo', '학교안심 둥근미소'],
-        ['aggro', '어그로체'],
-        ['a2g', '에이투지체'],
-      ].map(([v, label]) => `<option value="${v}"${v === bf ? ' selected' : ''}>${label}</option>`).join('');
       extraFields = `
         <div class="field">
           <span class="field-label">동그란 말풍선 (좌하단)</span>
           <textarea data-k="bubble1" data-id="${s.id}" rows="2" placeholder="로열티 3.3%&#10;##포인트## ==형광펜==">${escHtml(s.bubble1)}</textarea>
-          <span class="hint">미리보기에서 <code>드래그</code> 위치 · <code>휠 스크롤</code> 크기 · <code>##포인트##</code> <code>==형광펜==</code> 등 커버와 동일</span>
+          <span class="hint">미리보기에서 <code>드래그</code> 위치 · <code>휠 스크롤</code> 크기 · ${SLIDE_MARKUP_HINT}</span>
         </div>
         <div class="field">
           <span class="field-label">뾰족 말풍선 (우상단)</span>
           <textarea data-k="bubble2" data-id="${s.id}" rows="2" placeholder="창업 지원금&#10;##1,000만## 지원">${escHtml(s.bubble2)}</textarea>
-        </div>
-        <div class="field">
-          <div class="field-row"><span class="field-label">말풍선 텍스트 폰트</span></div>
-          <select data-k="bubbleFont" data-id="${s.id}" title="말풍선 텍스트 폰트" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">${fontOpts}</select>
+          <span class="hint">${SLIDE_MARKUP_HINT}</span>
         </div>
         <div class="field">
           <div class="field-row"><span class="field-label">말풍선 컬러 (테두리/형광펜/포인트)</span></div>
@@ -1402,7 +1415,7 @@ function renderSlideInputs(){
         <div class="field">
           <span class="field-label">제목 (카드 위 큰 카피)</span>
           <textarea data-k="gTitle" data-id="${s.id}" rows="2" placeholder="사장님이 알려주는&#10;##진짜 정보##">${escHtml(s.gTitle)}</textarea>
-          <span class="hint"><code>**포인트**</code> 강조 — 라인별 줄바꿈</span>
+          <span class="hint">라인별 줄바꿈 · ${SLIDE_MARKUP_HINT}</span>
         </div>
         <div class="field">
           <div class="field-row"><span class="field-label">제목 포인트 컬러 (<code>**text**</code>)</span></div>
@@ -1414,7 +1427,7 @@ function renderSlideInputs(){
         <div class="field">
           <span class="field-label">✓ Bullets (줄당 1개)</span>
           <textarea data-k="bullets" data-id="${s.id}" rows="6" placeholder="가맹비 교육비 면제&#10;로열티 50만원&#10;##창업지원금 최대 5천만 원##&#10;업종 변경 시 간판 교체 비용 지원&#10;==통행세 없는 착한 프랜차이즈==&#10;@@주목@@ 소자본 가능">${escHtml(s.bullets)}</textarea>
-          <span class="hint"><code>##포인트##</code> 컬러 · <code>==형광펜==</code> · <code>@@강조 폰트@@</code> · <code>~테두리~</code> · <code>++확대++</code> 등 커버와 동일</span>
+          <span class="hint">${SLIDE_MARKUP_HINT}</span>
         </div>
         <div class="field">
           <div class="field-row"><span class="field-label">Bullets 포인트 컬러 (<code>**text**</code>)</span></div>
@@ -1431,9 +1444,9 @@ function renderSlideInputs(){
     const showDesc = (p === 'A' || p === 'B');
     const descField = showDesc ? `
       <div class="field">
-        <span class="field-label">설명 (강점)</span>
+        <span class="field-label">메인 카피 (강점 설명)</span>
         <textarea data-k="desc" data-id="${s.id}" rows="3" placeholder="코로나 시기도 이겨낸 우동 브랜드!&#10;##소자본 창업## 찾고 있다면 강추 드려요&#10;==400만원 가맹 지원금==도 받을 수 있대요">${escHtml(s.desc)}</textarea>
-        <span class="hint"><code>##포인트##</code> <code>==형광펜==</code> 등 커버와 동일</span>
+        <span class="hint">${SLIDE_MARKUP_HINT}</span>
       </div>` : '';
     const isA = (p === 'A');
     const sideUploadKey = isA ? 'menuCut' : 'logo';
@@ -1445,6 +1458,19 @@ function renderSlideInputs(){
         <span class="field-label">브랜드명</span>
         <input type="text" data-k="brand" data-id="${s.id}" value="${escAttr(s.brand)}" placeholder="브랜드명">
       </div>`;
+    // 패턴별 텍스트 → 폰트 매핑 (브랜드명·메인·서브)
+    let fontFields = '';
+    if (p === 'A') {
+      fontFields = fontSelectHtml(s, 'brandFont', '브랜드명 폰트') + fontSelectHtml(s, 'mainFont', '메인 카피 폰트');
+    } else if (p === 'B') {
+      fontFields = fontSelectHtml(s, 'brandFont', '브랜드명 폰트') + fontSelectHtml(s, 'mainFont', '메인 카피 폰트') + fontSelectHtml(s, 'subFont', '서브 카피 (CTA) 폰트');
+    } else if (p === 'E') {
+      fontFields = fontSelectHtml(s, 'brandFont', '브랜드명 폰트') + fontSelectHtml(s, 'mainFont', '메인 카피 (메트릭) 폰트') + fontSelectHtml(s, 'subFont', '서브 카피 (해시태그) 폰트');
+    } else if (p === 'G') {
+      fontFields = fontSelectHtml(s, 'mainFont', '메인 카피 (제목+불릿) 폰트') + fontSelectHtml(s, 'subFont', '서브 카피 (부제목) 폰트');
+    } else if (p === 'L') {
+      fontFields = fontSelectHtml(s, 'mainFont', '메인 카피 (말풍선) 폰트');
+    }
     card.innerHTML = `
       <div class="slide-card-head">
         <span class="slide-num">${String(i+1).padStart(2,'0')}</span>
@@ -1476,13 +1502,7 @@ function renderSlideInputs(){
         <span class="hint">미리보기에서 <code>드래그</code>하여 위치 조정</span>
       </div>
       ${postImageFields}
-      <div class="field">
-        <span class="field-label">슬라이드 폰트</span>
-        <select data-k="slideFont" data-id="${s.id}" title="슬라이드 폰트" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff;font-family:var(--font-mono);font-size:12px">
-          ${[['','Pretendard (기본)'],['paperlogy','페이퍼로지'],['hakgyo','학교안심 둥근미소'],['aggro','어그로체'],['a2g','에이투지체'],['mulmaru','물마루'],['bunpil','학교안심 분필']].map(([v,label]) => `<option value="${v}"${v === (s.slideFont||'') ? ' selected' : ''}>${label}</option>`).join('')}
-        </select>
-        <span class="hint">슬라이드의 주요 텍스트 (브랜드명·제목 등)에 적용</span>
-      </div>
+      ${fontFields}
     `;
     list.appendChild(card);
     // 썸네일 표시
@@ -1908,6 +1928,10 @@ function buildSlide(s){
 function coverMainFontStack(){ const k = state.cover.coverMainFont; return (k && FONTS[k]) ? FONTS[k] : null; }
 function coverSubFontStack(){ const k = state.cover.coverSubFont; return (k && FONTS[k]) ? FONTS[k] : null; }
 function slideFontStack(s){ const k = s.slideFont; return (k && FONTS[k]) ? FONTS[k] : null; }
+// 슬라이드 각 텍스트별 폰트 스택 (빈 값이면 기존 slideFont/bubbleFont 폴백, 그래도 없으면 Pretendard)
+function brandFontStack(s){ const k = s.brandFont || s.slideFont; return (k && FONTS[k]) ? FONTS[k] : null; }
+function mainFontStack(s){ const k = s.mainFont || s.slideFont || s.bubbleFont; return (k && FONTS[k]) ? FONTS[k] : null; }
+function subFontStack(s){ const k = s.subFont || s.slideFont; return (k && FONTS[k]) ? FONTS[k] : null; }
 function buildCoverA(){
   const frame = makeFrame('cover-a');
   frame.appendChild(state.cover.image ? bgImage(state.cover.image, state.cover.imagePos) : bgEmpty());
@@ -1936,12 +1960,13 @@ function buildSlideA(s){
   const grad = document.createElement('div');
   grad.style.cssText = 'position:absolute;inset:0;background:linear-gradient(0deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.1) 40%, transparent 100%);z-index:1;';
   frame.appendChild(grad);
-  const ff = slideFontStack(s);
+  const bf = brandFontStack(s);
+  const mf = mainFontStack(s);
   const box = document.createElement('div'); box.className = 'info-box';
   const brandRow = document.createElement('div'); brandRow.className = 'brand-row';
   if (s.brand) {
     const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand;
-    if (ff) name.style.fontFamily = ff;
+    if (bf) name.style.fontFamily = bf;
     brandRow.appendChild(name);
   }
   if (s.menuCut) {
@@ -1953,7 +1978,7 @@ function buildSlideA(s){
   if (brandRow.children.length) box.appendChild(brandRow);
   if (s.desc) {
     const desc = document.createElement('div'); desc.className = 'desc'; desc.innerHTML = parseEmphasis(s.desc);
-    if (ff) desc.style.fontFamily = ff;
+    if (mf) desc.style.fontFamily = mf;
     box.appendChild(desc);
   }
   frame.appendChild(box);
@@ -2008,27 +2033,29 @@ function buildSlideB(s){
   // 상단 흰 그라디언트 오버레이
   const veil = document.createElement('div'); veil.className = 'top-veil';
   frame.appendChild(veil);
-  const ff = slideFontStack(s);
+  const bf = brandFontStack(s);
+  const mf = mainFontStack(s);
+  const sf = subFontStack(s);
   // 헤드 (브랜드명 + 로고)
   const head = document.createElement('div'); head.className = 'head';
   if (s.brand) {
     const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand;
-    if (ff) name.style.fontFamily = ff;
+    if (bf) name.style.fontFamily = bf;
     head.appendChild(name);
   }
   if (s.logo) { const logo = document.createElement('img'); logo.className = 'brand-logo'; logo.src = s.logo; head.appendChild(logo); }
   frame.appendChild(head);
-  // 설명
+  // 설명 (메인 카피)
   if (s.desc) {
     const desc = document.createElement('div'); desc.className = 'desc'; desc.innerHTML = parseEmphasis(s.desc);
-    if (ff) desc.style.fontFamily = ff;
+    if (mf) desc.style.fontFamily = mf;
     frame.appendChild(desc);
   }
-  // CTA — 가로 풀폭, 가운데 정렬, 화살표 없음 (마케터 직접 입력)
+  // CTA (서브 카피) — 가로 풀폭, 가운데 정렬, 화살표 없음
   if (s.cta) {
     const cta = document.createElement('div'); cta.className = 'cta';
     cta.textContent = s.cta;
-    if (ff) cta.style.fontFamily = ff;
+    if (sf) cta.style.fontFamily = sf;
     frame.appendChild(cta);
   }
   return frame;
@@ -2080,12 +2107,14 @@ function buildSlideE(s){
   frame.style.setProperty('--hl-c', s.highlightColor || s.pointColor || '#4A8A3A');
   frame.style.setProperty('--text-c', s.textColor || '#fff');
   frame.style.setProperty('--grad-h', (s.gradientHeight ?? 240) + 'px');
-  const ff = slideFontStack(s);
+  const bf = brandFontStack(s);
+  const mf = mainFontStack(s);
+  const sf = subFontStack(s);
   const head = document.createElement('div'); head.className = 'head';
   const headLeft = document.createElement('div'); headLeft.className = 'head-left';
   if (s.brand) {
     const name = document.createElement('div'); name.className = 'brand-name'; name.textContent = s.brand;
-    if (ff) name.style.fontFamily = ff;
+    if (bf) name.style.fontFamily = bf;
     headLeft.appendChild(name);
   }
   if (s.hashtags) {
@@ -2095,6 +2124,7 @@ function buildSlideE(s){
       t.textContent = tag.startsWith('#') ? tag : '#' + tag;
       ht.appendChild(t);
     });
+    if (sf) ht.style.fontFamily = sf;
     headLeft.appendChild(ht);
   }
   head.appendChild(headLeft);
@@ -2107,6 +2137,7 @@ function buildSlideE(s){
       el.innerHTML = parseEmphasis(m.trim());
       wrap.appendChild(el);
     });
+    if (mf) wrap.style.fontFamily = mf;
     frame.appendChild(wrap);
   }
   if (s.image) {
@@ -2158,7 +2189,8 @@ function buildSlideL(s){
   const logoBox = document.createElement('div'); logoBox.className = 'logo-box';
   if (s.logo) { const img = document.createElement('img'); img.className = 'brand-logo'; img.src = s.logo; logoBox.appendChild(img); }
   frame.appendChild(logoBox);
-  const bubbleFontFamily = (s.bubbleFont && FONTS[s.bubbleFont]) ? FONTS[s.bubbleFont] : null;
+  // 말풍선(메인 카피) 폰트 — 신규 mainFont 우선, 레거시 bubbleFont 폴백
+  const bubbleFontFamily = mainFontStack(s);
   // 뾰족 말풍선 (우상)
   if (s.bubble2) {
     const b2 = document.createElement('div');
@@ -2216,12 +2248,13 @@ function buildSlideG(s){
     frame.style.setProperty('--accent-font', FONTS[s.accentFont]);
   }
   if (s.image) { const bg = document.createElement('div'); bg.className = 'bg'; bg.style.backgroundImage = `url(${s.image})`; applyBgPos(bg, s.imagePos); frame.appendChild(bg); }
-  const ff = slideFontStack(s);
-  // 부제목 알약 (상단 부착)
+  const mf = mainFontStack(s);
+  const sf = subFontStack(s);
+  // 부제목 알약 (서브 카피)
   if (s.gSubtitle) {
     const sub = document.createElement('div'); sub.className = 'subtitle-pill';
     sub.textContent = s.gSubtitle;
-    if (ff) sub.style.fontFamily = ff;
+    if (sf) sub.style.fontFamily = sf;
     frame.appendChild(sub);
   }
   // 제목 + 카드를 묶는 stack (제목 위, 카드 아래 — 카드는 남은 공간 채워 하단까지)
@@ -2229,7 +2262,7 @@ function buildSlideG(s){
   if (s.gTitle) {
     const ttl = document.createElement('div'); ttl.className = 'g-title';
     ttl.innerHTML = parseEmphasis(s.gTitle);
-    if (ff) ttl.style.fontFamily = ff;
+    if (mf) ttl.style.fontFamily = mf;
     stack.appendChild(ttl);
   }
   const card = document.createElement('div'); card.className = 'card';
@@ -2246,6 +2279,7 @@ function buildSlideG(s){
       const t = document.createElement('div'); t.innerHTML = parseEmphasis(line.trim());
       row.appendChild(t); wrap.appendChild(row);
     });
+    if (mf) wrap.style.fontFamily = mf;
     card.appendChild(wrap);
   }
   if (card.children.length) stack.appendChild(card);
