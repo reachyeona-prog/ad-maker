@@ -178,11 +178,18 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 .frame{
   position:relative;overflow:hidden;background:#222;
   font-family:var(--font);color:#fff;
+  /* 미리보기 인터랙션 — 텍스트 선택/네이티브 이미지 드래그가 배경 드래그와 충돌하지 않도록 차단 */
+  -webkit-user-select:none; user-select:none;
 }
+.frame *{ -webkit-user-drag:none; user-drag:none; }
 .frame .bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat}
 .frame .bg-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#888;font-family:var(--font-mono);font-size:14px}
 
 /* === 공통 메인 카피 마커 (모든 커버 .main 요소에 적용) === */
+/* 단독 ~text~ / ~~text~~ 는 흰색 채움 + 컬러 테두리.
+   ##~text~## 처럼 컬러 마커 안쪽에 중첩되면 부모 컬러를 상속받아야 함 (테두리 + 채움색 둘 다 적용) */
+.hl-y-text .hl-outline,
+.hl-y-text .hl-dbl-outline{ color:inherit; }
 .hl-outline{
   display:inline-block;color:#fff;-webkit-text-stroke:0;
   text-shadow:
@@ -453,6 +460,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 }
 .cover-e .copy .main .line{display:block}
 .cover-e .copy .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));padding:0 12px;border-radius:6px}
+.cover-e .copy .main .hl-y-text{color:var(--c-text, var(--hook-yellow))}
 .cover-e .copy .main .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
 .cover-e .copy .main .hl-zoom-xl{display:inline-block;font-size:calc(1em + 55px);line-height:1}
 .cover-e .copy .sub{
@@ -630,6 +638,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 .cover-g .pre{display:inline-block;background:#1A1A1A;color:#fff;font-size:90px;font-weight:900;letter-spacing:-.02em;padding:18px 36px;border-radius:18px;border:none}
 .cover-g .main{font-size:108px;font-weight:900;line-height:1.05;letter-spacing:-.04em;color:#fff;text-shadow:0 6px 18px rgba(0,0,0,.6);word-break:keep-all;display:flex;flex-direction:column;gap:48px;align-items:center}
 .cover-g .main .hl{display:inline-block;background:var(--c-box, var(--hook-yellow));color:#1A1A1A;padding:6px 24px;border-radius:14px;text-shadow:none;box-shadow:0 6px 0 rgba(0,0,0,.3)}
+.cover-g .main .hl-y-text{color:var(--c-text, var(--hook-yellow));text-shadow:none}
 .cover-g .main .hl-zoom{display:inline-block;font-size:calc(1em + 30px);line-height:1}
 .cover-g .main .hl-zoom-xl{display:inline-block;font-size:calc(1em + 55px);line-height:1}
 
@@ -691,8 +700,14 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 }
 .slide-g .brand-logo{height:110px;max-width:80%;object-fit:contain}
 .slide-g .bullets{display:flex;flex-direction:column;gap:14px;font-size:40px;line-height:1.4;color:#1A1A1A;word-break:keep-all}
-.slide-g .bullets .row{display:flex;gap:14px;align-items:flex-start}
-.slide-g .bullets .row::before{content:'·';color:#1A1A1A;font-weight:900;flex-shrink:0;font-size:1.6em;line-height:.9;margin-top:-.1em}
+.slide-g .bullets .row{display:flex;gap:16px;align-items:flex-start}
+/* 작은 원 불릿 — font 40 · line-height 1.4 ⇒ 줄높이 56, 중앙 28px, 원 반지름 7px ⇒ top 21px ≈ .525em */
+.slide-g .bullets .row::before{
+  content:'';flex-shrink:0;
+  width:14px;height:14px;border-radius:50%;
+  background:#1A1A1A;
+  margin-top:.525em;
+}
 .slide-g .bullets .hl-y-text{color:var(--g-bullets-pt-c, #1A1A1A);font-weight:900;background:none}
 .slide-g .bullets .hl-hi{background:linear-gradient(transparent 60%, var(--g-bullets-pt-c, var(--hook-yellow)) 60%);font-weight:800;padding:0 .1em}
 
