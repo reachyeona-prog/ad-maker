@@ -482,6 +482,11 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
 /* === 패턴 G 슬라이드 (부제목 알약 + 큰 제목 + 흰 카드 + bullets) === */
 .slide-g{background:#F0EDE5}
 .slide-g .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(8px) brightness(.85);transform:scale(1.1)}
+/* 배경 이미지 위에 흰색 30% 그라데이션 일괄 적용 */
+.slide-g::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom, rgba(255,255,255,.3), rgba(255,255,255,.3));
+}
 /* 부제목 — 상단 부착 알약 (655x95, 하단 라운드 40) */
 .slide-g .subtitle-pill{
   position:absolute;top:0;left:50%;
@@ -1795,7 +1800,9 @@ function buildSlideL(s){
     b2.style.top = (s.bubble2Y ?? 180) + 'px';
     b2.style.fontSize = (s.bubble2FS ?? 52) + 'px';
     if (bubbleFontFamily) b2.style.fontFamily = bubbleFontFamily;
-    b2.innerHTML = `<svg class="bubble-burst" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="${BURST_POINTS}"/></svg><span class="bubble-text">${parseEmphasis(s.bubble2)}</span>`;
+    // fill/stroke를 인라인 속성으로 박아둠 — html-to-image 캡처 시 CSS가 서브 SVG 폴리곤에 안 먹는 케이스 회피
+    const sc = s.bubbleColor || '#E11D2A';
+    b2.innerHTML = `<svg class="bubble-burst" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="${BURST_POINTS}" fill="#fff" stroke="${sc}" stroke-width="8" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></svg><span class="bubble-text">${parseEmphasis(s.bubble2)}</span>`;
     frame.appendChild(b2);
   }
   // 동그란 말풍선 (좌하)
