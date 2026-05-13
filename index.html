@@ -799,7 +799,15 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
           <input type="text" id="cover-point-hex" class="hex-input" value="#F5FF00" placeholder="#F5FF00" maxlength="7">
           <input type="color" id="cover-point-swatch" class="color-swatch" value="#F5FF00" title="컬러 피커">
         </div>
-        <span class="hint">박스·컬러·밑줄·동그라미·별·테두리 마커에 동일 적용</span>
+        <span class="hint">박스·컬러·밑줄·동그라미·별 마커에 동일 적용</span>
+      </div>
+      <div class="field" data-show-pattern="A,E,G,L">
+        <div class="field-row"><span class="field-label">테두리 컬러</span></div>
+        <div class="color-input-row">
+          <input type="text" id="cover-outline-hex" class="hex-input" value="#1A1A1A" placeholder="#1A1A1A" maxlength="7">
+          <input type="color" id="cover-outline-swatch" class="color-swatch" value="#1A1A1A" title="테두리 컬러">
+        </div>
+        <span class="hint"><code>~테두리~</code> 마커 + <code>~~이중 테두리~~</code> 안쪽</span>
       </div>
       <div class="field" data-show-pattern="A,E,G,L">
         <div class="field-row"><span class="field-label">이중 테두리 바깥 컬러</span></div>
@@ -807,7 +815,7 @@ body{padding-top:96px}  /* 헤더 fixed 영역만큼 컨텐츠 시작 위치 보
           <input type="text" id="cover-dbl-outline-hex" class="hex-input" value="#E11D2A" placeholder="#E11D2A" maxlength="7">
           <input type="color" id="cover-dbl-outline-swatch" class="color-swatch" value="#E11D2A" title="이중 테두리 바깥 컬러">
         </div>
-        <span class="hint"><code>~~이중 테두리~~</code> 마커의 외곽선 (안쪽 18px은 포인트 컬러)</span>
+        <span class="hint"><code>~~이중 테두리~~</code> 마커의 외곽선</span>
       </div>
       <div class="field" data-show-pattern="B">
         <div class="field-row"><span class="field-label">메인 카피 포인트 컬러 1 (그라데이션 시작)</span></div>
@@ -948,7 +956,8 @@ const state = {
   cover: {
     main: '', sub: '', stamp: '', image: null, imagePos: { x: 50, y: 50 }, campaignTitle: '',
     pointColor: '#F5FF00',
-    doubleOutlineColor: '#E11D2A',  // ~~이중 테두리~~ 바깥쪽 컬러 (안쪽은 pointColor)
+    outlineColor: '#1A1A1A',        // ~테두리~ 컬러 + ~~이중 테두리~~ 안쪽
+    doubleOutlineColor: '#E11D2A',  // ~~이중 테두리~~ 바깥쪽 컬러
     coverMainFont: '',  // 공통: 모든 패턴 커버 메인 카피 폰트 (빈 값 = Pretendard)
     coverSubFont: '',   // 공통: 모든 패턴 커버 서브 카피 폰트
     l_subStrokeColor:     '#1A1A1A',  // 서브 카피 스트로크 (L 전용)
@@ -1133,11 +1142,13 @@ function bindCoverPointColor(){
     swatch.addEventListener('change', e => onChange(e.target.value));
   };
   bindPair('cover-point-hex', 'cover-point-swatch', 'pointColor');
+  bindPair('cover-outline-hex', 'cover-outline-swatch', 'outlineColor');
   bindPair('cover-dbl-outline-hex', 'cover-dbl-outline-swatch', 'doubleOutlineColor');
 }
 function applyCoverColors(frame){
   const c = state.cover.pointColor || '#F5FF00';
-  ['--c-box','--c-text','--c-underline','--c-circle','--c-star','--c-outline'].forEach(v => frame.style.setProperty(v, c));
+  ['--c-box','--c-text','--c-underline','--c-circle','--c-star'].forEach(v => frame.style.setProperty(v, c));
+  frame.style.setProperty('--c-outline',  state.cover.outlineColor       || '#1A1A1A');
   frame.style.setProperty('--c-outline2', state.cover.doubleOutlineColor || '#E11D2A');
 }
 
